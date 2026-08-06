@@ -322,8 +322,6 @@ handoff(){
         || fatal "Installer entry point not found."
 
     msg "Starting installer..."
-
-    exec bash "$SA_DIR_INSTALL/sa_main.sh"
 }
 
 # ==============================================================================
