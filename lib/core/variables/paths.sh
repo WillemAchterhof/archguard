@@ -34,8 +34,9 @@ readonly AG_DIR_PIPELINE="$AG_DIR_INSTALL/ag_orchestrator"
 readonly AG_DIR_STATE="$AG_DIR_MAIN/ag_state"
 
 readonly AG_DIR_CORE="$AG_DIR_LIB/core"
-
 readonly AG_DIR_LOG="$AG_DIR_STATE/log"
+
+readonly AG_DIR_LOGGING="$AG_DIR_CORE/logging"
 
 # ------------------------------------------------------------------------------
 # Files
