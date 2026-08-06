@@ -128,7 +128,7 @@ log_variables(){
     log_silent "VARIABLES"
 
     while IFS= read -r var; do
-        [[ "$var" == SAS_* ]] && continue
+        [[ "$var" == AGS_* ]] && continue
         log_silent "$(printf " %-20s = %q" "$var" "${!var}")"
     done < <(compgen -A variable AG_)
 
