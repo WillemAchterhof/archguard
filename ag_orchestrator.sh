@@ -38,6 +38,7 @@ init_core()
 
     source "$AG_DIR_LOGGING/module.sh" \
         || { printf "[FATAL] Failed loading logging.\n"; exit 1; }
+    init_logging
 }
 
 load_pipeline(){
