@@ -312,8 +312,6 @@ repository_clone(){
 repository_sync(){
     repository_remove
     repository_clone
-	
-	rm -f "$AG_DIR_INSTALL/ag_install.sh"
 }
 
 # ------
