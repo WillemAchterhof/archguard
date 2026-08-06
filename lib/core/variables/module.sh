@@ -33,7 +33,6 @@ set -Eeuo pipefail
 : "${AG_DIR_MAIN:?AG_DIR_MAIN not set — source from ag_orchestrator.sh only}"
 
 AG_DIR_VARS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly AG_DIR_VARS
 
 set -a
 
