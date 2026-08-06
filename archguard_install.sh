@@ -9,7 +9,7 @@ set -Eeuo pipefail
 #  This script prepares the minimal environment required to start the full
 #  installer. Its responsibility is intentionally limited to bootstrap tasks.
 #
-#  After successful preparation, control is handed off to: sa_main.sh
+#  After successful preparation, control is handed off to: ag_main.sh
 #
 #  The bootstrap script remains intentionally small and self-contained.
 #  All actual installation logic lives inside the cloned installer repository.
@@ -19,25 +19,25 @@ set -Eeuo pipefail
 # ==============================================================================
 
 check_root(){
-   [[ $EUID -eq 0 ]] || fatal "Must be run as root. Use: sudo bash sa_install.sh"
+   [[ $EUID -eq 0 ]] || fatal "Must be run as root. Use: sudo bash ag_install.sh"
 }
 
 init_variables(){
-    readonly SA_REPO_URL="https://github.com/WillemAchterhof/archguar.git"
-    readonly SA_REPO_BRANCH="main"
+    readonly AG_REPO_URL="https://github.com/WillemAchterhof/archguard.git"
+    readonly AG_REPO_BRANCH="main"
 
-    readonly SA_DIR_BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    readonly SA_DIR_INSTALL="$SA_DIR_BASE/sa_install"
-    readonly SA_DIR_STATE="$SA_DIR_BASE/sa_state"
+    readonly AG_DIR_BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    readonly AG_DIR_INSTALL="$AG_DIR_BASE/ag_install"
+    readonly AG_DIR_STATE="$AG_DIR_BASE/ag_state"
 	
-	readonly SA_DIR_LOG="$SA_DIR_STATE/log"
-	readonly SA_DIR_CONFIG="$SA_DIR_STATE/config"
+	readonly AG_DIR_LOG="$AG_DIR_STATE/log"
+	readonly AG_DIR_CONFIG="$AG_DIR_STATE/config"
 
-    SA_FILE_LOG="$SA_DIR_LOG/install.log"
-    SA_FILE_WIFI="$SA_DIR_CONFIG/wifi.env"
+    AG_FILE_LOG="$AG_DIR_LOG/install.log"
+    AG_FILE_WIFI="$AG_DIR_CONFIG/wifi.env"
 	
-	SA_WIFI_DEVICE=""
-	SA_WIFI_SSID=""
+	AG_WIFI_DEVICE=""
+	AG_WIFI_SSID=""
 	SAS_WIFI_PASSWORD=""
 }
 
@@ -45,9 +45,9 @@ init_state(){
     local dir
 
     for dir in \
-        "$SA_DIR_STATE" \
-        "$SA_DIR_LOG" \
-        "$SA_DIR_CONFIG"
+        "$AG_DIR_STATE" \
+        "$AG_DIR_LOG" \
+        "$AG_DIR_CONFIG"
     do
         [[ -d "$dir" ]] || mkdir -p "$dir"
 
@@ -59,7 +59,7 @@ init_state(){
             || fatal "Directory not writable: $dir"
     done
 
-    : > "$SA_FILE_LOG"
+    : > "$AG_FILE_LOG"
 }
 
 # --------------
@@ -87,8 +87,8 @@ Exit    : $exit_code"
 
     printf "%s\n" "$message"
 
-    [[ -n "${SA_FILE_LOG:-}" ]] &&
-        printf "%s\n" "$message" >> "$SA_FILE_LOG"
+    [[ -n "${AG_FILE_LOG:-}" ]] &&
+        printf "%s\n" "$message" >> "$AG_FILE_LOG"
 
     exit "$exit_code"
 }
@@ -101,11 +101,11 @@ trap 'trap_err' ERR
 
 log(){
     printf " %s\n" "$1"
-    printf " %s\n" "$1" >> "$SA_FILE_LOG"
+    printf " %s\n" "$1" >> "$AG_FILE_LOG"
 }
 
 log_silent(){
-    printf " %s\n" "$1" >> "$SA_FILE_LOG"
+    printf " %s\n" "$1" >> "$AG_FILE_LOG"
 }
 
 msg(){
@@ -130,7 +130,7 @@ log_variables(){
     while IFS= read -r var; do
         [[ "$var" == SAS_* ]] && continue
         log_silent "$(printf " %-20s = %q" "$var" "${!var}")"
-    done < <(compgen -A variable SA_)
+    done < <(compgen -A variable AG_)
 
     log_silent "================================================================================"
 }
@@ -149,19 +149,19 @@ check_internet(){
 }
 
 wifi_show(){
-    SA_WIFI_DEVICE="$(iwctl device list | awk '/station/ {print $2; exit}')"
+    AG_WIFI_DEVICE="$(iwctl device list | awk '/station/ {print $2; exit}')"
 
-    [[ -n "$SA_WIFI_DEVICE" ]] \
+    [[ -n "$AG_WIFI_DEVICE" ]] \
         || fatal "No wireless adapter found."
 
     msg "Scanning for wireless networks..."
 
-    iwctl station "$SA_WIFI_DEVICE" scan
+    iwctl station "$AG_WIFI_DEVICE" scan
     sleep 2
 
     printf "\nAvailable wireless networks:\n\n"
 
-    iwctl station "$SA_WIFI_DEVICE" get-networks |
+    iwctl station "$AG_WIFI_DEVICE" get-networks |
         tail -n +5 |
         sed 's/^[>* ]*//'
 
@@ -170,7 +170,7 @@ wifi_show(){
 
 wifi_select(){
     printf "SSID: "
-    read -r SA_WIFI_SSID
+    read -r AG_WIFI_SSID
 }
 
 wifi_password(){
@@ -180,8 +180,8 @@ wifi_password(){
 }
 
 wifi_attempt(){
-    iwctl station "$SA_WIFI_DEVICE" connect \
-        "$SA_WIFI_SSID" \
+    iwctl station "$AG_WIFI_DEVICE" connect \
+        "$AG_WIFI_SSID" \
         --passphrase "$SAS_WIFI_PASSWORD"
 }
 
@@ -207,12 +207,12 @@ wifi_connect(){
 }
 
 wifi_save(){
-    cat > "$SA_FILE_WIFI" <<EOF
-SA_WIFI_SSID=$(printf '%q' "$SA_WIFI_SSID")
+    cat > "$AG_FILE_WIFI" <<EOF
+AG_WIFI_SSID=$(printf '%q' "$AG_WIFI_SSID")
 SAS_WIFI_PASSWORD=$(printf '%q' "$SAS_WIFI_PASSWORD")
 EOF
 
-    chmod 600 "$SA_FILE_WIFI"
+    chmod 600 "$AG_FILE_WIFI"
     
     unset SAS_WIFI_PASSWORD
 }
@@ -231,32 +231,32 @@ network_connection(){
 
 package_check(){
 
-	SA_INSTALL_PACKAGES=()	
-	readonly SA_PACKAGES_BOOTSTRAP=(
+	AG_INSTALL_PACKAGES=()	
+	readonly AG_PACKAGES_BOOTSTRAP=(
 		git
 		curl
 	)
 	
     local package
 
-    for package in "${SA_PACKAGES_BOOTSTRAP[@]}"; do
+    for package in "${AG_PACKAGES_BOOTSTRAP[@]}"; do
 
         if command -v "$package" >/dev/null 2>&1; then
             log "[installed] $package"
         else
-            SA_INSTALL_PACKAGES+=("$package")
+            AG_INSTALL_PACKAGES+=("$package")
         fi
 
     done
 }
 
 package_install(){
-    [[ ${#SA_INSTALL_PACKAGES[@]} -eq 0 ]] && return
+    [[ ${#AG_INSTALL_PACKAGES[@]} -eq 0 ]] && return
 
     msg "Installing required bootstrap packages..."
 
     pacman -Sy --noconfirm --needed \
-        "${SA_INSTALL_PACKAGES[@]}" \
+        "${AG_INSTALL_PACKAGES[@]}" \
         || fatal "Failed to install required packages."
 }
 
@@ -274,21 +274,21 @@ check_install_dir(){
     local base
 	local install
 
-    base="$(realpath "$SA_DIR_BASE")"
-    install="$(realpath -m "$SA_DIR_INSTALL")"
+    base="$(realpath "$AG_DIR_BASE")"
+    install="$(realpath -m "$AG_DIR_INSTALL")"
 
     [[ "$install" == "$base" ]] \
-        && fatal "SA_DIR_INSTALL must not be the base dir itself: $install"
+        && fatal "AG_DIR_INSTALL must not be the base dir itself: $install"
 
     [[ "$install" == "$base/"* ]] \
-        || fatal "SA_DIR_INSTALL is outside base dir, refusing to remove: $install"
+        || fatal "AG_DIR_INSTALL is outside base dir, refusing to remove: $install"
 }
 
 repository_remove(){
     check_install_dir
 
-    if [[ -d "$SA_DIR_INSTALL" ]]; then
-        rm -rf -- "$SA_DIR_INSTALL" \
+    if [[ -d "$AG_DIR_INSTALL" ]]; then
+        rm -rf -- "$AG_DIR_INSTALL" \
             || fatal "Failed to remove previous installer."
 
         msg "Previous repository removed."
@@ -301,10 +301,10 @@ repository_clone(){
     msg "Downloading installer..."
 
     git clone \
-        --branch "$SA_REPO_BRANCH" \
+        --branch "$AG_REPO_BRANCH" \
         --depth 1 \
-        "$SA_REPO_URL" \
-        "$SA_DIR_INSTALL" \
+        "$AG_REPO_URL" \
+        "$AG_DIR_INSTALL" \
         || fatal "Failed to clone repository."
 }
 
@@ -313,12 +313,12 @@ repository_sync(){
     repository_remove
     repository_clone
 	
-	rm -f "$SA_DIR_INSTALL/sa_install.sh"
+	rm -f "$AG_DIR_INSTALL/ag_install.sh"
 }
 
 # ------
 handoff(){
-    [[ -f "$SA_DIR_INSTALL/sa_main.sh" ]] \
+    [[ -f "$AG_DIR_INSTALL/ag_main.sh" ]] \
         || fatal "Installer entry point not found."
 
     msg "Starting installer..."
