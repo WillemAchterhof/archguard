@@ -41,4 +41,4 @@ readonly AG_DIR_LOGGING="$AG_DIR_STATE/logging"
 # Files
 # ------------------------------------------------------------------------------
 
-readonly AG_FILE_LOG="$AG_DIR_LOGGING/ag_install.log"
+readonly AG_FILE_LOG="$AG_DIR_LOG/ag_install.log"
