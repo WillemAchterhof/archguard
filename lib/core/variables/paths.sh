@@ -36,3 +36,9 @@ readonly AG_DIR_STATE="$AG_DIR_MAIN/ag_state"
 readonly AG_DIR_CORE="$AG_DIR_LIB/core"
 
 readonly AG_DIR_LOGGING="$AG_DIR_STATE/logging"
+
+# ------------------------------------------------------------------------------
+# Files
+# ------------------------------------------------------------------------------
+
+readonly AG_FILE_LOG="$AG_DIR_LOGGING/ag_install.log"
