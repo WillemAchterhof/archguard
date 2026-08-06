@@ -38,7 +38,7 @@ init_variables(){
 	
 	AG_WIFI_DEVICE=""
 	AG_WIFI_SSID=""
-	SAS_WIFI_PASSWORD=""
+	AGS_WIFI_PASSWORD=""
 }
 
 init_state(){
@@ -175,14 +175,14 @@ wifi_select(){
 
 wifi_password(){
     printf "\nPassword: "
-    read -rs SAS_WIFI_PASSWORD
+    read -rs AGS_WIFI_PASSWORD
     printf "\n"
 }
 
 wifi_attempt(){
     iwctl station "$AG_WIFI_DEVICE" connect \
         "$AG_WIFI_SSID" \
-        --passphrase "$SAS_WIFI_PASSWORD"
+        --passphrase "$AGS_WIFI_PASSWORD"
 }
 
 wifi_connect(){
@@ -209,12 +209,12 @@ wifi_connect(){
 wifi_save(){
     cat > "$AG_FILE_WIFI" <<EOF
 AG_WIFI_SSID=$(printf '%q' "$AG_WIFI_SSID")
-SAS_WIFI_PASSWORD=$(printf '%q' "$SAS_WIFI_PASSWORD")
+AGS_WIFI_PASSWORD=$(printf '%q' "$AGS_WIFI_PASSWORD")
 EOF
 
     chmod 600 "$AG_FILE_WIFI"
     
-    unset SAS_WIFI_PASSWORD
+    unset AGS_WIFI_PASSWORD
 }
 
 # ------------------
