@@ -9,7 +9,7 @@ set -Eeuo pipefail
 #  This script prepares the minimal environment required to start the full
 #  installer. Its responsibility is intentionally limited to bootstrap tasks.
 #
-#  After successful preparation, control is handed off to: ag_main.sh
+#  After successful preparation, control is handed off to: archguard_install.sh
 #
 #  The bootstrap script remains intentionally small and self-contained.
 #  All actual installation logic lives inside the cloned installer repository.
