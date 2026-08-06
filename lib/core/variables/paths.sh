@@ -35,4 +35,4 @@ readonly AG_DIR_STATE="$AG_DIR_MAIN/ag_state"
 
 readonly AG_DIR_CORE="$AG_DIR_LIB/core"
 
-readonly SA_DIR_LOGGING="$SA_DIR_STATE/logging"
+readonly AG_DIR_LOGGING="$AG_DIR_STATE/logging"
