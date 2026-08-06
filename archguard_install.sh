@@ -318,7 +318,7 @@ repository_sync(){
 
 # ------
 handoff(){
-    [[ -f "$AG_DIR_INSTALL/ag_main.sh" ]] \
+    [[ -f "$AG_DIR_INSTALL/ag_orchestrator.sh" ]] \
         || fatal "Installer entry point not found."
 
     msg "Starting installer..."
@@ -329,7 +329,7 @@ handoff(){
 # ==============================================================================
 
 main(){
-  initialization
+	initialization
 	logging_setup
 	network_connection
 	packages_check
