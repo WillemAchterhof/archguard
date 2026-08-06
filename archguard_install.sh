@@ -322,6 +322,8 @@ handoff(){
         || fatal "Installer entry point not found."
 
     msg "Starting installer..."
+
+	exec bash "$AG_DIR_INSTALL/ag_orchestrator.sh"
 }
 
 # ==============================================================================
