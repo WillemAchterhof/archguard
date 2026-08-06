@@ -30,9 +30,9 @@
 
 AG_HW_BOOT_MODE="unknown"
 
-AG_HW_SB_AVAILABLE="no"
-AG_HW_SB_ENABLED="no"
-AG_HW_SB_SETUP_MODE="unknown"
+AG_HW_SB_AVAILABLE="false"
+AG_HW_SB_ENABLED="false"
+AG_HW_SB_SETUP_MODE="false"
 AG_HW_SB_STATE="unknown"
 
 # ------------------------------------------------------------------------------
