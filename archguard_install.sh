@@ -33,8 +33,8 @@ init_variables(){
 	readonly AG_DIR_LOG="$AG_DIR_STATE/log"
 	readonly AG_DIR_CONFIG="$AG_DIR_STATE/config"
 
-    AG_FILE_LOG="$AG_DIR_LOG/install.log"
-    AG_FILE_WIFI="$AG_DIR_CONFIG/wifi.env"
+    readonly AG_FILE_LOG="$AG_DIR_LOG/archguard_install.log"
+    readonly AG_FILE_WIFI="$AG_DIR_CONFIG/wifi.env"
 	
 	AG_WIFI_DEVICE=""
 	AG_WIFI_SSID=""
