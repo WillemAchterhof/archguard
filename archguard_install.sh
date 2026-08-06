@@ -65,7 +65,7 @@ init_state(){
 # --------------
 initialization(){
 	init_variables
-  check_root
+  	check_root
 	init_state
 }
 
