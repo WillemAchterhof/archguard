@@ -27,8 +27,10 @@ run_menu()
         render_menu
         read -r -n1 -s key
         printf "\n"
+
         handle_input "$key"
-        [[ "${AG_MENU_EXIT:-0}" == "1" ]] && return
-        [[ "${AG_MENU_PROCEED:-0}" == "1" ]] && return
+
+        [[ "$AG_MENU_EXIT" == "1" ]] && return
+        [[ "$AG_MENU_PROCEED" == "1" ]] && return
     done
 }

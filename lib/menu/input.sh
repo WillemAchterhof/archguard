@@ -35,16 +35,8 @@ handle_input()
         # ---- ACTIONS ----
         w) profile_load ;;
         x) profile_save ;;
-        y)
-            SA_MENU_PROCEED=1
-            return
-            ;;
-        z)
-            SA_MENU_EXIT=1
-            return
-            ;;
-        *)
-            msg "Invalid selection."
-            ;;
+        y) SA_MENU_PROCEED="1" ;;
+        z) SA_MENU_EXIT="1" ;;
+        *) msg "Invalid selection." ;;
     esac
 }

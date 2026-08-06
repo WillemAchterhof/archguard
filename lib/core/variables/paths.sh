@@ -24,6 +24,7 @@
 # ------------------------------------------------------------------------------
 
 readonly AG_DIR_INSTALL="$AG_DIR_MAIN/ag_install"
+readonly AG_DIR_STATE="$AG_DIR_MAIN/ag_state"
 
 # ------------------------------------------------------------------------------
 # Library
@@ -31,12 +32,18 @@ readonly AG_DIR_INSTALL="$AG_DIR_MAIN/ag_install"
 
 readonly AG_DIR_LIB="$AG_DIR_INSTALL/lib"
 readonly AG_DIR_PIPELINE="$AG_DIR_INSTALL/ag_orchestrator"
-readonly AG_DIR_STATE="$AG_DIR_MAIN/ag_state"
-
-readonly AG_DIR_CORE="$AG_DIR_LIB/core"
 readonly AG_DIR_LOG="$AG_DIR_STATE/log"
 
+readonly AG_DIR_CORE="$AG_DIR_LIB/core"
+readonly AG_DIR_INSTALLER="$AG_DIR_LIB/installer"
+readonly AG_DIR_MENU="$AG_DIR_LIB/menu"
+readonly AG_DIR_PREPARE="$AG_DIR_LIB/prepare"
+readonly AG_DIR_VALIDATE="$AG_DIR_LIB/validate"
+
+
 readonly AG_DIR_LOGGING="$AG_DIR_CORE/logging"
+readonly AG_DIR_PRECHECKS="$AG_DIR_CORE/prechecks"
+readonly AG_DIR_VARIABLES="$AG_DIR_CORE/variables"
 
 # ------------------------------------------------------------------------------
 # Files
