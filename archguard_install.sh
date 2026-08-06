@@ -9,7 +9,7 @@ set -Eeuo pipefail
 #  This script prepares the minimal environment required to start the full
 #  installer. Its responsibility is intentionally limited to bootstrap tasks.
 #
-#  After successful preparation, control is handed off to: archguard_install.sh
+#  After successful preparation, control is handed off to: ag_orchestrator.sh
 #
 #  The bootstrap script remains intentionally small and self-contained.
 #  All actual installation logic lives inside the cloned installer repository.
@@ -19,7 +19,7 @@ set -Eeuo pipefail
 # ==============================================================================
 
 check_root(){
-   [[ $EUID -eq 0 ]] || fatal "Must be run as root. Use: sudo bash ag_install.sh"
+   [[ $EUID -eq 0 ]] || fatal "Must be run as root. Use: sudo bash archguard_install.sh"
 }
 
 init_variables(){
