@@ -22,15 +22,22 @@
 format_hardware()
 {
     case "$AG_HW_SB_STATE" in
-        enabled)      AG_DISPLAY_SB="Available (locked)" ;;
-        "setup mode") AG_DISPLAY_SB="Available (setup mode)" ;;
-        disabled)     AG_DISPLAY_SB="Available (disabled)" ;;
-        unavailable)  AG_DISPLAY_SB="Not available" ;;
+        enabled)      AG_DISPLAY_SB="Locked" ;;
+        "setup mode") AG_DISPLAY_SB="Unlocked" ;;
+        disabled)     AG_DISPLAY_SB="Disabled" ;;
+        unavailable)  AG_DISPLAY_SB="-" ;;
         *)            AG_DISPLAY_SB="Undetected" ;;
     esac
 
-    case "$AG_HW_TPM_PRESENT" in
-        yes) AG_DISPLAY_TPM="Available" ;;
-        *)   AG_DISPLAY_TPM="Not available" ;;
-    esac
+   case "$AG_HW_TPM_PRESENT" in
+    yes)
+        case "$AG_HW_TPM_VERSION" in
+            unknown) AG_DISPLAY_TPM="undetected" ;;
+            *)       AG_DISPLAY_TPM="$AG_HW_TPM_VERSION" ;;
+        esac
+        ;;
+    *)
+        AG_DISPLAY_TPM="-"
+        ;;
+esac
 }
