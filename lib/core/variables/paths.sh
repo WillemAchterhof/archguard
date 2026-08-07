@@ -30,19 +30,21 @@ readonly AG_DIR_STATE="$AG_DIR_MAIN/ag_state"
 # Library
 # ------------------------------------------------------------------------------
 
+# /
 readonly AG_DIR_LIB="$AG_DIR_INSTALL/lib"
 readonly AG_DIR_PIPELINE="$AG_DIR_INSTALL/ag_orchestrator"
 readonly AG_DIR_LOG="$AG_DIR_STATE/log"
 
+# /Lib
 readonly AG_DIR_CORE="$AG_DIR_LIB/core"
 readonly AG_DIR_INSTALLER="$AG_DIR_LIB/installer"
 readonly AG_DIR_MENU="$AG_DIR_LIB/menu"
 readonly AG_DIR_PREPARE="$AG_DIR_LIB/prepare"
 readonly AG_DIR_VALIDATE="$AG_DIR_LIB/validate"
 
-
+# /lib/core
 readonly AG_DIR_LOGGING="$AG_DIR_CORE/logging"
-readonly AG_DIR_PRECHECKS="$AG_DIR_CORE/prechecks"
+readonly AG_DIR_PRECHECK="$AG_DIR_CORE/precheck"
 readonly AG_DIR_VARIABLES="$AG_DIR_CORE/variables"
 
 # ------------------------------------------------------------------------------

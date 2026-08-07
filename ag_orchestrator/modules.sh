@@ -16,30 +16,30 @@
 
 module_precheck()
 {
-    run_module "$AG_DIR_CORE/precheck"
+    run_module "$AG_DIR_PRECHECK"
     run_precheck
 }
 
 module_prepare()
 {
-    run_module "$AG_DIR_CORE/prepare"
+    run_module "$AG_DIR_PREPARE"
     run_prepare
 }
 
 module_menu()
 {
-    run_module "$AG_DIR_CORE/menu"
+    run_module "$AG_DIR_MENU"
     run_menu
 }
 
 module_validate()
 {
-    run_module "$AG_DIR_CORE/validate"
+    run_module "$AG_DIR_VALIDATE"
     run_validation
 }
 
 module_install()
 {
-    run_module "$AG_DIR_CORE/install"
+    run_module "$AG_DIR_INSTALLER"
     run_install
 }
