@@ -20,6 +20,7 @@ module_services()
     run_services
 }
 
+module_precheck()
 {
     run_module "$AG_DIR_PRECHECK"
     run_precheck
