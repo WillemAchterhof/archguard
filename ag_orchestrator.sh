@@ -36,7 +36,7 @@ init_core()
     source "$AG_DIR_MAIN/ag_install/lib/core/variables/module.sh" \
         || { printf "[FATAL] Failed loading variables.\n"; exit 1; }
 
-    source "$AG_DIR_LOGGING_LIB/module.sh" \
+    source "$AG_DIR_LOGGING/module.sh" \
         || { printf "[FATAL] Failed loading logging.\n"; exit 1; }
     init_logging
 
