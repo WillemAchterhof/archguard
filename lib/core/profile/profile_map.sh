@@ -30,6 +30,7 @@ build_profile_map()
     local name
 
     while IFS= read -r name; do
+        [[ "$name" == "Default" ]] && continue
         all_names+=("$name")
     done < <(
         find "$AG_DIR_PROFILE_STATE" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' |
