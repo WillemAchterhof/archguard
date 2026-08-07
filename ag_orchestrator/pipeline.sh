@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Main Pipeline
 # ==============================================================================
-#  ag_install/ag_orchestrator/pipeline.sh
+#  ag_install/orchestrator/pipeline.sh
 #
 #  Defines the installer's top-level stage sequence.
 #
