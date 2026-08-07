@@ -17,8 +17,7 @@
 
 # shopt -s globstar
 
-# for file in "$AG_DIR_PREPARE"/**/*.sh; do
-for file in "$AG_DIR_PREPARE/storage/disk/*.sh; do
+for file in "$AG_DIR_PREPARE"/**/*.sh; do
     [[ -f "$file" ]] || continue
     [[ "$(basename "$file")" == "module.sh" ]] && continue
     source "$file"
