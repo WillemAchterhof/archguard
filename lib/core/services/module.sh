@@ -15,6 +15,5 @@
 for file in "$AG_DIR_SERVICES"/*.sh; do
     [[ -f "$file" ]] || continue
     [[ "$(basename "$file")" == "module.sh" ]] && continue
-    [[ "$(basename "$file")" == "run.sh" ]] && continue
     source "$file"
 done
