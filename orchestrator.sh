@@ -33,7 +33,7 @@ readonly AG_DIR_MAIN="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 init_core()
 {
-    source "$AG_DIR_MAIN/ag_install/lib/core/variables/module.sh" \
+    source "$AG_DIR_MAIN/install/lib/core/variables/module.sh" \
         || { printf "[FATAL] Failed loading variables.\n"; exit 1; }
 
     source "$AG_DIR_LOGGING/module.sh" \
