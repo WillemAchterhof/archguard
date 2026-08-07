@@ -21,5 +21,6 @@ set -Eeuo pipefail
 
 for file in "$AG_DIR_PRECHECK"/*.sh; do
     [[ -f "$file" ]] || continue
+    [[ "$(basename "$file")" == "module.sh" ]] && continue
     source "$file"
 done

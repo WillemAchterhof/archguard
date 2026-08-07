@@ -23,5 +23,7 @@
 
 for file in "$AG_DIR_LOGGING"/*.sh; do
     [[ -f "$file" ]] || continue
+    [[ "$(basename "$file")" == "module.sh" ]] && continue
     source "$file"
 done
+
