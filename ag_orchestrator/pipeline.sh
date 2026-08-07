@@ -23,17 +23,17 @@ run_pipeline()
     msg "Hardware detection"
     module_precheck
 
-    msg "Prepare installer"
-    module_prepare
+#    msg "Prepare installer"
+#    module_prepare
 
     msg "Configure profile"
     module_menu
 
-    msg "Validate profile"
-    module_validate
+#    msg "Validate profile"
+#    module_validate
 
-    msg "Install system"
-    module_install
+#    msg "Install system"
+#    module_install
 
     msg "Installer finished"
     log_header "SESSION COMPLETE"

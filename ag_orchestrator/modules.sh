@@ -20,26 +20,26 @@ module_precheck()
     run_precheck
 }
 
-# module_prepare()
-# {
-#     run_module "$AG_DIR_PREPARE"
-#     run_prepare
-# }
+module_prepare()
+{
+    run_module "$AG_DIR_PREPARE"
+    run_prepare
+}
 
-# module_menu()
-# {
-#     run_module "$AG_DIR_MENU"
-#     run_menu
-# }
+module_menu()
+{
+    run_module "$AG_DIR_MENU"
+    run_menu
+}
 
-# module_validate()
-# {
-#     run_module "$AG_DIR_VALIDATE"
-#     run_validation
-# }
+module_validate()
+{
+    run_module "$AG_DIR_VALIDATE"
+    run_validation
+}
 
-# module_install()
-# {
-#     run_module "$AG_DIR_INSTALLER"
-#     run_install
-# }
+module_install()
+{
+    run_module "$AG_DIR_INSTALLER"
+    run_install
+}
