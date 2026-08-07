@@ -58,4 +58,4 @@ readonly AG_DIR_VARIABLES="$AG_DIR_CORE/variables"
 # ------------------------------------------------------------------------------
 
 readonly AG_FILE_LOG="$AG_DIR_LOG/archguard_install.log"
-readonly AG_FILE_PROFILE_DEFAULT="$AG_DIR_PROFILE/default_system.env"
+readonly AG_FILE_PROFILE_DEFAULT="$AG_DIR_PROFILES/default_system.env"
