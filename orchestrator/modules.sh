@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Installer Modules
 # ==============================================================================
-#  ag_install/orchestrator/modules.sh
+#  install/orchestrator/modules.sh
 #
 #  Defines each installer stage as a module entry point.
 #

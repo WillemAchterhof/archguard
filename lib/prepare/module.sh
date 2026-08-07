@@ -1,24 +1,26 @@
 #!/usr/bin/env bash
 # ==============================================================================
-#  Arch Secure Installer V2.6 — Disk Module
+#  Arch Secure Installer V2.6 — Prepare Module
 # ==============================================================================
-#  lib/menu/storage/disk/module.sh
+#  lib/prepare/module.sh
 #
-#  Loads the disk menu components.
+#  Loads all prepare-stage components, at any depth
+#  (storage/disk, storage/swap, system/*, security/*, etc).
 #
 #  Responsibilities:
-#    - Load disk renderer
-#    - Load disk helpers
+#    - Recursively load every *.sh under this directory
 #
 #  Does NOT:
-#    - Render menus
-#    - Handle user input
-#    - Modify installer variables
+#    - Run any prepare logic itself
 #    - Source itself
 # ==============================================================================
 
-for file in "$SA_DIR_PREPARE/disk"/*.sh; do
+shopt -s globstar
+
+for file in "$AG_DIR_PREPARE"/**/*.sh; do
     [[ -f "$file" ]] || continue
     [[ "$(basename "$file")" == "module.sh" ]] && continue
     source "$file"
 done
+
+shopt -u globstar

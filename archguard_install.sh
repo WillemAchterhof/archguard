@@ -316,12 +316,12 @@ repository_sync(){
 
 # ------
 handoff(){
-    [[ -f "$AG_DIR_INSTALL/ag_orchestrator.sh" ]] \
+    [[ -f "$AG_DIR_INSTALL/orchestrator.sh" ]] \
         || fatal "Installer entry point not found."
 
     msg "Starting installer..."
 
-	exec bash "$AG_DIR_INSTALL/ag_orchestrator.sh"
+	exec bash "$AG_DIR_INSTALL/orchestrator.sh"
 }
 
 # ==============================================================================
