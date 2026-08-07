@@ -39,6 +39,10 @@ init_core()
     source "$AG_DIR_LOGGING/module.sh" \
         || { printf "[FATAL] Failed loading logging.\n"; exit 1; }
     init_logging
+
+    source "$AG_DIR_PROFILE_LIB/module.sh" \
+        || { printf "[FATAL] Failed loading profile handling.\n"; exit 1; }
+    load_default_profile
 }
 
 load_pipeline(){
