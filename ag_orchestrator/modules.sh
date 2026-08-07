@@ -14,7 +14,12 @@
 #    - Handle user input, rendering, or validation itself
 # ==============================================================================
 
-module_precheck()
+module_services()
+{
+    run_module "$AG_DIR_SERVICES"
+    run_services
+}
+
 {
     run_module "$AG_DIR_PRECHECK"
     run_precheck
