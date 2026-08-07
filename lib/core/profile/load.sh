@@ -1,21 +1,31 @@
 #!/usr/bin/env bash
 # ==============================================================================
-#  Arch Secure Installer V2.6 — Profile Module
+#  Arch Secure Installer V2.6 — Profile Loading
 # ==============================================================================
-#  lib/core/profile/module.sh
+#  lib/core/profile/load.sh
 #
-#  Loads profile handling components.
-#
-#  Responsibilities:
-#    - Load profile load/save functions
+#  Loads profile .env files into AG_P_* variables.
 #
 #  Does NOT:
-#    - Load profile files itself
-#    - Source itself
+#    - Validate loaded values
+#    - Save profiles
 # ==============================================================================
 
-for file in "$AG_DIR_PROFILE_LIB"/*.sh; do
-    [[ -f "$file" ]] || continue
-    [[ "$(basename "$file")" == "module.sh" ]] && continue
+profile_load_file()
+{
+    local file="$1"
+
+    [[ -f "$file" ]] || return 1
+
     source "$file"
-done
+}
+
+load_default_profile()
+{
+    if [[ -f "$AG_FILE_PROFILE_DEFAULT" ]]; then
+        profile_load_file "$AG_FILE_PROFILE_DEFAULT"
+        msg "Loaded default profile: $AG_FILE_PROFILE_DEFAULT"
+    else
+        log_silent "No default profile found — using defaults."
+    fi
+}
