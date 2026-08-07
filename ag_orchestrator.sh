@@ -4,7 +4,7 @@ set -Eeuo pipefail
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Main Orchestrator
 # ==============================================================================
-#  ag_install/ag_orchestrator.sh
+#  install/ag_orchestrator.sh
 #
 #  Pure orchestration layer.
 #
