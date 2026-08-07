@@ -42,13 +42,20 @@ readonly AG_DIR_MENU="$AG_DIR_LIB/menu"
 readonly AG_DIR_PREPARE="$AG_DIR_LIB/prepare"
 readonly AG_DIR_VALIDATE="$AG_DIR_LIB/validate"
 
+# /ag_status
+readonly AG_DIR_PROFILES="$AG_DIR_STATE/profiles"
+
 # /lib/core
 readonly AG_DIR_LOGGING="$AG_DIR_CORE/logging"
 readonly AG_DIR_PRECHECK="$AG_DIR_CORE/precheck"
+readonly AG_DIR_PROFILE="$AG_DIR_CORE/profile"
 readonly AG_DIR_VARIABLES="$AG_DIR_CORE/variables"
+
+
 
 # ------------------------------------------------------------------------------
 # Files
 # ------------------------------------------------------------------------------
 
 readonly AG_FILE_LOG="$AG_DIR_LOG/archguard_install.log"
+readonly AG_FILE_PROFILE_DEFAULT="$AG_DIR_PROFILE/default_system.env"
