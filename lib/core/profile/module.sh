@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Profile Module
 # ==============================================================================
-#  lib/profile/module.sh
+#  lib/core/profile/module.sh
 #
 #  Loads profile handling components.
 #
