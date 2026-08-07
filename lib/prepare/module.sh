@@ -24,5 +24,3 @@ for file in "$AG_DIR_PREPARE"/**/*.sh; do
 done
 
 shopt -u globstar
-
-source "$AG_DIR_PREPARE/storage/disk/module.sh"
