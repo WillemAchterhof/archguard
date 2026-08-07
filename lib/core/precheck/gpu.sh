@@ -55,8 +55,8 @@ detect_gpu()
             ;;
     esac
 
-   AG_HW_GPU_MODEL=$(
-       printf "%s\n" "$gpu" |
-       sed 's/^[^:]*: [^:]*: //'
-)
+    AG_HW_GPU_MODEL=$(
+        printf "%s\n" "$gpu" |
+        sed -E 's/^.*(VGA compatible controller|3D controller|Display controller):[[:space:]]*//'
+    )
 }
