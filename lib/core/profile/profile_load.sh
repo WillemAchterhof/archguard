@@ -46,7 +46,7 @@ profile_load()
         printf "\n"
 
         case "$choice" in
-            z)
+            Z)
                 return
                 ;;
             N)
