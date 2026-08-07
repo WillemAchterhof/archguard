@@ -20,6 +20,9 @@ run_pipeline()
     log_header "Arch Secure Installer V2.6"
     msg "Installer started"
 
+    msg "Loading core services"
+    module_services
+
     msg "Hardware detection"
     module_precheck
 
