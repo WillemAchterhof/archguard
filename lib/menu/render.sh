@@ -52,7 +52,7 @@ render_menu()
 
     printf " Actions\n"
     printf " ────────────────────────────────────────────────────────────────────────────────\n"    
-    printf "  [w] Load profile    [x] Save profile    [y] Install    [z] Exit\n\n"
+    printf "  [w] Load profile    [x/X] Save profile (as)   [y] Install    [z] Exit\n\n"
     printf "\n"
     printf "================================================================================\n"
 }
