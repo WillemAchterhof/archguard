@@ -29,7 +29,6 @@ module_precheck()
 module_prepare()
 {
     run_module "$AG_DIR_PREPARE"
-    run_prepare
 }
 
 module_menu()
