@@ -17,5 +17,3 @@ for file in "$AG_DIR_SERVICES"/*.sh; do
     [[ "$(basename "$file")" == "module.sh" ]] && continue
     source "$file"
 done
-
-run_services
