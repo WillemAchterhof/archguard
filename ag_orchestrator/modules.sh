@@ -23,7 +23,7 @@ module_precheck()
 module_prepare()
 {
     run_module "$AG_DIR_CORE/prepare"
-    # run_prepare
+    run_prepare
 }
 
 module_menu()
