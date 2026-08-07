@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Module Runner
 # ==============================================================================
-#  ag_install/ag_orchestrator/run_module.sh
+#  ag_install/orchestrator/run_module.sh
 #
 #  Loads and logs a single installer module.
 #
