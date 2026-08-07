@@ -14,9 +14,12 @@ render_menu()
     printf "================================================================================\n\n"
 
     printf " Hardware\n"
-    printf "   Boot Mode : %s\n"    "$AG_HW_BOOT_MODE"
-    printf "   CPU       : %s\n"    "$AG_HW_CPU_NAME"
-    printf "   Memory    : %s GB\n" "$AG_HW_MEMORY_TOTAL_GB"
+    printf "   Boot Mode   : %s\n" "${AG_HW_BOOT_MODE^^}"
+    printf "   Secure Boot : %s\n" "$AG_DISPLAY_SB"
+    printf "   TPM         : %s\n" "$AG_DISPLAY_TPM"
+    printf "   CPU         : %s\n" "$AG_HW_CPU_NAME"
+    printf "   GPU         : %s\n" "$AG_HW_GPU_MODEL"
+    printf "   Memory      : %s GB\n" "$AG_HW_MEMORY_TOTAL_GB"
     printf "\n"
 
     printf " Storage\n"
