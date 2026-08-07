@@ -26,8 +26,8 @@ build_disk_map()
     set +e
     while IFS= read -r disk; do
 
-        if [[ -n "${SA_HW_USB_DEVICE:-}" ]] &&
-           [[ "$disk" == "$SA_HW_USB_DEVICE" ]]; then
+        if [[ -n "${AG_HW_USB_DEVICE:-}" ]] &&
+           [[ "$disk" == "$AG_HW_USB_DEVICE" ]]; then
             continue
         fi
 

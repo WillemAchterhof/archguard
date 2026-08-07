@@ -19,8 +19,8 @@ render_disk_menu()
     printf " Target Disk Selection\n"
     printf "================================================\n\n"
 
-    if [[ -n "$SA_HW_USB_DEVICE" ]]; then
+    if [[ -n "$AG_HW_USB_DEVICE" ]]; then
         printf " Installer USB: %s (excluded)\n\n" \
-            "$SA_HW_USB_DEVICE"
+            "$AG_HW_USB_DEVICE"
     fi
 }

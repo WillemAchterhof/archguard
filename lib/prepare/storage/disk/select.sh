@@ -33,18 +33,18 @@ select_disk()
         return 1
     fi
 
-    if [[ -n "${SA_HW_USB_DEVICE:-}" ]] &&
-       [[ "$(readlink -f "$selected")" == "$(readlink -f "$SA_HW_USB_DEVICE")" ]]; then
+    if [[ -n "${AG_HW_USB_DEVICE:-}" ]] &&
+       [[ "$(readlink -f "$selected")" == "$(readlink -f "$AG_HW_USB_DEVICE")" ]]; then
 
         printf " ⚠ Cannot select installer USB: %s\n" "$selected"
         sleep 2
         return 1
     fi
 
-    SA_P_DISK="$selected"
+    AG_P_DISK="$selected"
 
-    msg "Selected disk: $SA_P_DISK"
-    log_silent "SETTER: disk — SA_P_DISK=$SA_P_DISK"
+    msg "Selected disk: $AG_P_DISK"
+    log_silent "SETTER: disk — AG_P_DISK=$AG_P_DISK"
 
     return 0
 }
