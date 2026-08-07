@@ -22,9 +22,12 @@ profile_load_file()
 
 load_default_profile()
 {
-    if [[ -f "$AG_FILE_PROFILE_DEFAULT" ]]; then
-        profile_load_file "$AG_FILE_PROFILE_DEFAULT"
-        msg "Loaded default profile: $AG_FILE_PROFILE_DEFAULT"
+    local file="$AG_DIR_PROFILE_STATE/Default/system.env"
+
+    if [[ -f "$file" ]]; then
+        profile_load_file "$file"
+        AG_PROFILE_NAME="Default"
+        msg "Loaded default profile: $file"
     else
         log_silent "No default profile found — using defaults."
     fi
