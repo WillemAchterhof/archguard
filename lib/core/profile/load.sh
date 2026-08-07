@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Profile Loading
 # ==============================================================================
-#  lib/core/profile/load.sh
+#  lib/profile/load.sh
 #
 #  Loads profile .env files into AG_P_* variables.
 #
