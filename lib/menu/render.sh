@@ -15,12 +15,15 @@ render_menu()
     printf " Arch Secure Installer\n"
     printf "================================================================================\n\n"
 
+    printf " Profile : %s\n" "${AG_PROFILE_NAME:-Default}"
+
     printf " Hardware\n"
+    printf "   CPU         : %s\n" "$AG_HW_CPU_NAME"
+    printf "   GPU         : %s\n" "$AG_HW_GPU_MODEL"
     printf "   Boot Mode   : %s\n" "${AG_HW_BOOT_MODE^^}"
     printf "   Secure Boot : %s\n" "$AG_DISPLAY_SB"
     printf "   TPM         : %s\n" "$AG_DISPLAY_TPM"
-    printf "   CPU         : %s\n" "$AG_HW_CPU_NAME"
-    printf "   GPU         : %s\n" "$AG_HW_GPU_MODEL"
+
     printf "   Memory      : %s GB\n" "$AG_HW_MEMORY_TOTAL_GB"
     printf "\n"
 
@@ -47,7 +50,6 @@ render_menu()
     printf "   [p] Pacman      : %s parallel downloads\n" "${AG_P_PACMAN_PARALLEL:-Not set}"
     printf "\n"
 
-    printf " Profile : %s\n" "${AG_PROFILE_NAME:-Default}"
     printf " Actions\n"
     printf " ────────────────────────────────────────────────────────────────────────────────\n"    
     printf "  [w] Load profile    [x] Save profile    [y] Install    [z] Exit\n\n"
