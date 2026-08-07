@@ -23,8 +23,9 @@ profile_write_file()
     : > "$file"
 
     while IFS= read -r var; do
+        [[ -n "$var" ]] || continue
         printf "%s=%q\n" "$var" "${!var}" >> "$file"
-    done < <(compgen -A variable AG_P_)
+    done < <(compgen -A variable AG_P_ || true)
 
     chmod 600 "$file"
 }
