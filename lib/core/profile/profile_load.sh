@@ -20,12 +20,13 @@
 profile_load()
 {
     local choice
+    local page=0
 
     while true; do
 
-        build_profile_map
+        build_profile_map "$page"
         clear
-        render_profile_menu
+        render_profile_menu "$page"
 
         if [[ "${#PROFILE_MAP[@]}" -eq 0 ]]; then
             printf "  No saved profiles found.\n\n"
@@ -34,6 +35,7 @@ profile_load()
         fi
 
         printf "\n"
+        [[ "$AG_PROFILE_PAGE_COUNT" -gt 1 ]] && printf " [n] Next page\n"
         printf " [1] Download profiles from git\n"
         printf " [2] Change default git URL\n"
         printf " [z] Return\n\n"
@@ -44,6 +46,11 @@ profile_load()
         case "$choice" in
             z)
                 return
+                ;;
+            n)
+                if [[ "$AG_PROFILE_PAGE_COUNT" -gt 1 ]]; then
+                    page=$(( (page + 1) % AG_PROFILE_PAGE_COUNT ))
+                fi
                 ;;
             1)
                 profile_git_download
