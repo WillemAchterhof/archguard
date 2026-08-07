@@ -34,13 +34,13 @@ readonly AG_DIR_CORE="$AG_DIR_LIB/core"
 readonly AG_DIR_INSTALLER="$AG_DIR_LIB/installer"
 readonly AG_DIR_MENU="$AG_DIR_LIB/menu"
 readonly AG_DIR_PREPARE="$AG_DIR_LIB/prepare"
-readonly AG_DIR_PROFILE_LIB="$AG_DIR_LIB/profile"
 readonly AG_DIR_VALIDATE="$AG_DIR_LIB/validate"
 # /ag_state
 readonly AG_DIR_PROFILE_STATE="$AG_DIR_STATE/profile"
 # /lib/core
 readonly AG_DIR_LOGGING="$AG_DIR_CORE/logging"
 readonly AG_DIR_PRECHECK="$AG_DIR_CORE/precheck"
+readonly AG_DIR_PROFILE_LIB="$AG_DIR_CORE/profile"
 readonly AG_DIR_VARIABLES="$AG_DIR_CORE/variables"
 # ------------------------------------------------------------------------------
 # Files
