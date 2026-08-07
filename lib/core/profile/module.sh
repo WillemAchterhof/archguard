@@ -14,7 +14,7 @@
 #    - Source itself
 # ==============================================================================
 
-for file in "$AG_DIR_PROFILE_LIB"/*.sh; do
+for file in "$AG_DIR_PROFILE"/*.sh; do
     [[ -f "$file" ]] || continue
     [[ "$(basename "$file")" == "module.sh" ]] && continue
     source "$file"
