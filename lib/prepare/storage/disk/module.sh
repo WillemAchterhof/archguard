@@ -1,28 +1,23 @@
 #!/usr/bin/env bash
 # ==============================================================================
-#  Arch Secure Installer V2.6 — Prepare Module
+#  Arch Secure Installer V2.6 — Menu Module
 # ==============================================================================
-#  lib/prepare/module.sh
+#  lib/menu/module.sh
 #
-#  Loads all prepare-stage components, at any depth
-#  (storage/disk, storage/swap, system/*, security/*, etc).
+#  Loads the menu-stage components.
 #
 #  Responsibilities:
-#    - Recursively load every *.sh under this directory
+#    - Load menu renderer
+#    - Load input dispatcher
 #
 #  Does NOT:
-#    - Run any prepare logic itself
+#    - Render menus
+#    - Handle user input
 #    - Source itself
 # ==============================================================================
 
-shopt -s globstar
-
-for file in "$AG_DIR_PREPARE"/**/*.sh; do
+for file in "$AG_DIR_PREPARE/storage/disk"/*.sh; do
     [[ -f "$file" ]] || continue
     [[ "$(basename "$file")" == "module.sh" ]] && continue
     source "$file"
 done
-
-shopt -u globstar
-
-source "$AG_DIR_PREPARE/storage/disk/module.sh"
