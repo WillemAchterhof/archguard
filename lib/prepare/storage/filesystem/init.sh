@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Filesystem Setter
 # ==============================================================================
-#  lib/prepare/storage/filesystem/setter.sh
+#  lib/prepare/storage/filesystem/init.sh
 #
 #  Drives the root filesystem selection menu.
 #
@@ -14,25 +14,26 @@
 
 prepare_filesystem()
 {
-    local choice
+    case "${AG_P_ROOT_FS:-}" in
+        "")
+            AG_P_ROOT_FS="ext4"
+            ;;
 
-    while true; do
-        clear
-        render_filesystem_menu
+        "ext4")
+            AG_P_ROOT_FS="btrfs"
+            ;;
 
-        read -r -n1 -s choice
-        printf "\n"
+        "btrfs")
+            AG_P_ROOT_FS=""
+            ;;
 
-        case "$choice" in
-            z)
-                return
-                ;;
-            *)
-                if select_filesystem "$choice"; then
-                    update_swap_for_filesystem
-                    return
-                fi
-                ;;
-        esac
-    done
+        *)
+            AG_P_ROOT_FS="ext4"
+            ;;
+    esac
+
+    update_swap_for_filesystem
+
+    log_silent \
+        "SETTER: filesystem — AG_P_ROOT_FS=${AG_P_ROOT_FS:-}"
 }
