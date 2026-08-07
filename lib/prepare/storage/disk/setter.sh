@@ -16,7 +16,7 @@
 #    - Partition or wipe disks
 # ==============================================================================
 
-run_disk_setter()
+run_disk()
 {
     local choice
 
