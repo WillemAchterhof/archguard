@@ -35,7 +35,9 @@ profile_load()
         fi
 
         printf "\n"
-        [[ "$AG_PROFILE_PAGE_COUNT" -gt 1 ]] && printf " [n] Next page\n"
+        if [[ "$AG_PROFILE_PAGE_COUNT" -gt 1 ]]; then
+            printf " [N] Next page    [P] Previous page\n"
+        fi
         printf " [1] Download profiles from git\n"
         printf " [2] Change default git URL\n"
         printf " [z] Return\n\n"
@@ -47,9 +49,14 @@ profile_load()
             z)
                 return
                 ;;
-            n)
+            N)
                 if [[ "$AG_PROFILE_PAGE_COUNT" -gt 1 ]]; then
                     page=$(( (page + 1) % AG_PROFILE_PAGE_COUNT ))
+                fi
+                ;;
+            P)
+                if [[ "$AG_PROFILE_PAGE_COUNT" -gt 1 ]]; then
+                    page=$(( (page - 1 + AG_PROFILE_PAGE_COUNT) % AG_PROFILE_PAGE_COUNT ))
                 fi
                 ;;
             1)
