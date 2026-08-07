@@ -20,14 +20,14 @@
 # ------------------------------------------------------------------------------
 # Base
 # ------------------------------------------------------------------------------
-readonly AG_DIR_INSTALL="$AG_DIR_MAIN/ag_install"
-readonly AG_DIR_STATE="$AG_DIR_MAIN/ag_state"
+readonly AG_DIR_INSTALL="$AG_DIR_MAIN/install"
+readonly AG_DIR_STATE="$AG_DIR_MAIN/state"
 # ------------------------------------------------------------------------------
 # Library
 # ------------------------------------------------------------------------------
 # /
 readonly AG_DIR_LIB="$AG_DIR_INSTALL/lib"
-readonly AG_DIR_PIPELINE="$AG_DIR_INSTALL/ag_orchestrator"
+readonly AG_DIR_PIPELINE="$AG_DIR_INSTALL/orchestrator"
 readonly AG_DIR_LOG="$AG_DIR_STATE/log"
 # /lib
 readonly AG_DIR_CORE="$AG_DIR_LIB/core"
