@@ -16,9 +16,15 @@
 
 render_profile_menu()
 {
+    local page="$1"
+
     printf "\n"
     printf "================================================\n"
-    printf " Load Profile\n"
+    if [[ "$AG_PROFILE_PAGE_COUNT" -gt 1 ]]; then
+        printf " Load Profile  (page %s of %s)\n" "$((page + 1))" "$AG_PROFILE_PAGE_COUNT"
+    else
+        printf " Load Profile\n"
+    fi
     printf "================================================\n\n"
 }
 
