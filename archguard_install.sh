@@ -27,8 +27,8 @@ init_variables(){
     readonly AG_REPO_BRANCH="main"
 
     readonly AG_DIR_BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    readonly AG_DIR_INSTALL="$AG_DIR_BASE/ag_install"
-    readonly AG_DIR_STATE="$AG_DIR_BASE/ag_state"
+    readonly AG_DIR_INSTALL="$AG_DIR_BASE/install"
+    readonly AG_DIR_STATE="$AG_DIR_BASE/state"
 	
 	readonly AG_DIR_LOG="$AG_DIR_STATE/log"
 	readonly AG_DIR_CONFIG="$AG_DIR_STATE/config"
