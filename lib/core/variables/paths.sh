@@ -42,6 +42,7 @@ readonly AG_DIR_PROFILE_STATE="$AG_DIR_STATE/profile"
 readonly AG_DIR_LOGGING="$AG_DIR_CORE/logging"
 readonly AG_DIR_PRECHECK="$AG_DIR_CORE/precheck"
 readonly AG_DIR_PROFILE_LIB="$AG_DIR_CORE/profile"
+readonly AG_DIR_SERVICES="$AG_DIR_CORE/services"
 readonly AG_DIR_VARIABLES="$AG_DIR_CORE/variables"
 # ------------------------------------------------------------------------------
 # Files
