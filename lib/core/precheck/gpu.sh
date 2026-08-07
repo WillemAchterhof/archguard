@@ -55,5 +55,9 @@ detect_gpu()
             ;;
     esac
 
-    AG_HW_GPU_MODEL="$gpu"
+    AG_HW_GPU_MODEL=$(
+        printf "%s" "$gpu" |
+        cut -d: -f2- |
+        sed 's/^ *//'
+    )
 }
