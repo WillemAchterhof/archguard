@@ -42,3 +42,22 @@ select_profile()
 
     return 0
 }
+
+select_default_profile()
+{
+    local file="$AG_DIR_PROFILE_STATE/Default/system.env"
+
+    if [[ ! -f "$file" ]]; then
+        printf " No default profile found.\n"
+        sleep 1
+        return 1
+    fi
+
+    profile_load_file "$file"
+    AG_PROFILE_NAME="Default"
+
+    msg "Loaded profile: $AG_PROFILE_NAME"
+    log_silent "LOADER: profile — AG_PROFILE_NAME=$AG_PROFILE_NAME"
+
+    return 0
+}
