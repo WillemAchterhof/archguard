@@ -18,6 +18,7 @@ module_precheck()
 {
     run_module "$AG_DIR_PRECHECK"
     run_precheck
+    format_hardware
 }
 
 module_prepare()
