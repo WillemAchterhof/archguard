@@ -34,6 +34,7 @@ readonly AG_DIR_CORE="$AG_DIR_LIB/core"
 readonly AG_DIR_INSTALLER="$AG_DIR_LIB/installer"
 readonly AG_DIR_MENU="$AG_DIR_LIB/menu"
 readonly AG_DIR_PREPARE="$AG_DIR_LIB/prepare"
+readonly AG_DIR_UTILITIES="$AG_DIR_LIB/utilities"
 readonly AG_DIR_VALIDATE="$AG_DIR_LIB/validate"
 # /ag_state
 readonly AG_DIR_PROFILE_STATE="$AG_DIR_STATE/profile"
