@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Profile Module
 # ==============================================================================
-#  lib/core/profile/module.sh
+#  lib/profile/module.sh
 #
 #  Loads profile handling components.
 #
@@ -14,7 +14,7 @@
 #    - Source itself
 # ==============================================================================
 
-for file in "$AG_DIR_PROFILE"/*.sh; do
+for file in "$AG_DIR_PROFILE_LIB"/*.sh; do
     [[ -f "$file" ]] || continue
     [[ "$(basename "$file")" == "module.sh" ]] && continue
     source "$file"
