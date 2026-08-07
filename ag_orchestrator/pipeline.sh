@@ -26,8 +26,8 @@ run_pipeline()
     msg "Hardware detection"
     module_precheck
 
-#    msg "Prepare installer"
-#    module_prepare
+    msg "Prepare installer"
+    module_prepare
 
     msg "Configure profile"
     module_menu
