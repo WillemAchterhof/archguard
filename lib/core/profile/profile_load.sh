@@ -28,8 +28,10 @@ profile_load()
         clear
         render_profile_menu "$page"
 
+        printf " [A] Load Default\n"
+
         if [[ "${#PROFILE_MAP[@]}" -eq 0 ]]; then
-            printf "  No saved profiles found.\n\n"
+            printf "  No other saved profiles found.\n\n"
         else
             display_profiles
         fi
@@ -48,6 +50,9 @@ profile_load()
         case "$choice" in
             z)
                 return
+                ;;
+            A)
+                select_default_profile && return
                 ;;
             N)
                 if [[ "$AG_PROFILE_PAGE_COUNT" -gt 1 ]]; then
