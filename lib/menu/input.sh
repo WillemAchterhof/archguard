@@ -13,7 +13,7 @@ handle_input()
 {
     case "$1" in
         # ---- STORAGE ----
-        a) prepare_disk ;;
+        a) runs_disk ;;
         b) prepare_filesystem ;;
         c) prepare_efi ;;
         d) prepare_swap ;;
