@@ -16,7 +16,7 @@ render_menu()
     printf "================================================================================\n\n"
 
     printf " Profile : %s\n" "${AG_PROFILE_NAME:-Default}"
-    printf " Press Capital form more information on choices\n"
+    printf " Press Capital for more information on choices\n"
     printf "\n"
 
     printf " Hardware\n"
@@ -34,14 +34,7 @@ render_menu()
     printf "   [c] LVM on LUKS : %s\n" "${AG_P_LUKS:-Auto}"
     printf "   [d] Filesystem  : %s\n" "${AG_P_ROOT_FS:-Not set}"
     printf "   [e] Swap        : %s\n" "${AG_P_SWAP_STATUS:-Not set}"
-
-    case "${AG_P_DISK_WIPE_MODE:-}" in
-        quick)    printf "   [f] Wipe        : Quick (headers/table only)\n" ;;
-        secure)   printf "   [f] Wipe        : Secure (single-pass overwrite)\n" ;;
-        paranoia) printf "   [f] Wipe        : Paranoia (multi-pass overwrite)\n" ;;
-        *)        printf "   [f] Wipe        : Not set\n" ;;
-    esac
-
+    printf "   [f] Wipe        : %s\n" "${AG_P_DISK_WIPE_MODE:-Not set})"
     printf "\n"
     
 
