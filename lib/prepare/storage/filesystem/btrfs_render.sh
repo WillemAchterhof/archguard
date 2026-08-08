@@ -27,7 +27,7 @@ render_btrfs_menu()
         printf "    %s\n" "$subvol"
     done
 
-    printf "................................................\n"
+    printf "================================================\n"
     printf "[x] Edit configuration file (nano)\n"
     printf "[y] Edit configuration file (vim)\n"
     printf "[z] Return\n\n"
