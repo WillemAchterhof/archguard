@@ -4,36 +4,29 @@
 # ==============================================================================
 #  lib/prepare/storage/lvm_luks/setter.sh
 #
-#  LVM-on-LUKS is mandatory — this only toggles HOW the key is
+#  LVM-on-LUKS is mandatory — this only toggles HOW the key will be
 #  obtained (auto-generated vs. manually typed), never whether
-#  encryption happens.
-#
-#  Requires:
-#    - generate_luks_passphrase (from generate.sh)
+#  encryption happens. The passphrase itself is never generated or
+#  requested here — only at install time (see resolve_luks_passphrase).
 #
 #  Populates:
 #    - AG_P_LUKS ("auto" | "manual")
-#    - AGS_LUKS_PASSPHRASE (sensitive)
 # ==============================================================================
 
 prepare_luks()
 {
     case "${AG_P_LUKS:-}" in
         ""|"manual")
-            generate_luks_passphrase
             AG_P_LUKS="auto"
-            msg "LUKS passphrase auto-generated."
+            msg "LUKS key method: auto-generated at install."
             ;;
 
         "auto")
-            if prompt_luks_passphrase; then
-                AG_P_LUKS="manual"
-                msg "LUKS passphrase set manually."
-            fi
+            AG_P_LUKS="manual"
+            msg "LUKS key method: manual entry at install."
             ;;
 
         *)
-            generate_luks_passphrase
             AG_P_LUKS="auto"
             ;;
     esac
