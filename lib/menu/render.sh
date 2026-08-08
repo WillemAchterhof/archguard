@@ -8,7 +8,7 @@
 render_menu()
 {
     format_hardware
-    run_disk    
+    [[$AG_P_DISK=""]] && run_disk    
     
     clear
 
