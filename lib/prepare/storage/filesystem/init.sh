@@ -15,16 +15,12 @@
 prepare_filesystem()
 {
     case "${AG_P_ROOT_FS:-}" in
-        "")
-            AG_P_ROOT_FS="ext4"
-            ;;
-
         "ext4")
             AG_P_ROOT_FS="btrfs"
             ;;
 
         "btrfs")
-            AG_P_ROOT_FS=""
+            AG_P_ROOT_FS="ext4"
             ;;
 
         *)
