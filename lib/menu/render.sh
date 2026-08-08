@@ -24,7 +24,7 @@ render_menu()
     printf "   Boot Mode   : %s\n" "${AG_HW_BOOT_MODE^^}"
     printf "   Secure Boot : %s\n" "$AG_DISPLAY_SB"
     printf "   TPM         : %s\n" "$AG_DISPLAY_TPM"
-    printf "   Memory      : %s GB\n" "$AG_P_SWAP_MENU_DISPLAY"
+    printf "   Memory      : %s GB\n" "$AG_HW_MEMORY_TOTAL_GB"
     printf "\n"
 
     printf " Prepare Disk\n"
@@ -32,7 +32,7 @@ render_menu()
     printf "   [b] EFI         : %s\n" "$AG_P_EFI_SIZE"
     printf "   [c] LVM on LUKS : %s\n" "$AG_P_LUKS"
     printf "   [d] Filesystem  : %s\n" "$AG_P_ROOT_FS"
-    printf "   [e] Swap        : %s\n" "$AG_P_SWAP_STATUS"
+    printf "   [e] Swap        : %s\n" "$AG_P_SWAP_MENU_DISPLAY"
     printf "   [f] Wipe        : %s\n" "$AG_P_DISK_WIPE_MODE"
     printf "\n"
     
