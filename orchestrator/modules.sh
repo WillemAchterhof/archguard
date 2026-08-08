@@ -34,7 +34,6 @@ module_prepare()
 module_menu()
 {
     run_module "$AG_DIR_MENU"
-    prepare_swap
     run_disk
     run_menu
 }
