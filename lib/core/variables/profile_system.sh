@@ -27,7 +27,7 @@ AG_PROFILE_NAME="Default"
 # Disk Preperation
 # ------------------------------------------------------------------------------
 
-AG_P_DISK= run_disk ;;
+AG_P_DISK=""
 AG_P_EFI_SIZE="500M"
 AG_P_LUKS="auto"
 AG_P_ROOT_FS="btrfs"

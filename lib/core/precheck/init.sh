@@ -23,6 +23,7 @@ run_precheck()
     detect_storage
     detect_tpm
     lock_hardware
+    run_disk
 
     msg "Hardware detection completed"
 }
