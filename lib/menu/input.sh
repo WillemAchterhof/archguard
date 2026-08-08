@@ -15,14 +15,16 @@ handle_input()
         # ---- Disk Preparatation ----
         a) run_disk ;;
         b) prepare_efi ;;
-        c) prepare_LVM_ON_LUKS ;;
+        c) prepare_lvm_luks ;;
+        C) show_luks_passphrase ;;
         d) prepare_filesystem ;;
         D) prepare_btrfs ;;
-        d) prepare_swap ;;
+        e) prepare_swap ;;
+        f) prepare_wipe ;;
 
         # ---- SECURITY ----
-        e)  ;;
-        f) prepare_secureboot ;;
+
+        g) prepare_secureboot ;;
         
 
         # ---- SYSTEM ----
