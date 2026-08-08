@@ -5,7 +5,9 @@
 #  lib/core/variables/btrfs.sh
 #
 #  Default btrfs volume configuration, held in memory until the user
-#  saves the profile (see profile_save).
+#  saves the profile (see profile_save). This is the single source of
+#  truth for defaults — defaults.sh re-sources this file rather than
+#  duplicating the values.
 #
 #  Does NOT:
 #    - Create btrfs volumes

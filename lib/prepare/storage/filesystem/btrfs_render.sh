@@ -6,7 +6,7 @@
 #
 #  Requires:
 #    - AG_BTRFS_* (from lib/core/variables/btrfs.sh, updated in-memory
-#      by edit.sh when the user edits)
+#      by edit.sh when the user edits, or by profile.sh on load)
 # ==============================================================================
 
 render_btrfs_menu()
@@ -30,5 +30,6 @@ render_btrfs_menu()
     printf "================================================\n"
     printf "[x] Edit configuration file (nano)\n"
     printf "[y] Edit configuration file (vim)\n"
+    printf "[w] Reload defaults\n"
     printf "[z] Return\n\n"
 }
