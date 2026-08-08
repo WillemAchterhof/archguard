@@ -24,7 +24,7 @@ prepare_filesystem()
             ;;
 
         *)
-            AG_P_ROOT_FS="ext4"
+            AG_P_ROOT_FS="btrfs"
             ;;
     esac
 
