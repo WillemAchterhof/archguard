@@ -16,3 +16,14 @@ reset_btrfs_defaults()
 {
     source "$AG_DIR_VARS/btrfs.sh"
 }
+
+reset_btrfs_profile()
+{
+    local file="$AG_DIR_PROFILE_STATE/$AG_PROFILE_NAME/btrfs_config.env"
+
+    if [[ -f "$file" ]]; then
+        load_btrfs_profile
+    else
+        reset_btrfs_defaults
+    fi
+}

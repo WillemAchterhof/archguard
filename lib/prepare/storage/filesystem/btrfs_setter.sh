@@ -12,6 +12,8 @@ prepare_btrfs()
 {
     [[ "$AG_P_ROOT_FS" == "btrfs" ]] || return
 
+    load_btrfs_profile
+
     local choice
     local confirm
 
@@ -23,6 +25,24 @@ prepare_btrfs()
         printf "\n"
 
         case "$choice" in
+            v)
+                printf " Reset all btrfs settings to defaults? [y/N] "
+                read -r -n1 -s confirm
+                printf "\n"
+                if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+                    reset_btrfs_profile
+                    msg "Btrfs settings reset to profiles."
+                fi
+                ;;
+            w)
+                printf " Reset all btrfs settings to defaults? [y/N] "
+                read -r -n1 -s confirm
+                printf "\n"
+                if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+                    reset_btrfs_defaults
+                    msg "Btrfs settings reset to defaults."
+                fi
+                ;;
             x)
                 write_btrfs_scratch
                 if command -v nano >/dev/null; then
@@ -41,15 +61,6 @@ prepare_btrfs()
                 else
                     printf " vim not found.\n"
                     sleep 1
-                fi
-                ;;
-            w)
-                printf " Reset all btrfs settings to defaults? [y/N] "
-                read -r -n1 -s confirm
-                printf "\n"
-                if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
-                    reset_btrfs_defaults
-                    msg "Btrfs settings reset to defaults."
                 fi
                 ;;
             z)
