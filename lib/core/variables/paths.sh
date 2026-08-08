@@ -49,3 +49,4 @@ readonly AG_DIR_VARIABLES="$AG_DIR_CORE/variables"
 # Files
 # ------------------------------------------------------------------------------
 readonly AG_FILE_LOG="$AG_DIR_LOG/archguard_install.log"
+readonly AG_FILE_BTRFS_SCRATCH="$AG_DIR_CONFIG/btrfs.env"

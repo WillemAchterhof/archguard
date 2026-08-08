@@ -15,6 +15,7 @@ handle_input()
         # ---- STORAGE ----
         a) run_disk ;;
         b) prepare_filesystem ;;
+        B) prepare_btrfs ;;
         c) prepare_efi ;;
         d) prepare_swap ;;
 

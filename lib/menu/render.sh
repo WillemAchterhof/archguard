@@ -27,7 +27,11 @@ render_menu()
     printf "\n"
 
     printf " Storage\n"
-    printf "   [a] Disk        : %s\n" "${AG_P_DISK:-Not set}"
+    if [[ "$AG_P_ROOT_FS" == "btrfs" ]]; then
+        printf "   [b] Filesystem  : %s (B for volume configuration)\n" "$AG_P_ROOT_FS"
+    else
+        printf "   [b] Filesystem  : %s\n" "${AG_P_ROOT_FS:-Not set}"
+    fi
     printf "   [b] Filesystem  : %s\n" "${AG_P_ROOT_FS:-Not set}"
     printf "   [c] EFI         : %s\n" "${AG_P_EFI_SIZE:-Not set}"
     printf "   [d] Swap        : %s\n" "${AG_P_SWAP_STATUS:-Not set}"
