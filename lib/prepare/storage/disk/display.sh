@@ -22,16 +22,6 @@ display_disks()
     local size
     local model
 
-    printf "\n"
-    printf "================================================\n"
-    printf " Target Disk Selection\n"
-    printf "================================================\n\n"
-    printf " Choose the disk to install to. This disk will be\n"
-    printf " wiped and partitioned according to your other\n"
-    printf " settings (filesystem, LVM, wipe mode) once install\n"
-    printf " begins. Nothing is modified until then.\n\n"
-
-
     for key in $(printf "%s\n" "${!DISK_MAP[@]}" | sort); do
 
         disk="${DISK_MAP[$key]}"
