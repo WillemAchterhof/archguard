@@ -27,7 +27,7 @@ prepare_efi()
             ;;
 
         *)
-            AG_P_EFI_SIZE="500M"
+            AG_P_EFI_SIZE="1G"
             ;;
     esac
 
