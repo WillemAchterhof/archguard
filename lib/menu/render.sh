@@ -5,11 +5,11 @@
 #  lib/menu/render.sh
 # ==============================================================================
 
+run_disk || exit 1
+
 render_menu()
 {
-    format_hardware
-    [[ -z "$AG_P_DISK" ]] && run_disk
-    
+    format_hardware    
     clear
 
     printf "================================================================================\n"
