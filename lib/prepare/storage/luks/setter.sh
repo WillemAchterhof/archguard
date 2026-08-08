@@ -16,7 +16,7 @@
 prepare_luks()
 {
     case "${AG_P_LUKS:-}" in
-        ""|"manual")
+        "manual")
             AG_P_LUKS="auto"
             msg "LUKS key method: auto-generated at install."
             ;;
@@ -27,7 +27,7 @@ prepare_luks()
             ;;
 
         *)
-            AG_P_LUKS="auto"
+            AG_P_LUKS="manual"
             ;;
     esac
 
