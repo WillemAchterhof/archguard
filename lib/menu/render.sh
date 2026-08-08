@@ -32,13 +32,7 @@ render_menu()
     printf "   [a] Disk        : %s\n" "${AG_P_DISK:-Not set}"
     printf "   [b] EFI         : %s\n" "${AG_P_EFI_SIZE:-Not set}"
     printf "   [c] LVM on LUKS : %s\n" "${AG_P_LUKS:-Auto}"
-    
-    if [[ "$AG_P_ROOT_FS" == "btrfs" ]]; then
-        printf "   [d] Filesystem  : %s (D for Volume configuration)\n" "$AG_P_ROOT_FS"
-    else
-        printf "   [d] Filesystem  : %s\n" "${AG_P_ROOT_FS:-Not set}"
-    
-    fi
+    printf "   [d] Filesystem  : %s\n" "${AG_P_ROOT_FS:-Not set}"
     printf "   [e] Swap        : %s\n" "${AG_P_SWAP_STATUS:-Not set}"
 
     case "${AG_P_DISK_WIPE_MODE:-}" in

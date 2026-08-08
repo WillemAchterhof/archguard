@@ -19,7 +19,7 @@ handle_input()
         c) prepare_luks ;;
         C) show_luks_info ;;
         d) prepare_filesystem ;;
-        D) prepare_btrfs ;;
+        D) show_filesystem_info ;;
         e) prepare_swap ;;
         f) prepare_wipe ;;
 
