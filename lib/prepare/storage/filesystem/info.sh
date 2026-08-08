@@ -23,7 +23,7 @@ show_filesystem_info()
 "
 
     if [[ "$AG_P_ROOT_FS" == "btrfs" ]]; then
-        render_btrfs_menu
+        prepare_btrfs
     else
         printf "\n Press any key to return..."
         read -r -n1 -s
