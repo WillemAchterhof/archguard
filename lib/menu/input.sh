@@ -12,15 +12,16 @@
 handle_input()
 {
     case "$1" in
-        # ---- STORAGE ----
+        # ---- Disk Preparatation ----
         a) run_disk ;;
-        b) prepare_filesystem ;;
-        B) prepare_btrfs ;;
-        c) prepare_efi ;;
+        b) prepare_efi ;;
+        c) prepare_LVM_ON_LUKS ;;
+        d) prepare_filesystem ;;
+        D) prepare_btrfs ;;
         d) prepare_swap ;;
 
         # ---- SECURITY ----
-        e) prepare_luks ;;
+        e)  ;;
         f) prepare_secureboot ;;
         g) prepare_wipe ;;
 

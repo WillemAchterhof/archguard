@@ -26,21 +26,25 @@ render_menu()
     printf "   Memory      : %s GB\n" "$AG_HW_MEMORY_TOTAL_GB"
     printf "\n"
 
-    printf " Storage\n"
+    printf " Prepare Disk\n"
     printf "   [a] Disk        : %s\n" "${AG_P_DISK:-Not set}"
+    printf "   [b] EFI         : %s\n" "${AG_P_EFI_SIZE:-Not set}"
+    printf "   [c] LVM on LUKS : %s\n" "${AG_P_LUKS:-Not set}"
     if [[ "$AG_P_ROOT_FS" == "btrfs" ]]; then
-        printf "   [b] Filesystem  : %s (B for volume configuration)\n" "$AG_P_ROOT_FS"
+        printf "   [d] Filesystem  : %s (B for volume configuration)\n" "$AG_P_ROOT_FS"
     else
-        printf "   [b] Filesystem  : %s\n" "${AG_P_ROOT_FS:-Not set}"
+        printf "   [d] Filesystem  : %s\n" "${AG_P_ROOT_FS:-Not set}"
     fi
-    printf "   [c] EFI         : %s\n" "${AG_P_EFI_SIZE:-Not set}"
-    printf "   [d] Swap        : %s\n" "${AG_P_SWAP_STATUS:-Not set}"
+    printf "   [e] Swap        : %s\n" "${AG_P_SWAP_STATUS:-Not set}"
+    printf "   [f] Wipe        : %s\n" "${AG_P_DISK_WIPE_MODE:-Not set}"
     printf "\n"
     
+
+    # Below need to rearage again.
     printf " Security\n"
-    printf "   [e] LUKS        : %s\n" "${AG_P_LUKS:-Not set}"
-    printf "   [f] Secure Boot : %s\n" "${AG_P_SECUREBOOT:-Not set}"
-    printf "   [g] Wipe        : %s\n" "${AG_P_DISK_WIPE_MODE:-Not set}"
+    
+    printf "   [g] Secure Boot : %s\n" "${AG_P_SECUREBOOT:-Not set}"
+
     printf "\n"
 
     printf " System\n"
