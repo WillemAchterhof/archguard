@@ -5,8 +5,6 @@
 #  lib/menu/render.sh
 # ==============================================================================
 
-run_disk || exit 1
-
 render_menu()
 {
     format_hardware    
