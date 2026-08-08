@@ -7,7 +7,6 @@
 
 render_menu()
 {
-    prepare_swap
     format_hardware    
     clear
 
