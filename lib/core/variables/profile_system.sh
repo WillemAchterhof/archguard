@@ -24,7 +24,7 @@
 AG_PROFILE_NAME="Default"
 
 # ------------------------------------------------------------------------------
-# Storage
+# Disk Preperation
 # ------------------------------------------------------------------------------
 
 AG_P_DISK=""
@@ -42,16 +42,16 @@ AG_P_DISK_WIPE_MODE="secure"
 # ------------------------------------------------------------------------------
 
 
-AG_P_SECUREBOOT=""
+AG_P_SECUREBOOT="Custom"
 
 # ------------------------------------------------------------------------------
 # System
 # ------------------------------------------------------------------------------
 
-AG_P_HOSTNAME=""
-AG_P_USERNAME=""
-AG_P_LOCALE=""
-AG_P_TIMEZONE=""
-AG_P_KEYBOARD=""
-AG_P_MIRROR_COUNTRIES=""
-AG_P_PACMAN_PARALLEL=""
+AG_P_HOSTNAME="ArchGuard"
+AG_P_USERNAME="willem"
+AG_P_LOCALE="en_US.UTF-8"
+AG_P_TIMEZONE="Europe/Amsterdam"
+AG_P_KEYBOARD="us"
+AG_P_MIRROR_COUNTRIES="NL,DE"
+AG_P_PACMAN_PARALLEL="20"
