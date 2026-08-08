@@ -36,8 +36,9 @@ readonly AG_DIR_MENU="$AG_DIR_LIB/menu"
 readonly AG_DIR_PREPARE="$AG_DIR_LIB/prepare"
 readonly AG_DIR_UTILITIES="$AG_DIR_LIB/utilities"
 readonly AG_DIR_VALIDATE="$AG_DIR_LIB/validate"
-# /ag_state
+# /state
 readonly AG_DIR_PROFILE_STATE="$AG_DIR_STATE/profile"
+readonly AG_DIR_CONFIG="$AG_DIR_STATE/config"
 # /lib/core
 readonly AG_DIR_LOGGING="$AG_DIR_CORE/logging"
 readonly AG_DIR_PRECHECK="$AG_DIR_CORE/precheck"
