@@ -31,8 +31,8 @@ render_menu()
     printf "   [b] EFI         : %s\n" "${AG_P_EFI_SIZE:-Not set}"
     
     case "${AG_P_LUKS:-}" in
-        auto)   printf "   [c] LVM on LUKS : Set (Auto generated)   [C - Show]\n" ;;
-        manual) printf "   [c] LVM on LUKS : Set (Manual set)       [C - Show]\n" ;;
+        auto)   printf "   [c] LVM on LUKS : Set (Auto generated)\n" ;;
+        manual) printf "   [c] LVM on LUKS : Set (Manual set)\n" ;;
         *)      printf "   [c] LVM on LUKS : Not set\n" ;;
     esac
     
