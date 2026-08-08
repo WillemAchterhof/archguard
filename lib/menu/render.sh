@@ -43,7 +43,14 @@ render_menu()
     
     fi
     printf "   [e] Swap        : %s\n" "${AG_P_SWAP_STATUS:-Not set}"
-    printf "   [f] Wipe        : %s\n" "${AG_P_DISK_WIPE_MODE:-Not set}"
+
+    case "${AG_P_DISK_WIPE_MODE:-}" in
+        quick)    printf "   [f] Wipe        : Quick (headers/table only)\n" ;;
+        secure)   printf "   [f] Wipe        : Secure (single-pass overwrite)\n" ;;
+        paranoia) printf "   [f] Wipe        : Paranoia (multi-pass overwrite)\n" ;;
+        *)        printf "   [f] Wipe        : Not set\n" ;;
+    esac
+
     printf "\n"
     
 
