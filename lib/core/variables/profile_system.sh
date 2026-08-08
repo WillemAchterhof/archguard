@@ -31,9 +31,10 @@ AG_P_DISK=""
 AG_P_EFI_SIZE="500M"
 AG_P_LUKS="auto"
 AG_P_ROOT_FS="btrfs"
-AG_P_SWAP_STATUS="Not set"
+AG_P_SWAP_STATUS=""
 AG_P_SWAP_SIZE="${AG_HW_MEMORY_TOTAL_GB}GB"
-AG_P_SWAP_SIZE="Not set"
+AG_P_SWAP_SIZE="not set"
+AG_P_SWAP_ENABLED="not set"
 AG_P_DISK_WIPE_MODE="secure"
 
 # ------------------------------------------------------------------------------
