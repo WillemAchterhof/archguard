@@ -23,7 +23,7 @@ handle_input()
         # ---- SECURITY ----
         e)  ;;
         f) prepare_secureboot ;;
-        g) prepare_wipe ;;
+        
 
         # ---- SYSTEM ----
         h) prepare_hostname ;;
