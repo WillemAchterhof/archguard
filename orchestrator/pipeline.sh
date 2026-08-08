@@ -29,6 +29,7 @@ run_pipeline()
 
     msg "Prepare installer"
     module_prepare
+    run_disk
 
     msg "Configure profile"
     module_menu

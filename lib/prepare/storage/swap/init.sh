@@ -19,21 +19,25 @@ prepare_swap()
         "")
             AG_P_SWAP_ENABLED="full"
             AG_P_SWAP_SIZE="${AG_HW_MEMORY_TOTAL_GB}G"
+            AG_P_SWAP_MENU_DISPLAY="${AG_P_SWAP_SIZE} - Hibernation"
             ;;
 
         "full")
             AG_P_SWAP_ENABLED="half"
             AG_P_SWAP_SIZE="$(awk -v r="$AG_HW_MEMORY_TOTAL_GB" 'BEGIN{printf "%.1f", r/2}')G"
+            AG_P_SWAP_MENU_DISPLAY="${AG_P_SWAP_SIZE} - No Hibernation"
             ;;
 
         "half")
             AG_P_SWAP_ENABLED=""
             AG_P_SWAP_SIZE=""
+            AG_P_SWAP_MENU_DISPLAY="Not used"
             ;;
 
         *)
             AG_P_SWAP_ENABLED="full"
             AG_P_SWAP_SIZE="${AG_HW_MEMORY_TOTAL_GB}G"
+            AG_P_SWAP_MENU_DISPLAY="${AG_P_SWAP_SIZE} - Hibernation"
             ;;
     esac
 
