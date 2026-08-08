@@ -75,5 +75,7 @@ render_menu()
     printf " ────────────────────────────────────────────────────────────────────────────────\n"    
     printf "  [w] Load profile    [x/X] Save profile (as)   [y] Install    [z] Exit\n\n"
     printf "\n"
+    printf "Press Capital form more information on choices"
+    printf "\n"
     printf "================================================================================\n"
 }

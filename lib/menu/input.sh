@@ -15,6 +15,7 @@ handle_input()
         # ---- Disk Preparatation ----
         a|A) run_disk ;;
         b) prepare_efi ;;
+        B) show_efi_info
         c) prepare_lvm_luks ;;
         C) show_luks_passphrase ;;
         d) prepare_filesystem ;;
