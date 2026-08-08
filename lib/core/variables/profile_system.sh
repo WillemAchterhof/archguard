@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Profile Variables
 # ==============================================================================
-#  lib/core/variables/profile.sh
+#  lib/core/variables/profile_system.sh
 #
 #  Declares default values for all user-configurable profile settings.
 #  Each prepare-stage setter overwrites its own AG_P_* value(s) once the
