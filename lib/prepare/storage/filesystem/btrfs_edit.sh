@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Btrfs Scratch Editing
 # ==============================================================================
-#  lib/prepare/storage/filesystem/btrfs_edit.sh
+#  lib/prepare/storage/filesystem/btrfs/edit.sh
 #
 #  Lets the user free-edit AG_BTRFS_* via an external editor. Changes
 #  only affect memory — nothing is written to a profile until
