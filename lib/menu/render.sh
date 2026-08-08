@@ -15,7 +15,9 @@ render_menu()
     printf " Arch Secure Installer\n"
     printf "================================================================================\n\n"
 
-    printf " Profile : %s\n" "${AG_PROFILE_NAME:-Default}"
+    printf " Profile : %s\n" "${AG_PROFILE_NAME:-Default}\n"
+    printf "  Press Capital form more information on choices\n"
+    printf "\n"
 
     printf " Hardware\n"
     printf "   CPU         : %s\n" "$AG_HW_CPU_NAME"
@@ -74,8 +76,6 @@ render_menu()
     printf " Actions\n"
     printf " ────────────────────────────────────────────────────────────────────────────────\n"    
     printf "  [w] Load profile    [x/X] Save profile (as)   [y] Install    [z] Exit\n\n"
-    printf "\n"
-    printf "Press Capital form more information on choices"
     printf "\n"
     printf "================================================================================\n"
 }
