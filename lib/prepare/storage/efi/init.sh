@@ -15,7 +15,7 @@ prepare_efi()
 {
     case "${AG_P_EFI_SIZE:-}" in
         "")
-            AG_P_EFI_SIZE="500M"
+            AG_P_EFI_SIZE="300M"
             ;;
 
         "300M")
