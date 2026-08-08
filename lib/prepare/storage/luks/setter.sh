@@ -16,7 +16,7 @@
 #    - AGS_LUKS_PASSPHRASE (sensitive)
 # ==============================================================================
 
-prepare_lvm_luks()
+prepare_luks()
 {
     case "${AG_P_LUKS:-}" in
         ""|"manual")

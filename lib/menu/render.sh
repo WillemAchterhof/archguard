@@ -15,8 +15,8 @@ render_menu()
     printf " Arch Secure Installer\n"
     printf "================================================================================\n\n"
 
-    printf " Profile : %s\n" "${AG_PROFILE_NAME:-Default}\n"
-    printf "  Press Capital form more information on choices\n"
+    printf " Profile : %s\n" "${AG_PROFILE_NAME:-Default}"
+    printf " Press Capital form more information on choices\n"
     printf "\n"
 
     printf " Hardware\n"
@@ -31,12 +31,7 @@ render_menu()
     printf " Prepare Disk\n"
     printf "   [a] Disk        : %s\n" "${AG_P_DISK:-Not set}"
     printf "   [b] EFI         : %s\n" "${AG_P_EFI_SIZE:-Not set}"
-    
-    case "${AG_P_LUKS:-}" in
-        auto)   printf "   [c] LVM on LUKS : Set (Auto generated)\n" ;;
-        manual) printf "   [c] LVM on LUKS : Set (Manual set)\n" ;;
-        *)      printf "   [c] LVM on LUKS : Not set\n" ;;
-    esac
+    printf "   [c] LVM on LUKS : %s\n" "${AG_P_LUKS:-Auto}"
     
     if [[ "$AG_P_ROOT_FS" == "btrfs" ]]; then
         printf "   [d] Filesystem  : %s (D for Volume configuration)\n" "$AG_P_ROOT_FS"

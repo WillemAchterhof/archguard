@@ -16,8 +16,8 @@ handle_input()
         a|A) run_disk ;;
         b) prepare_efi ;;
         B) show_efi_info ;;
-        c) prepare_lvm_luks ;;
-        C) show_luks_passphrase ;;
+        c) prepare_luks ;;
+        C) show_luks_info ;;
         d) prepare_filesystem ;;
         D) prepare_btrfs ;;
         e) prepare_swap ;;
