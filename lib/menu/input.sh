@@ -13,7 +13,7 @@ handle_input()
 {
     case "$1" in
         # ---- Disk Preparatation ----
-        a) run_disk ;;
+        a|A) run_disk ;;
         b) prepare_efi ;;
         c) prepare_lvm_luks ;;
         C) show_luks_passphrase ;;
