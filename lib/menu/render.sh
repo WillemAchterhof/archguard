@@ -34,7 +34,7 @@ render_menu()
     printf "   [c] LVM on LUKS : %s\n" "${AG_P_LUKS:-Auto}"
     printf "   [d] Filesystem  : %s\n" "${AG_P_ROOT_FS:-Not set}"
     printf "   [e] Swap        : %s\n" "${AG_P_SWAP_STATUS:-Not set}"
-    printf "   [f] Wipe        : %s\n" "${AG_P_DISK_WIPE_MODE:-Not set})"
+    printf "   [f] Wipe        : %s\n" "${AG_P_DISK_WIPE_MODE:-Not set}"
     printf "\n"
     
 
