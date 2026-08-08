@@ -32,6 +32,9 @@ profile_save()
 
     profile_write_file "$file"
 
+    write_btrfs_scratch
+    save_btrfs_profile "$dir/btrfs_config.env"
+
     AG_PROFILE_NAME="$name"
 
     msg "Profile saved: $file"
