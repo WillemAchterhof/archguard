@@ -28,8 +28,6 @@ prepare_filesystem()
             ;;
     esac
 
-    update_swap_for_filesystem
-
     log_silent \
         "SETTER: filesystem — AG_P_ROOT_FS=${AG_P_ROOT_FS:-}"
 }
