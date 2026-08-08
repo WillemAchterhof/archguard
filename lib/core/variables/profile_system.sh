@@ -28,16 +28,18 @@ AG_PROFILE_NAME="Default"
 # ------------------------------------------------------------------------------
 
 AG_P_DISK=""
-AG_P_ROOT_FS=""
-AG_P_EFI_SIZE=""
-AG_P_SWAP_ENABLED=""
-AG_P_SWAP_STATUS=""
+AG_P_EFI_SIZE="500M"
+AG_P_LUKS="auto"
+AG_P_ROOT_FS="ext4"
+AG_P_SWAP_STATUS="enabled"
+AG_P_SWAP_SIZE="${AG_HW_MEMORY_TOTAL_GB}GB"
+
 
 # ------------------------------------------------------------------------------
 # Security
 # ------------------------------------------------------------------------------
 
-AG_P_LUKS=""
+
 AG_P_SECUREBOOT=""
 AG_P_DISK_WIPE_MODE=""
 
