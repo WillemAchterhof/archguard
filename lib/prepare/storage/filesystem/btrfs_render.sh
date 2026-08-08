@@ -28,8 +28,10 @@ render_btrfs_menu()
     done
 
     printf "================================================\n"
+
+    printf "[v] Reload Profile Config\n"
+    printf "[w] Reload Default Config\n"
     printf "[x] Edit configuration file (nano)\n"
     printf "[y] Edit configuration file (vim)\n"
-    printf "[w] Reload defaults\n"
     printf "[z] Return\n\n"
 }
