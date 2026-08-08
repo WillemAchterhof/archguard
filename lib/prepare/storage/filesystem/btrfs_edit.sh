@@ -14,13 +14,14 @@
 
 write_btrfs_scratch()
 {
-    declare -p \
-        AG_BTRFS_LAYOUT \
-        AG_BTRFS_COMPRESSION \
-        AG_BTRFS_SNAPSHOTS \
-        AG_BTRFS_COW \
-        AG_BTRFS_SUBVOLUMES \
-        > "$AG_FILE_BTRFS_SCRATCH"
+    {
+        declare -p \
+            AG_BTRFS_LAYOUT \
+            AG_BTRFS_COMPRESSION \
+            AG_BTRFS_SNAPSHOTS \
+            AG_BTRFS_COW \
+            AG_BTRFS_SUBVOLUMES
+    } | sed 's/^declare -/declare -g -/' > "$AG_FILE_BTRFS_SCRATCH"
 }
 
 reload_btrfs_scratch()
