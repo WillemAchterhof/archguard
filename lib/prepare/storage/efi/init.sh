@@ -23,7 +23,7 @@ prepare_efi()
             ;;
 
         "1G")
-            AG_P_EFI_SIZE="300"
+            AG_P_EFI_SIZE="300M"
             ;;
 
         *)
