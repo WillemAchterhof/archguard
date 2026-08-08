@@ -18,7 +18,7 @@
 
 load_btrfs_profile()
 {
-    local file="$AG_DIR_PROFILE_ROOT/$AG_PROFILE_NAME/btrfs_config.env"
+    local file="$AG_DIR_PROFILE_STATE/$AG_PROFILE_NAME/btrfs_config.env"
 
     [[ -f "$file" ]] || return 0
 
