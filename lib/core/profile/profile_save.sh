@@ -32,8 +32,12 @@ profile_save()
 
     profile_write_file "$file"
 
-    write_btrfs_scratch
-    save_btrfs_profile "$dir/btrfs_config.env"
+    if [[ "$AG_P_ROOT_FS" == "btrfs" ]]; then
+        write_btrfs_scratch
+        save_btrfs_profile "$dir/btrfs_config.env"
+    else
+        rm -f "$dir/btrfs_config.env"
+    fi
 
     AG_PROFILE_NAME="$name"
 
