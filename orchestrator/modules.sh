@@ -29,12 +29,12 @@ module_precheck()
 module_prepare()
 {
     run_module "$AG_DIR_PREPARE"
-    run_disk
 }
 
 module_menu()
 {
     run_module "$AG_DIR_MENU"
+    run_disk
     run_menu
 }
 
