@@ -20,8 +20,9 @@ handle_input()
         C) show_luks_info ;;
         d) prepare_filesystem ;;
         D) show_filesystem_info ;;
-        e) prepare_swap ;;
+        e|E) prepare_swap ;;
         f) prepare_wipe ;;
+        F) show_wipe_info ;;
 
         # ---- SECURITY ----
 
