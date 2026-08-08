@@ -15,7 +15,7 @@ prepare_efi()
 {
     case "${AG_P_EFI_SIZE:-}" in
         "")
-            AG_P_EFI_SIZE="300M"
+            AG_P_EFI_SIZE="500M"
             ;;
 
         "300M")
@@ -31,7 +31,7 @@ prepare_efi()
             ;;
 
         *)
-            AG_P_EFI_SIZE="300M"
+            AG_P_EFI_SIZE="500M"
             ;;
     esac
 

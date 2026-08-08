@@ -30,11 +30,11 @@ render_menu()
 
     printf " Prepare Disk\n"
     printf "   [a] Disk        : %s\n" "${AG_P_DISK:-Not set}"
-    printf "   [b] EFI         : %s\n" "${AG_P_EFI_SIZE:-Not set}"
-    printf "   [c] LVM on LUKS : %s\n" "${AG_P_LUKS:-Auto}"
-    printf "   [d] Filesystem  : %s\n" "${AG_P_ROOT_FS:-Not set}"
+    printf "   [b] EFI         : %s\n" "${AG_P_EFI_SIZE:-500M}"
+    printf "   [c] LVM on LUKS : %s\n" "${AG_P_LUKS:-auto}"
+    printf "   [d] Filesystem  : %s\n" "${AG_P_ROOT_FS:-ext4}"
     printf "   [e] Swap        : %s\n" "${AG_P_SWAP_STATUS:-Not set}"
-    printf "   [f] Wipe        : %s\n" "${AG_P_DISK_WIPE_MODE:-Not set}"
+    printf "   [f] Wipe        : %s\n" "${AG_P_DISK_WIPE_MODE:-secure}"
     printf "\n"
     
 
