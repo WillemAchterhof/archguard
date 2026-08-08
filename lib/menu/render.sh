@@ -31,7 +31,7 @@ render_menu()
     printf "   [b] EFI         : %s\n" "${AG_P_EFI_SIZE:-Not set}"
     printf "   [c] LVM on LUKS : %s\n" "${AG_P_LUKS:-Not set}"
     if [[ "$AG_P_ROOT_FS" == "btrfs" ]]; then
-        printf "   [d] Filesystem  : %s (D for volume configuration)\n" "$AG_P_ROOT_FS"
+        printf "   [d] Filesystem  : %s ([D] Volume configuration)\n" "$AG_P_ROOT_FS"
     else
         printf "   [d] Filesystem  : %s\n" "${AG_P_ROOT_FS:-Not set}"
     fi
