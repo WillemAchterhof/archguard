@@ -24,12 +24,12 @@ module_precheck()
 {
     run_module "$AG_DIR_PRECHECK"
     run_precheck
-    run_disk
 }
 
 module_prepare()
 {
     run_module "$AG_DIR_PREPARE"
+    
 }
 
 module_menu()
