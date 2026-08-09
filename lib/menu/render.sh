@@ -34,9 +34,9 @@ render_menu()
     printf "   [d] Filesystem  : %s\n" "$AG_P_ROOT_FS"
    
    case "${AG_P_SWAP_ENABLED:-}" in
-        full) printf "   [e] Swap        : %s (Hibernation, E for info)\n" "$AG_P_SWAP_SIZE" ;;
-        half) printf "   [e] Swap        : %s (No hibernation, E for info)\n" "$AG_P_SWAP_SIZE" ;;
-        *)    printf "   [e] Swap        : Not used (E for info)\n" ;;
+        full) printf "   [e] Swap        : %s (Hibernation)\n" "$AG_P_SWAP_SIZE" ;;
+        half) printf "   [e] Swap        : %s\n" "$AG_P_SWAP_SIZE" ;;
+        *)    printf "   [e] Swap        : Not used\n" ;;
     esac
 
     printf "   [f] Wipe        : %s\n" "$AG_P_DISK_WIPE_MODE"

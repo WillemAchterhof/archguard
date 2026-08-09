@@ -13,10 +13,6 @@
 prepare_wipe()
 {
     case "${AG_P_DISK_WIPE_MODE:-}" in
-        "")
-            AG_P_DISK_WIPE_MODE="quick"
-            ;;
-
         "quick")
             AG_P_DISK_WIPE_MODE="secure"
             ;;

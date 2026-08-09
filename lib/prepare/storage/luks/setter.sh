@@ -27,7 +27,7 @@ prepare_luks()
             ;;
 
         *)
-            AG_P_LUKS="manual"
+            AG_P_LUKS="auto"
             ;;
     esac
 
