@@ -24,6 +24,7 @@ module_precheck()
 {
     run_module "$AG_DIR_PRECHECK"
     run_precheck
+    run_disk
 }
 
 module_prepare()
@@ -34,7 +35,6 @@ module_prepare()
 module_menu()
 {
     run_module "$AG_DIR_MENU"
-    run_disk
     run_menu
 }
 
