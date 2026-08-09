@@ -36,6 +36,7 @@ select_profile()
 
     profile_load_file "$file"
     AG_PROFILE_NAME="$selected"
+    recalc_swap_size
 
     msg "Loaded profile: $AG_PROFILE_NAME"
     log_silent "LOADER: profile — AG_PROFILE_NAME=$AG_PROFILE_NAME"
@@ -55,6 +56,7 @@ select_default_profile()
 
     profile_load_file "$file"
     AG_PROFILE_NAME="Default"
+    recalc_swap_size
 
     msg "Loaded profile: $AG_PROFILE_NAME"
     log_silent "LOADER: profile — AG_PROFILE_NAME=$AG_PROFILE_NAME"

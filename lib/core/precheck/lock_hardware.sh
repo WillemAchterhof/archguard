@@ -24,6 +24,9 @@ lock_hardware()
     readonly AG_HW_MEMORY_TOTAL_KB
     readonly AG_HW_MEMORY_TOTAL_GB
 
+    readonly AG_HW_SWAP_FULL_GB
+    readonly AG_HW_SWAP_HALF_GB
+
     readonly AG_HW_DISKS
     readonly AG_HW_USB_DEVICE
 

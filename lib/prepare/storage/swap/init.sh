@@ -41,5 +41,15 @@ prepare_swap()
             ;;
     esac
 
+    limit="$(get_swap_disk_limit_gb 40)"
+
+    if awk -v w="$wanted" -v l="$limit" 'BEGIN { exit !(l > 0 && w > l) }'; then
+        AG_P_SWAP_SIZE="${limit}G"
+        msg "Swap capped at ${limit}G (40% of target disk)."
+    else
+        AG_P_SWAP_SIZE="${wanted}G"
+    fi
+
     log_silent "SETTER: swap — AG_P_SWAP_ENABLED=${AG_P_SWAP_ENABLED:-} AG_P_SWAP_SIZE=${AG_P_SWAP_SIZE:-}"
 }
+

@@ -20,6 +20,7 @@ run_precheck()
     detect_firmware
     detect_gpu
     detect_memory
+    detect_swap_recommendations
     detect_storage
     detect_tpm
     lock_hardware
