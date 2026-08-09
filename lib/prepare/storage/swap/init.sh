@@ -15,29 +15,30 @@
 
 prepare_swap()
 {
+    local wanted
+    local limit
+
     case "${AG_P_SWAP_ENABLED:-}" in
         "")
             AG_P_SWAP_ENABLED="full"
-            AG_P_SWAP_SIZE="${AG_HW_MEMORY_TOTAL_GB}G"
-            AG_P_SWAP_MENU_DISPLAY="${AG_P_SWAP_SIZE} - Hibernation"
+            wanted="$AG_HW_SWAP_FULL_GB"
             ;;
 
         "full")
             AG_P_SWAP_ENABLED="half"
-            AG_P_SWAP_SIZE="$(awk -v r="$AG_HW_MEMORY_TOTAL_GB" 'BEGIN{printf "%.1f", r/2}')G"
-            AG_P_SWAP_MENU_DISPLAY="${AG_P_SWAP_SIZE} - No Hibernation"
+            wanted="$AG_HW_SWAP_HALF_GB"
             ;;
 
         "half")
             AG_P_SWAP_ENABLED=""
             AG_P_SWAP_SIZE=""
-            AG_P_SWAP_MENU_DISPLAY="Not used"
+            log_silent "SETTER: swap — AG_P_SWAP_ENABLED= AG_P_SWAP_SIZE="
+            return
             ;;
 
         *)
-            AG_P_SWAP_ENABLED="half"
-            AG_P_SWAP_SIZE="$(awk -v r="$AG_HW_MEMORY_TOTAL_GB" 'BEGIN{printf "%.1f", r/2}')G"
-            AG_P_SWAP_MENU_DISPLAY="${AG_P_SWAP_SIZE} - No Hibernation"
+            AG_P_SWAP_ENABLED="full"
+            wanted="$AG_HW_SWAP_FULL_GB"
             ;;
     esac
 
@@ -52,4 +53,3 @@ prepare_swap()
 
     log_silent "SETTER: swap — AG_P_SWAP_ENABLED=${AG_P_SWAP_ENABLED:-} AG_P_SWAP_SIZE=${AG_P_SWAP_SIZE:-}"
 }
-

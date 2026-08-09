@@ -32,7 +32,13 @@ render_menu()
     printf "   [b] EFI         : %s\n" "$AG_P_EFI_SIZE"
     printf "   [c] LVM on LUKS : %s\n" "$AG_P_LUKS"
     printf "   [d] Filesystem  : %s\n" "$AG_P_ROOT_FS"
-    printf "   [e] Swap        : %s\n" "$AG_P_SWAP_MENU_DISPLAY"
+   
+   case "${AG_P_SWAP_ENABLED:-}" in
+        full) printf "   [e] Swap        : %s (Hibernation, E for info)\n" "$AG_P_SWAP_SIZE" ;;
+        half) printf "   [e] Swap        : %s (No hibernation, E for info)\n" "$AG_P_SWAP_SIZE" ;;
+        *)    printf "   [e] Swap        : Not used (E for info)\n" ;;
+    esac
+
     printf "   [f] Wipe        : %s\n" "$AG_P_DISK_WIPE_MODE"
     printf "\n"
     
