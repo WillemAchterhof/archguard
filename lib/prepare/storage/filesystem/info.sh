@@ -23,10 +23,6 @@ show_filesystem_info()
 "
 
     if [[ "$AG_P_ROOT_FS" == "btrfs" ]]; then
-        printf "\n Press any key to view btrfs configuration..."
-        read -r -n1 -s
-        printf "\n"
-
         prepare_btrfs
     else
         printf "\n Press any key to return..."
