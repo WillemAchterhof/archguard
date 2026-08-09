@@ -18,29 +18,33 @@ prepare_swap()
     local wanted
     local limit
 
-    case "${AG_P_SWAP_ENABLED:-}" in
-        "")
-            AG_P_SWAP_ENABLED="full"
-            wanted="$AG_HW_SWAP_FULL_GB"
-            ;;
+    prepare_swap()
+    {
+        local wanted
+        local limit
 
-        "full")
-            AG_P_SWAP_ENABLED="half"
-            wanted="$AG_HW_SWAP_HALF_GB"
-            ;;
+        case "${AG_P_SWAP_ENABLED:-}" in
+            "")
+                AG_P_SWAP_ENABLED="half"
+                wanted="$AG_HW_SWAP_HALF_GB"
+                ;;
 
-        "half")
-            AG_P_SWAP_ENABLED=""
-            AG_P_SWAP_SIZE=""
-            log_silent "SETTER: swap — AG_P_SWAP_ENABLED= AG_P_SWAP_SIZE="
-            return
-            ;;
+            "half")
+                AG_P_SWAP_ENABLED="full"
+                wanted="$AG_HW_SWAP_FULL_GB"
+                ;;
 
-        *)
-            AG_P_SWAP_ENABLED="full"
-            wanted="$AG_HW_SWAP_FULL_GB"
-            ;;
-    esac
+            "full")
+                AG_P_SWAP_ENABLED=""
+                AG_P_SWAP_SIZE=""
+                wanted=""
+                ;;
+
+            *)
+                AG_P_SWAP_ENABLED="half"
+                wanted="$AG_HW_SWAP_HALF_GB"
+                ;;
+        esac
 
     limit="$(get_swap_disk_limit_gb 40)"
 
