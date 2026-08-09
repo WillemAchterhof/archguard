@@ -10,8 +10,10 @@
 
 show_filesystem_info()
 {
-    clear
-    printf "\
+    if [[ "$AG_P_ROOT_FS" == "btrfs" ]]; then
+        prepare_btrfs
+    else
+        show_info "\
 ================================================
  Root Filesystem
 ================================================
@@ -19,14 +21,7 @@ show_filesystem_info()
           built-in snapshots or subvolumes.
 
   btrfs   Snapshots, compression, subvolumes.
-          Current configuration shown below.
-"
-
-    if [[ "$AG_P_ROOT_FS" == "btrfs" ]]; then
-        prepare_btrfs
-    else
-        printf "\n Press any key to return..."
-        read -r -n1 -s
-        printf "\n"
+          Select btrfs to see its configuration
+          here."
     fi
 }

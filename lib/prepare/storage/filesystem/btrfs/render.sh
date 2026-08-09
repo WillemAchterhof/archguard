@@ -13,10 +13,21 @@ render_btrfs_menu()
 {
     local subvol
 
-    printf "\n"
-    printf "================================================\n"
-    printf " Btrfs Configuration\n"
-    printf "================================================\n"
+    clear
+    printf "\
+================================================
+ Root Filesystem
+================================================
+  ext4    Stable, mature, widely supported. No
+          built-in snapshots or subvolumes.
+
+  btrfs   Snapshots, compression, subvolumes.
+          Current configuration shown below.
+
+================================================
+ Btrfs Configuration
+================================================
+"
     printf "* Layout        : %s\n" "$AG_BTRFS_LAYOUT"
     printf "* Compression   : %s\n" "$AG_BTRFS_COMPRESSION"
     printf "* Snapshots     : %s\n" "$AG_BTRFS_SNAPSHOTS"
@@ -28,7 +39,6 @@ render_btrfs_menu()
     done
 
     printf "================================================\n"
-
     printf "[v] Reload Profile Config\n"
     printf "[w] Reload Default Config\n"
     printf "[x] Edit configuration file (nano)\n"
