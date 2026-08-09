@@ -27,30 +27,30 @@ AG_PROFILE_NAME="Default"
 # Disk Preperation
 # ------------------------------------------------------------------------------
 
-AG_P_DISK="not set"
-AG_P_EFI_SIZE="500M"
-AG_P_LUKS="auto"
-AG_P_ROOT_FS="btrfs"
-AG_P_SWAP_ENABLED="full"
+AG_P_DISK=""
+AG_P_EFI_SIZE=""
+AG_P_LUKS=""
+AG_P_ROOT_FS=""
+AG_P_SWAP_ENABLED=""
 AG_P_SWAP_SIZE=""
 AG_P_SWAP_MENU_DISPLAY=""
-AG_P_DISK_WIPE_MODE="secure"
+AG_P_DISK_WIPE_MODE=""
 
 # ------------------------------------------------------------------------------
 # Security
 # ------------------------------------------------------------------------------
 
 
-AG_P_SECUREBOOT="Custom"
+AG_P_SECUREBOOT=""
 
 # ------------------------------------------------------------------------------
 # System
 # ------------------------------------------------------------------------------
 
-AG_P_HOSTNAME="ArchGuard"
-AG_P_USERNAME="willem"
-AG_P_LOCALE="en_US.UTF-8"
-AG_P_TIMEZONE="Europe/Amsterdam"
-AG_P_KEYBOARD="us"
-AG_P_MIRROR_COUNTRIES="NL,DE"
-AG_P_PACMAN_PARALLEL="20"
+AG_P_HOSTNAME=""
+AG_P_USERNAME=""
+AG_P_LOCALE=""
+AG_P_TIMEZONE=""
+AG_P_KEYBOARD=""
+AG_P_MIRROR_COUNTRIES=""
+AG_P_PACMAN_PARALLEL=""
