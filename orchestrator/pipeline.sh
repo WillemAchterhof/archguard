@@ -33,11 +33,11 @@ run_pipeline()
     msg "Configure profile"
     module_menu
 
-#    msg "Validate profile"
-#    module_validate
+    msg "Validate profile"
+    module_validate
 
-#    msg "Install system"
-#    module_install
+    msg "Install system"
+    module_install
 
     msg "Installer finished"
     log_header "SESSION COMPLETE"
