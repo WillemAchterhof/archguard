@@ -30,11 +30,18 @@ run_pipeline()
     msg "Prepare installer"
     module_prepare
 
-    msg "Configure profile"
-    module_menu
 
-    msg "Validate profile"
-    module_validate
+    while true; do
+        msg "Configure profile"
+        module_menu
+    
+        [[ "$AG_MENU_EXIT" == "1" ]] && { msg "Installer exited"; exit 0; }
+    
+        msg "Validate profile"
+        module_validate
+    
+        [[ "$AG_MENU_PROCEED" == "1" ]] && break
+    done
 
     msg "Install system"
     module_install
