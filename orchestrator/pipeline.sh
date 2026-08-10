@@ -26,10 +26,8 @@ run_pipeline()
     msg "Hardware detection"
     module_precheck
 
-
     msg "Prepare installer"
     module_prepare
-
 
     while true; do
         msg "Configure profile"
