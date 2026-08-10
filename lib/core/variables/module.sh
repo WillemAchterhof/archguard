@@ -23,6 +23,7 @@
 # AG_     Installer-wide variables
 # AG_P_   Profile configuration
 # AG_HW_  Hardware detection results
+# AG_V_   Verification state (pass/fail per field, see verification.sh)
 #
 # AGS_    Sensitive runtime-only values
 #         variables must never be stored globally.
