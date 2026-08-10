@@ -24,6 +24,7 @@ profile_write_file()
 
     while IFS= read -r var; do
         [[ -n "$var" ]] || continue
+        [[ "$var" == "AG_P_DISK" ]] && continue
         printf "%s=%q\n" "$var" "${!var}" >> "$file"
     done < <(compgen -A variable AG_P_ || true)
 
