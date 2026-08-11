@@ -22,6 +22,16 @@
 
 confirm_disk_destruction()
 {
+
+    if [[ "$input" != "$AG_P_DISK" ]]; then
+        printf "  Disk path did not match — aborting.\n\n"
+        printf "  A typo here is the last thing standing between you and\n"
+        printf "  wiping the wrong disk, so this sends you all the way\n"
+        printf "  back to the menu rather than letting you retype it.\n\n"
+        sleep 3
+        return 1
+    fi
+
     printf "================================================\n"
     printf " ⚠  CONFIRM TARGET DISK\n"
     printf "================================================\n\n"
