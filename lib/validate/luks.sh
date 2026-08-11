@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — LUKS Passphrase Resolution
 # ==============================================================================
-#  lib/validate/validate_luks.sh
+#  lib/validate/luks.sh
 #
 #  Resolves the LUKS passphrase — auto-generated or manually typed
 #  and confirmed. Whether a method was even chosen is checked earlier,
