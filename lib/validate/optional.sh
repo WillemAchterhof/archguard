@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Optional Field Validation
 # ==============================================================================
-#  lib/validate/validate_optional.sh
+#  lib/validate/optional.sh
 #
 #  Checks fields where empty is a legitimate, deliberate value — not
 #  "not yet set" (see validate_required.sh for fields where it is).
