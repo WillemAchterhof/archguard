@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Required Field Validation
 # ==============================================================================
-#  lib/validate/validate_required.sh
+#  lib/validate/required.sh
 #
 #  Presence-only checks for the plain AG_P_* fields the wipe/partition/
 #  format stage needs: disk, EFI size, root filesystem, wipe mode,
