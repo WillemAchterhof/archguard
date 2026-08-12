@@ -47,5 +47,5 @@ module_validate()
 module_install()
 {
     run_module "$AG_DIR_INSTALLER"
-    #run_install
+    run_install
 }
