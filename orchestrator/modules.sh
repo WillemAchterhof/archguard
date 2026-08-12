@@ -42,6 +42,7 @@ module_validate()
 {
     run_module "$AG_DIR_VALIDATE"
     run_validation || true
+    confirm_disk_destruction
 }
 
 module_install()
