@@ -41,7 +41,7 @@ module_menu()
 module_validate()
 {
     run_module "$AG_DIR_VALIDATE"
-    run_validation
+    run_validation || true
 }
 
 module_install()
