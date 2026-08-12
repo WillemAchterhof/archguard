@@ -42,7 +42,7 @@ run_pipeline()
     done
 
     msg "Install system"
-   #module_install
+    module_install
 
     msg "Installer finished"
     log_header "SESSION COMPLETE"
