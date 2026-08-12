@@ -41,8 +41,8 @@ run_pipeline()
         [[ "$AG_MENU_PROCEED" == "1" ]] && break
     done
 
-    msg "Install system"
-    module_install
+    #msg "Install system"
+   #module_install
 
     msg "Installer finished"
     log_header "SESSION COMPLETE"
