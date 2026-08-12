@@ -25,14 +25,18 @@ confirm_disk_destruction()
     printf "================================================\n"
     printf " ⚠  CONFIRM TARGET DISK\n"
     printf "================================================\n\n"
+
     printf "  Selected disk : %s\n" "$AG_P_DISK"
     printf "  Wipe mode     : %s\n\n" "${AG_P_DISK_WIPE_MODE:-Not set}"
+
     printf "  ALL DATA ON %s WILL BE PERMANENTLY LOST.\n\n" "$AG_P_DISK"
-    printf "  Type the disk path exactly to confirm, or leave\n"
-    printf "  blank to cancel:\n\n"
+
+    printf "  Type the following exactly to confirm:\n\n"
+    printf "      WIPE %s\n\n" "$AG_P_DISK"
+    printf "  Leave blank to cancel.\n\n"
 
     local input
-    read -rp "  > " input
+    read -r -p "  > " input
     printf "\n"
 
     if [[ -z "$input" ]]; then
@@ -40,15 +44,16 @@ confirm_disk_destruction()
         return 1
     fi
 
-    if [[ "$input" != "$AG_P_DISK" ]]; then
-        printf "  Disk path did not match — aborting.\n\n"
+    local expected="WIPE $AG_P_DISK"
+
+    if [[ "$input" != "$expected" ]]; then
+        printf "  Confirmation did not match — aborting.\n\n"
         printf "  A typo here is the last thing standing between you and\n"
         printf "  wiping the wrong disk, so this sends you all the way\n"
         printf "  back to the menu rather than letting you retype it.\n\n"
         sleep 3
         return 1
     fi
-
 
     log_silent "VALIDATE: disk destruction confirmed for AG_P_DISK=$AG_P_DISK"
     return 0
