@@ -35,7 +35,7 @@ module_prepare()
 module_menu()
 {
     run_module "$AG_DIR_MENU"
-    run_menu || true
+    run_menu
 }
 
 module_validate()

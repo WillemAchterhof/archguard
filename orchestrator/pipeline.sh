@@ -31,7 +31,7 @@ run_pipeline()
 
     while true; do
         msg "Configure profile"
-        module_menu
+        module_menu  || true
     
         [[ "$AG_MENU_EXIT" == "1" ]] && { msg "Installer exited"; exit 0; }
         
