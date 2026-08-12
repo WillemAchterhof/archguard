@@ -31,12 +31,12 @@ run_pipeline()
 
     while true; do
         msg "Configure profile"
-        module_menu  || true
+        module_menu
     
         [[ "$AG_MENU_EXIT" == "1" ]] && { msg "Installer exited"; exit 0; }
         
         msg "Validate profile"
-        module_validate
+        module_validate || true
     
         [[ "$AG_MENU_PROCEED" == "1" ]] && break
     done
