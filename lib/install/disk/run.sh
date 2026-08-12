@@ -7,8 +7,7 @@
 
 run_install_disk()
 {
-    confirm_disk_destruction || { msg "Install cancelled."; return 1; }
-    
+    install_disk_wipe    
     install_disk_partition
     install_disk_luks
     install_disk_lvm
