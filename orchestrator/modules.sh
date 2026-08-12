@@ -35,13 +35,13 @@ module_prepare()
 module_menu()
 {
     run_module "$AG_DIR_MENU"
-    run_menu
+    run_menu || true
 }
 
 module_validate()
 {
     run_module "$AG_DIR_VALIDATE"
-    run_validation || true
+    run_validation
 }
 
 module_install()
