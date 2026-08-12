@@ -34,9 +34,11 @@ run_pipeline()
         module_menu
     
         [[ "$AG_MENU_EXIT" == "1" ]] && { msg "Installer exited"; exit 0; }
-    
+        
+        set +e
         msg "Validate profile"
-        module_validate || true
+        module_validate
+        set -e
     
         [[ "$AG_MENU_PROCEED" == "1" ]] && break
     done
