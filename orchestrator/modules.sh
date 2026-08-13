@@ -29,6 +29,7 @@ module_precheck()
 module_prepare()
 {
     run_module "$AG_DIR_PREPARE"
+    recalc_swap_size
     run_disk
 }
 
