@@ -53,7 +53,25 @@ run_packstrap()
         sudo man-db git neovim \
         iproute2 iputils reflector libpwquality \
         polkit tar gzip unzip p7zip binutils \
-        plymouth
+        bluez bluez-utils \
+        pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber \
+        mesa vulkan-radeon libva-mesa-driver mesa-vdpau \
+        plymouth \
+          base base-devel linux linux-firmware \
+        btrfs-progs cryptsetup \
+        sbctl sbsigntools \
+        tpm2-tss tpm2-tools \
+        efibootmgr \
+        amd-ucode \
+        apparmor \
+        lvm2 \
+        bluez bluez-utils \
+        networkmanager iwd \
+        git neovim sudo man-db reflector openssh binutils inotify-tools \
+        zsh zsh-completions zsh-autosuggestions kitty pacman nftables udisks2\
+        pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber \
+        mesa vulkan-radeon libva-mesa-driver mesa-vdpau \
+        noto-fonts-cjk \
 
     msg "Base system installed."
 }
