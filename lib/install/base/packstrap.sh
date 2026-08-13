@@ -45,14 +45,28 @@ run_packstrap()
     msg "Installing base system via pacstrap..."
 
     pacstrap -K /mnt \
-        base base-devel linux linux-headers linux-firmware \
+        base base-devel \
+        linux linux-headers linux-firmware \
         ${ucode:+"$ucode"} \
         e2fsprogs dosfstools ${fs_pkg:+"$fs_pkg"} \
-        cryptsetup lvm2 mkinitcpio sbctl sbsigntools efibootmgr tpm2-tools \
-        apparmor nftables networkmanager iwd \
-        sudo man-db git neovim \
-        iproute2 iputils reflector libpwquality \
-        polkit tar gzip unzip p7zip binutils \
+        cryptsetup lvm2 \
+        mkinitcpio \
+        sbctl sbsigntools efibootmgr \
+        tpm2-tss tpm2-tools \
+        apparmor nftables \
+        networkmanager iwd \
+        bluez bluez-utils \
+        pipewire pipewire-audio pipewire-alsa pipewire-pulse wireplumber \
+        udisks2 polkit \
+        sudo \
+        man-db \
+        git neovim \
+        openssh \
+        iproute2 iputils \
+        reflector \
+        libpwquality \
+        inotify-tools \
+        tar gzip unzip 7zip binutils \
         plymouth
 
     msg "Base system installed."
