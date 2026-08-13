@@ -18,11 +18,11 @@ install_disk_mount()
 
     case "$AG_P_ROOT_FS" in
         ext4)
-            mount /dev/vgroot/root /mnt
+            mount -o noatime /dev/vgroot/root /mnt
             ;;
 
         btrfs)
-            local opts="compress=${AG_BTRFS_COMPRESSION}"
+            local opts="noatime,compress=${AG_BTRFS_COMPRESSION}"
             [[ "$AG_BTRFS_COW" == "Disabled" ]] && opts="$opts,nodatacow"
 
             mount -o "subvol=@,$opts" /dev/vgroot/root /mnt
