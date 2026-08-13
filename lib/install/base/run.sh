@@ -7,7 +7,7 @@
 
 run_install_base()
 {
-    install_base
+    run_packstrap
 
     msg "Base Install completed"
 }
