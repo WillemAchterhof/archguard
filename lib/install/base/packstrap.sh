@@ -27,7 +27,7 @@ detect_ucode()
     esac
 }
 
-install_base()
+run_packstrap()
 {
     local ucode
     local fs_pkg=""
