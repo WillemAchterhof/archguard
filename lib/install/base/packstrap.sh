@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Base System Install
 # ==============================================================================
-#  lib/install/base/base.sh
+#  lib/install/base/packstrap.sh
 #
 #  Requires:
 #    - /mnt already mounted (see lib/install/disk/mount.sh)
