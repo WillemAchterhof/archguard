@@ -8,6 +8,7 @@
 run_install()
 {
     run_install_disk
+    run_install_base
 
     msg "Install stage completed"
 }
