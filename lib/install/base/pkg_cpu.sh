@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # ==============================================================================
-#  Arch Secure Installer V2.6 — CPU Vendor Detection
+#  Arch Secure Installer V2.6 — CPU Package Selection
 # ==============================================================================
-#  lib/install/base/dset_cpu.sh
+#  lib/install/base/pkg_cpu.sh
 #
 #  Maps already-detected hardware vendors (from precheck) to the
 #  pacstrap package names needed for microcode support.
@@ -17,13 +17,7 @@
 #    - Touch /mnt or install anything (see install_base in base.sh)
 # ==============================================================================
 
-#!/usr/bin/env bash
-
-# ==============================================================================
-#  CPU Package Selection
-# ==============================================================================
-
-set_cpu_pkg()
+get_cpu_pkg()
 {
     case "${AG_HW_CPU_VENDOR:-unknown}" in
         intel)
