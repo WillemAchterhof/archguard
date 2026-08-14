@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Chroot Helper
 # ==============================================================================
-#  lib/install/chroot/wrapper.sh
+#  lib/install/chroot/run_chroot.sh
 #
 #  Provides a single entry point for executing commands inside the
 #  target system.
