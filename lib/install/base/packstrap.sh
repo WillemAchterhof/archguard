@@ -12,7 +12,7 @@
 #    - Generate fstab (see fstab.sh)
 # ==============================================================================
 
-run_pacstrap()
+run_pacstrap_install()
 {
     local cpu_pkg
     local gpu_pkg
