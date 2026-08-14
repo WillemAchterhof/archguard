@@ -61,7 +61,6 @@ run_packstrap()
         sudo \
         man-db \
         git neovim \
-        openssh \
         iproute2 iputils \
         reflector \
         libpwquality \
