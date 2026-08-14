@@ -12,7 +12,7 @@
 #    - AG_INSTALL_PART_EFI, AG_INSTALL_PART_ROOT (partition device paths)
 # ==============================================================================
 
-install_disk_partition()
+disk_partition()
 {
     msg "Partitioning disk: $AG_P_DISK"
 
