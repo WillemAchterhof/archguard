@@ -22,8 +22,16 @@
 #  directly, so the target mount point only needs to be named here.
 # ==============================================================================
 
+assert_target_root()
+{
+    [[ -d /mnt/etc ]] \
+        || fatal "Target root not found: /mnt"
+}
+
 install_fstab()
 {
+    assert_target_root
+    
     msg "Generating fstab"
     genfstab -U /mnt > /mnt/etc/fstab
     msg "fstab generated."
