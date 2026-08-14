@@ -23,7 +23,7 @@ sset_gpu_pkg()
 {
     case "${AG_HW_GPU_VENDOR:-unknown}" in
         amd)
-            echo "mesa vulkan-radeon libva-mesa-driver lib32-mesa lib32-vulkan-radeon"
+            echo "mesa vulkan-radeon libva-mesa-driver mesa-vdpau lib32-mesa lib32-vulkan-radeon lib32-mesa-vdpau"
             ;;
         intel)
             echo "mesa vulkan-intel intel-media-driver lib32-mesa lib32-vulkan-intel"
