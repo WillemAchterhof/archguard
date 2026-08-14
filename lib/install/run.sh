@@ -9,6 +9,7 @@ run_install()
 {
     configure_disk
     install_base
+    configure_system
 
     msg "Install stage completed"
 }
