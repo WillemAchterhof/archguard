@@ -8,7 +8,7 @@
 install_base()
 {
     configure_pacman_mirrors
-    run_pacstrap_install
+    install_packstrap_base
 
     msg "Base Install completed"
 }
