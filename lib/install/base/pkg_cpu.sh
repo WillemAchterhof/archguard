@@ -2,7 +2,6 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — CPU Package Selection
 # ==============================================================================
-#  lib/install/base/pkg_cpu.sh
 #
 #  Maps already-detected hardware vendors (from precheck) to the
 #  pacstrap package names needed for microcode support.
