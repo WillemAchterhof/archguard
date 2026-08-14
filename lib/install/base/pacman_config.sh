@@ -23,6 +23,8 @@
 #    - Touch /mnt or anything inside the target system
 # ==============================================================================
 
+AG_P_MIRROR_COUNTRY="NL,DE"
+
 configure_pacman_mirrors()
 {
     msg "Tuning live pacman.conf (parallel downloads, color, multilib)"
