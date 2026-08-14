@@ -15,7 +15,9 @@
 #    - Modify installer state
 # ==============================================================================
 
+readonly AG_INSTALL_ROOT="/mnt"
+
 run_chroot()
 {
-    arch-chroot /mnt "$@"
+    arch-chroot "$AG_INSTALL_ROOT" "$@"
 }
