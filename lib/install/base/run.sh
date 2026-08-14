@@ -5,7 +5,7 @@
 #  lib/install/base/run.sh
 # ==============================================================================
 
-run_install_base()
+install_base()
 {
     configure_pacman_mirrors
     run_pacstrap_install
