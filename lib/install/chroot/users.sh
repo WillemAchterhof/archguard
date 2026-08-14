@@ -5,6 +5,13 @@
 #  lib/install/chroot/users.sh
 # ==============================================================================
 
+#!/usr/bin/env bash
+# ==============================================================================
+#  Arch Secure Installer V2.6 — User Configuration
+# ==============================================================================
+#  lib/install/chroot/users.sh
+# ==============================================================================
+
 configure_users()
 {
     msg "Creating user: $AG_P_USERNAME"
@@ -14,8 +21,12 @@ configure_users()
         -G wheel \
         "$AG_P_USERNAME"
 
-    msg "Set password for user: $AG_P_USERNAME"
-    run_chroot passwd "$AG_P_USERNAME"
+    msg "Setting password for: $AG_P_USERNAME"
+
+    printf '%s:%s\n' \
+        "$AG_P_USERNAME" \
+        "$AGS_P_USER_PASS" |
+        run_chroot chpasswd
 
     printf '%%wheel ALL=(ALL:ALL) ALL\n' \
         > /mnt/etc/sudoers.d/wheel
