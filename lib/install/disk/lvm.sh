@@ -9,7 +9,7 @@
 #    - AG_P_SWAP_ENABLED, AG_P_SWAP_SIZE
 # ==============================================================================
 
-install_disk_lvm()
+disk_lvm()
 {
     msg "Creating LVM volumes"
 
