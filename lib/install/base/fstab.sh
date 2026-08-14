@@ -25,7 +25,7 @@
 install_fstab()
 {
     msg "Generating fstab"
-    genfstab -U /mnt >> /mnt/etc/fstab
+    genfstab -U /mnt > /mnt/etc/fstab
     msg "fstab generated."
 }
 
