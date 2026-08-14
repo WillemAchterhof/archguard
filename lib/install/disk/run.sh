@@ -5,14 +5,14 @@
 #  lib/install/disk/run.sh
 # ==============================================================================
 
-run_install_disk()
+configure_disk()
 {
-    install_disk_wipe    
-    install_disk_partition
-    install_disk_luks
-    install_disk_lvm
-    install_disk_format
-    install_disk_mount
+    disk_wipe    
+    disk_partition
+    disk_luks
+    disk_lvm
+    disk_format
+    disk_mount
 
     msg "Disk preparation completed"
 }
