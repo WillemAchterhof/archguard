@@ -10,7 +10,7 @@
 #    - AG_P_ROOT_FS, AG_BTRFS_SUBVOLUMES
 # ==============================================================================
 
-install_disk_format()
+disk_format()
 {
     msg "Formatting EFI partition"
     mkfs.fat -F32 "$AG_INSTALL_PART_EFI"
