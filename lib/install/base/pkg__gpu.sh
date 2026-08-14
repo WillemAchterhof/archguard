@@ -45,3 +45,4 @@ get_gpu_pkg()
             echo "mesa"
             ;;
     esac
+}
