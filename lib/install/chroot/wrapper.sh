@@ -19,5 +19,8 @@ readonly AG_INSTALL_ROOT="/mnt"
 
 run_chroot()
 {
+    [[ -d "$AG_INSTALL_ROOT" ]] \
+        || fatal "Install root not found: $AG_INSTALL_ROOT"
+
     arch-chroot "$AG_INSTALL_ROOT" "$@"
 }
