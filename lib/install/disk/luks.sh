@@ -18,7 +18,7 @@
 #    - /dev/mapper/cryptroot (opened LUKS device)
 # ==============================================================================
 
-install_disk_luks()
+disk_luks()
 {
     [[ -n "${AGS_LUKS_PASSPHRASE:-}" ]] \
         || fatal "LUKS passphrase not resolved — validate stage did not run."
