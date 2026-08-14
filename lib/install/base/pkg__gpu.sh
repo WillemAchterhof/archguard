@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
-#  Arch Secure Installer V2.6 — GPU Vendor Detection
+#  Arch Secure Installer V2.6 — GPU Package Selection
 # ==============================================================================
-#  lib/install/base/set_gpu.sh
 #
 #  Maps already-detected hardware vendors (from precheck) to the
 #  pacstrap package names needed for graphics support.
@@ -10,23 +9,31 @@
 #  hardware itself, and neither installs anything.
 #
 #  Requires:
-#    - AG_HW_CPU_VENDOR (from lib/core/precheck/gpu.sh)
+#    - AG_HW_GPU_VENDOR (from lib/core/precheck/gpu.sh)
 #
 #  Does NOT:
 #    - Detect hardware (see lib/core/precheck/)
 #    - Touch /mnt or install anything (see install_base in base.sh)
 # ==============================================================================
 
-#!/usr/bin/env bash
-
-set_gpu_pkg()
+get_gpu_pkg()
 {
     case "${AG_HW_GPU_VENDOR:-unknown}" in
         amd)
-            echo "mesa vulkan-radeon libva-mesa-driver mesa-vdpau lib32-mesa lib32-vulkan-radeon lib32-mesa-vdpau"
+            echo \
+                "mesa \
+                vulkan-radeon \
+                libva-mesa-driver \
+                lib32-mesa \
+                lib32-vulkan-radeon"
             ;;
         intel)
-            echo "mesa vulkan-intel intel-media-driver lib32-mesa lib32-vulkan-intel"
+            echo \
+                "mesa \
+                vulkan-intel \
+                intel-media-driver \
+                lib32-mesa \
+                lib32-vulkan-intel"
             ;;
         nvidia)
             log "[!] NVIDIA GPU detected."
