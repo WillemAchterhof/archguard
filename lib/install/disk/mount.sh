@@ -12,7 +12,7 @@
 #  listed here has no known mountpoint and is skipped with a warning.
 # ==============================================================================
 
-install_disk_mount()
+disk_mount()
 {
     msg "Mounting filesystems"
 
