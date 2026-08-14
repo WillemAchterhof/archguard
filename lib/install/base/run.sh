@@ -8,7 +8,7 @@
 install_base()
 {
     configure_pacman_mirrors
-    install_base_packstrap
+    install_base_pacstrap
     install_fstab
 
     msg "Base Install completed"
