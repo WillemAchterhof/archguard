@@ -12,28 +12,32 @@
 #    - Generate fstab (see fstab.sh)
 # ==============================================================================
 
-run_packstrap()
+run_pacstrap()
 {
-    local ucode
+    local cpu_pkg
+    local gpu_pkg
     local fs_pkg=""
 
-    ucode="$(detect_ucode)"
-    msg "CPU microcode: ${ucode:-none}"
+    cpu_pkg="$(set_cpu_pkg)"
+    gpu_pkg="$(set_gpu_pkg)"
+
+    msg "CPU package(s): ${cpu_pkg:-none}"
+    msg "GPU package(s): ${gpu_pkg:-none}"
 
     case "$AG_P_ROOT_FS" in
         btrfs) fs_pkg="btrfs-progs" ;;
         ext4)  ;;
-        *)     fatal "Unknown root filesystem: $AG_P_ROOT_FS" ;;
+        *) fatal "Unknown root filesystem: $AG_P_ROOT_FS" ;;
     esac
-    msg "Filesystem tools: e2fsprogs${fs_pkg:+, $fs_pkg}"
 
-    msg "Installing base system via pacstrap..."
+    msg "Filesystem tools: e2fsprogs${fs_pkg:+, $fs_pkg}"
 
     pacstrap -K /mnt \
         base base-devel \
         linux linux-headers linux-firmware \
-        ${ucode:+"$ucode"} \
-        e2fsprogs dosfstools ${fs_pkg:+"$fs_pkg"} \
+        $cpu_pkg \
+        $gpu_pkg \
+        e2fsprogs dosfstools ${fs_pkg:+$fs_pkg} \
         cryptsetup lvm2 \
         mkinitcpio \
         sbctl sbsigntools efibootmgr \
