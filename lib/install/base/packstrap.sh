@@ -18,8 +18,8 @@ run_pacstrap()
     local gpu_pkg
     local fs_pkg=""
 
-    cpu_pkg="$(set_cpu_pkg)"
-    gpu_pkg="$(set_gpu_pkg)"
+    cpu_pkg="$(get_cpu_pkg)"
+    gpu_pkg="$(get_gpu_pkg)"
 
     msg "CPU package(s): ${cpu_pkg:-none}"
     msg "GPU package(s): ${gpu_pkg:-none}"
