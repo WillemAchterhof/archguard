@@ -19,7 +19,7 @@
 
 #!/usr/bin/env bash
 
-sset_gpu_pkg()
+set_gpu_pkg()
 {
     case "${AG_HW_GPU_VENDOR:-unknown}" in
         amd)
