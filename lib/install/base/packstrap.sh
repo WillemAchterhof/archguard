@@ -35,8 +35,7 @@ run_pacstrap()
     pacstrap -K /mnt \
         base base-devel \
         linux linux-headers linux-firmware \
-        $cpu_pkg \
-        $gpu_pkg \
+        $cpu_pkg $gpu_pkg \
         e2fsprogs dosfstools ${fs_pkg:+$fs_pkg} \
         cryptsetup lvm2 \
         mkinitcpio \
