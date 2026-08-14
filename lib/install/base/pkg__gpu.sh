@@ -5,8 +5,8 @@
 #
 #  Maps already-detected hardware vendors (from precheck) to the
 #  pacstrap package names needed for graphics support.
-#  Each function only echoes package names — neither one detects
-#  hardware itself, and neither installs anything.
+#  The function only echoes package names. It does not detect
+#  hardware itself and does not install anything.
 #
 #  Requires:
 #    - AG_HW_GPU_VENDOR (from lib/core/precheck/gpu.sh)
