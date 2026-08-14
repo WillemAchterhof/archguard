@@ -8,7 +8,7 @@
 #    - AG_P_DISK, AG_P_DISK_WIPE_MODE
 # ==============================================================================
 
-install_disk_wipe()
+disk_wipe()
 {
     case "$AG_P_DISK_WIPE_MODE" in
         quick)
