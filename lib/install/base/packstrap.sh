@@ -12,7 +12,7 @@
 #    - Generate fstab (see fstab.sh)
 # ==============================================================================
 
-install_packstrap_base()
+install_base_packstrap()
 {
     local cpu_pkg
     local gpu_pkg
