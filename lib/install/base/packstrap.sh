@@ -12,21 +12,6 @@
 #    - Generate fstab (see fstab.sh)
 # ==============================================================================
 
-detect_ucode()
-{
-    local vendor
-    vendor=$(grep -m1 'vendor_id' /proc/cpuinfo | awk '{print $3}' | tr '[:upper:]' '[:lower:]')
-
-    case "$vendor" in
-        genuineintel) echo "intel-ucode" ;;
-        authenticamd) echo "amd-ucode"   ;;
-        *)
-            log "[!] Unknown CPU vendor: $vendor — skipping microcode"
-            echo ""
-            ;;
-    esac
-}
-
 run_packstrap()
 {
     local ucode
