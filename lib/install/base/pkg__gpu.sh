@@ -22,18 +22,18 @@ get_gpu_pkg()
         amd)
             echo \
                 "mesa \
-                vulkan-radeon \
-                libva-mesa-driver \
-                lib32-mesa \
-                lib32-vulkan-radeon"
+                 vulkan-radeon \
+                 libva-mesa-driver \
+                 lib32-mesa \
+                 lib32-vulkan-radeon"
             ;;
         intel)
             echo \
                 "mesa \
-                vulkan-intel \
-                intel-media-driver \
-                lib32-mesa \
-                lib32-vulkan-intel"
+                 vulkan-intel \
+                 intel-media-driver \
+                 lib32-mesa \
+                 lib32-vulkan-intel"
             ;;
         nvidia)
             log "[!] NVIDIA GPU detected."
