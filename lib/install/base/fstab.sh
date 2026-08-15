@@ -17,6 +17,12 @@
 #  doesn't add anything of its own.
 # ==============================================================================
 
+assert_target_root()
+{
+    [[ -d /mnt/etc ]] \
+        || fatal "Target root not found: /mnt"
+}
+
 install_fstab()
 {
     assert_target_root
