@@ -41,23 +41,18 @@ render_menu()
 
     printf "   [f] Wipe        : %s\n" "$AG_P_DISK_WIPE_MODE"
     printf "\n"
-    
-
-    # Below need to rearage again.
-    printf " Security\n"
-    
-    printf "   [g] Secure Boot : %s\n" "${AG_P_SECUREBOOT:-Not set}"
-
-    printf "\n"
 
     printf " System\n"
-    printf "   [h] Hostname    : %s\n" "${AG_P_HOSTNAME:-Not set}"
-    printf "   [i] Username    : %s\n" "${AG_P_USERNAME:-Not set}"
-    printf "   [l] Locale      : %s\n" "${AG_P_LOCALE:-Not set}"
-    printf "   [m] Timezone    : %s\n" "${AG_P_TIMEZONE:-Not set}"
-    printf "   [n] Keyboard    : %s\n" "${AG_P_KEYBOARD:-Not set}"
-    printf "   [o] Mirrors     : %s\n" "${AG_P_MIRROR_COUNTRIES:-Not set}"
-    printf "   [p] Pacman      : %s parallel downloads\n" "${AG_P_PACMAN_PARALLEL:-Not set}"
+    printf "   [f] Hostname    : %s\n" "${AG_P_HOSTNAME:-Not set}"
+    printf "   [g] Username    : %s\n" "${AG_P_USERNAME:-Not set}"
+    printf "   [h] Locale      : %s\n" "${AG_P_LOCALE:-Not set}"
+    printf "   [i] Timezone    : %s\n" "${AG_P_TIMEZONE:-Not set}"
+    printf "   [j] Keyboard    : %s\n" "${AG_P_KEYBOARD:-Not set}"
+    printf "   [k] Mirrors     : %s\n" "${AG_P_MIRROR_COUNTRIES:-Not set}"
+    printf "   [l] Pacman      : %s parallel downloads\n" "${AG_P_PACMAN_PARALLEL:-Not set}"
+    printf "\n"
+
+    printf "   [m] SB Cert     : %s\n" "${AG_P_SBCert:-Not set}"
     printf "\n"
 
     printf " Actions\n"
