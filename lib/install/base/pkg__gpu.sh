@@ -36,12 +36,12 @@ get_gpu_pkg()
                  lib32-vulkan-intel"
             ;;
         nvidia)
-            log "[!] NVIDIA GPU detected."
-            log "[!] NVIDIA support is not yet implemented."
+            log "[!] NVIDIA GPU detected." >&2
+            log "[!] NVIDIA support is not yet implemented." >&2
             echo "mesa"
             ;;
         *)
-            log "[!] Unknown GPU vendor: ${AG_HW_GPU_VENDOR:-unknown}"
+            log "[!] Unknown GPU vendor: ${AG_HW_GPU_VENDOR:-unknown}" >&2
             echo "mesa"
             ;;
     esac
