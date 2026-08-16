@@ -22,7 +22,7 @@ prepare_wipe()
             ;;
 
         "paranoia")
-            AG_P_DISK_WIPE_MODE=""
+            AG_P_DISK_WIPE_MODE="quick"
             ;;
 
         *)

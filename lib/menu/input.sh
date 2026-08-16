@@ -23,21 +23,19 @@ handle_input()
         e) prepare_swap ;;
         E) show_swap_info ;;
         f) prepare_wipe ;;
-        F) show_wipe_info ;;
-
-        # ---- SECURITY ----
-
-        g) prepare_secureboot ;;
-        
+        F) show_wipe_info ;;        
 
         # ---- SYSTEM ----
-        h) prepare_hostname ;;
-        i) prepare_username ;;
-        l) prepare_locale ;;
-        m) prepare_timezone ;;
-        n) prepare_keyboard ;;
-        o) prepare_mirrors ;;
-        p) prepare_pacman ;;
+        g) prepare_hostname ;;
+        h) prepare_username ;;
+        i) prepare_locale ;;
+        j) prepare_timezone ;;
+        k) prepare_keyboard ;;
+        l) prepare_mirrors ;;
+        m) prepare_pacman ;;
+
+        # ---- SECURITY ----
+        n) sb_certificate ;;
 
         # ---- ACTIONS ----
         w) profile_load ;;
