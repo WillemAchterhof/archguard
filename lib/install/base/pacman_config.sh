@@ -23,28 +23,19 @@ configure_pacman_mirrors()
     msg "Tuning live pacman.conf (parallel downloads, color, multilib)"
 
     sed -i \
-        -e 's/^ParallelDownloads =.*/ParallelDownloads = 20/' \
+        -e "s/^#\?ParallelDownloads.*/ParallelDownloads = ${AG_P_PACMAN_PARALLEL}/" \
         -e 's/^#Color/Color/' \
         -e '/^#\[multilib\]/,/^#Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' \
         /etc/pacman.conf
 
     msg "Refreshing mirrorlist${AG_P_MIRROR_COUNTRIES:+ ($AG_P_MIRROR_COUNTRIES)}..."
 
-    local -a reflector_args=(
-        --age 10
-        --protocol https
-        --sort rate
-        --save /etc/pacman.d/mirrorlist
-    )
-
-    if [[ -n "$AG_P_MIRROR_COUNTRIES" ]]; then
-        reflector_args=(
-            --country "$AG_P_MIRROR_COUNTRIES"
-            "${reflector_args[@]}"
-        )
-    fi
-
-    reflector "${reflector_args[@]}"
+   reflector \
+        --country "$AG_P_MIRROR_COUNTRIES" \
+        --protocol https \
+        --latest 20 \
+        --sort rate \
+        --save /etc/pacman.d/mirrorlisttest
 
     msg "Mirrorlist refreshed."
 
