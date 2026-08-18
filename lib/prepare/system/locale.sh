@@ -5,6 +5,7 @@
 #  lib/prepare/system/locale.sh
 #
 #  Substring search against the real /etc/locale.gen locale definitions.
+#
 #  Both enabled and commented locale definitions are searchable.
 #
 #  Type part of a language, region, or locale:
@@ -14,9 +15,6 @@
 #
 #  Blank input leaves the existing AG_P_LOCALE unchanged.
 #  'z' cancels the setter entirely.
-#
-#  A final locale definition check is performed immediately before
-#  committing the value.
 #
 #  Populates:
 #    - AG_P_LOCALE
@@ -50,21 +48,19 @@ prepare_locale()
         fi
 
         # ----------------------------------------------------------------------
-        # Search /etc/locale.gen
+        # Search /etc/locale.gen.
         #
-        # Locale definitions can be either:
-        #
-        #   en_US.UTF-8 UTF-8
-        #
-        # or:
+        # Examples:
         #
         #   #en_US.UTF-8 UTF-8
+        #   en_US.UTF-8 UTF-8
         #
-        # Commented definitions are deliberately included because they are
-        # valid locale choices that can be enabled later by locale-gen.
+        # Both are treated as:
         #
-        # awk is used instead of grep so "no matches" does not return status 1
-        # and trip set -Eeuo pipefail.
+        #   en_US.UTF-8
+        #
+        # awk is used so a search with zero results does not trigger
+        # set -Eeuo pipefail.
         # ----------------------------------------------------------------------
 
         mapfile -t matches < <(
@@ -75,32 +71,32 @@ prepare_locale()
                     # Remove leading whitespace.
                     sub(/^[[:space:]]+/, "", line)
 
-                    # Remove the locale.gen comment marker.
+                    # Remove optional locale.gen comment marker.
                     sub(/^#/, "", line)
 
-                    # Remove whitespace immediately after the marker.
+                    # Remove whitespace after comment marker.
                     sub(/^[[:space:]]+/, "", line)
 
-                    # Ignore empty lines and ordinary comments.
-                    if (line == "" || line ~ /^#/)
+                    # Ignore empty lines.
+                    if (line == "")
                         next
 
-                    # The first field is the locale name.
+                    # First field is the locale name.
                     locale = $1
 
-                    # Only accept actual locale definitions.
-                    if (locale !~ /^[A-Za-z_][A-Za-z0-9_+.-]*(\.[A-Za-z0-9_-]+)?(@[A-Za-z0-9_-]+)?$/)
+                    # Ignore lines that are clearly not locale definitions.
+                    if (locale == "")
                         next
 
                     # Case-insensitive substring search.
-                    if (index(tolower(locale), tolower(q)))
+                    if (index(tolower(locale), tolower(q)) > 0)
                         print locale
                 }
             ' /etc/locale.gen
         )
 
         # ----------------------------------------------------------------------
-        # No matches
+        # Nothing found
         # ----------------------------------------------------------------------
 
         if [[ "${#matches[@]}" -eq 0 ]]; then
@@ -110,7 +106,7 @@ prepare_locale()
         fi
 
         # ----------------------------------------------------------------------
-        # Remove duplicate locale names while preserving order.
+        # Remove duplicates while preserving order.
         # ----------------------------------------------------------------------
 
         mapfile -t matches < <(
@@ -119,7 +115,7 @@ prepare_locale()
         )
 
         # ----------------------------------------------------------------------
-        # Exactly one match — accept automatically.
+        # Exactly one result.
         # ----------------------------------------------------------------------
 
         if [[ "${#matches[@]}" -eq 1 ]]; then
@@ -128,7 +124,7 @@ prepare_locale()
         fi
 
         # ----------------------------------------------------------------------
-        # Multiple matches — show numbered list.
+        # Multiple results.
         # ----------------------------------------------------------------------
 
         printf "\n"
@@ -141,10 +137,6 @@ prepare_locale()
 
         selected=""
 
-        # Keep the user inside this result list until they:
-        #   - select a valid number
-        #   - leave blank to search again
-        #   - enter z to cancel
         while true; do
             read -rp "  Select [1-${#matches[@]}], or blank to search again: " choice
 
@@ -171,35 +163,24 @@ prepare_locale()
     done
 
     # --------------------------------------------------------------------------
-    # Final confirmation against /etc/locale.gen.
+    # Final confirmation.
     #
-    # This repeats the same normalization used during the search:
-    #   - leading whitespace removed
-    #   - '#' comment marker removed
-    #
-    # This confirms the selected locale is a real locale definition.
+    # Check that the selected locale actually exists as a definition in
+    # /etc/locale.gen.
     # --------------------------------------------------------------------------
 
     if ! awk -v q="$input" '
         {
             line = $0
 
-            # Remove leading whitespace.
             sub(/^[[:space:]]+/, "", line)
-
-            # Remove the locale.gen comment marker.
             sub(/^#/, "", line)
-
-            # Remove whitespace after the marker.
             sub(/^[[:space:]]+/, "", line)
 
-            # Ignore empty lines and ordinary comments.
-            if (line == "" || line ~ /^#/)
+            if (line == "")
                 next
 
-            locale = $1
-
-            if (locale == q) {
+            if ($1 == q) {
                 found = 1
                 exit
             }
