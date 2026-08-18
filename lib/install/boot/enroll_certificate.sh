@@ -36,7 +36,8 @@ enroll_secure_boot()
 
     case "$AG_P_SBCert" in
         Custom)
-            run_chroot sbctl enroll-keys
+            run_chroot sbctl enroll-keys \
+            --yes-this-might-brick-my-machine
             ;;
 
         Microsoft)
