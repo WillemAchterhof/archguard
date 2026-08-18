@@ -14,8 +14,7 @@ configure_timezone()
     msg "Configuring timezone: $AG_P_TIMEZONE"
 
     ln -sf \
-        "/usr/share/zoneinfo/$AG_P_TIMEZONE" \
-        "$AG_INSTALL_ROOT/etc/localtime"
+        "/usr/share/zoneinfo/$AG_P_TIMEZONE $AG_INSTALL_ROOT/etc/localtime"
 
     run_chroot hwclock --systohc
 
