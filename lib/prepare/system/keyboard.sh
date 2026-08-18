@@ -9,13 +9,13 @@
 #  numbered list back if more than one match, exact auto-accept if
 #  only one.
 #
-#  Blank input leaves the existing AG_P_KEYMAP unchanged.
+#  Blank input leaves the existing AG_P_KEYBOARD unchanged.
 #
 #  A final keymap-list check is performed immediately before committing,
 #  as a belt-and-suspenders confirmation.
 #
 #  Populates:
-#    - AG_P_KEYMAP
+#    - AG_P_KEYBOARD
 # ==============================================================================
 
 prepare_keyboard()
@@ -31,7 +31,7 @@ prepare_keyboard()
     printf "  'uk'), at least 2 characters. Leave blank to skip.\n\n"
 
     while true; do
-        read -rp "  Search keyboard [${AG_P_KEYMAP:-us}]: " query
+        read -rp "  Search keyboard [${AG_P_KEYBOARD:-us}]: " query
 
         [[ "$query" == "z" ]] && return
 
@@ -121,6 +121,6 @@ prepare_keyboard()
         return 1
     fi
 
-    AG_P_KEYMAP="$input"
-    log_silent "SETTER: keyboard — AG_P_KEYMAP=$AG_P_KEYMAP"
+    AG_P_KEYBOARD="$input"
+    log_silent "SETTER: keyboard — AG_P_KEYBOARD=$AG_P_KEYBOARD"
 }
