@@ -7,9 +7,15 @@
 
 configure_system()
 {
-    run_chroot
+    configure_pacman
     configure_pacman_mirrors
+    update_system
+
     configure_timezone
+    configure_locale
+    configure_keyboard
+    configure_hostname
+    configure_user
 
     msg "System Configured"
 }
