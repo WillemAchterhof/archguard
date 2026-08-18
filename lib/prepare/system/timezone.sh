@@ -20,20 +20,21 @@ prepare_timezone()
     local query
     local input
     local choice
+    local selected
     local -a matches
     local i
 
     printf "\n  Timezone — type part of a region or city (e.g. 'amst' for\n"
-    printf "  Europe/Amsterdam), at least 3 characters. Leave blank to cancel.\n\n"
+    printf "  Europe/Amsterdam), at least 3 characters. Leave blank to skip.\n\n"
 
     while true; do
         read -rp "  Search timezone [${AG_P_TIMEZONE:-UTC}]: " query
 
         [[ "$query" == "z" ]] && return
 
+        # Blank = skip/cancel, leaving existing value untouched.
         if [[ -z "$query" ]]; then
-            input="${AG_P_TIMEZONE:-UTC}"
-            break
+            return
         fi
 
         if [[ "${#query}" -lt 3 ]]; then
@@ -41,10 +42,13 @@ prepare_timezone()
             continue
         fi
 
-        mapfile -t matches < <(timedatectl list-timezones | grep -iF "$query")
+        mapfile -t matches < <(
+            timedatectl list-timezones | grep -iF -- "$query"
+        )
 
         if [[ "${#matches[@]}" -eq 0 ]]; then
-            printf "\n  ⚠  No timezones match: %s\n\n" "$query"
+            printf "\n  ⚠  Nothing found for: %s\n" "$query"
+            printf "  Enter another search, or leave blank to skip.\n\n"
             continue
         fi
 
@@ -59,11 +63,8 @@ prepare_timezone()
         done
         printf "\n"
 
-        # Separate inner loop: keep re-prompting for a selection from THIS
-        # list until valid, blank (search again), or z (cancel entirely).
-        # An invalid number must not fall through to the outer loop, or
-        # the next digit typed gets misread as a brand-new search query.
-        local selected=""
+        selected=""
+
         while true; do
             read -rp "  Select [1-${#matches[@]}], or blank to search again: " choice
 
@@ -73,7 +74,8 @@ prepare_timezone()
                 break
             fi
 
-            if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#matches[@]} )); then
+            if ! [[ "$choice" =~ ^[0-9]+$ ]] ||
+               (( choice < 1 || choice > ${#matches[@]} )); then
                 printf "\n  ⚠  Invalid selection.\n\n"
                 continue
             fi
