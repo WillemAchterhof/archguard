@@ -6,18 +6,13 @@
 #
 #  Runs on the LIVE ISO, before pacstrap — tunes the live environment's
 #  own /etc/pacman.conf and mirrorlist so the actual install downloads
-#  faster and multilib (lib32-*) packages can resolve at all. None of
-#  this persists to the installed system; pacstrap writes a fresh
-#  /mnt/etc/pacman.conf from the pacman package regardless. If any of
-#  this should also apply to the finished system, it needs its own
-#  step later, in the chroot stage.
+#  faster and multilib (lib32-*) packages can resolve at all.
 #
 #  Requires:
-#    - /etc/pacman.conf, /etc/pacman.d/mirrorlist (live ISO)
-#    - reflector (present on the live ISO)
-#    - AG_P_MIRROR_COUNTRY (optional — from the system-settings stage,
-#      not yet built. Falls back to reflector's own worldwide/rate
-#      sort if unset, rather than forcing a hardcoded region.)
+#    - /etc/pacman.conf
+#    - /etc/pacman.d/mirrorlist
+#    - reflector
+#    - AG_P_MIRROR_COUNTRIES (optional)
 #
 #  Does NOT:
 #    - Touch /mnt or anything inside the target system
@@ -33,11 +28,23 @@ configure_pacman_mirrors()
         -e '/^#\[multilib\]/,/^#Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' \
         /etc/pacman.conf
 
-    msg "Refreshing mirrorlist via reflector${AG_P_MIRROR_COUNTRY:+ ($AG_P_MIRROR_COUNTRY)}..."
-    reflector \
-        ${AG_P_MIRROR_COUNTRY:+--country "$AG_P_MIRROR_COUNTRY"} \
-        --age 10 --protocol https --sort rate \
+    msg "Refreshing mirrorlist${AG_P_MIRROR_COUNTRIES:+ ($AG_P_MIRROR_COUNTRIES)}..."
+
+    local -a reflector_args=(
+        --age 10
+        --protocol https
+        --sort rate
         --save /etc/pacman.d/mirrorlist
+    )
+
+    if [[ -n "$AG_P_MIRROR_COUNTRIES" ]]; then
+        reflector_args=(
+            --country "$AG_P_MIRROR_COUNTRIES"
+            "${reflector_args[@]}"
+        )
+    fi
+
+    reflector "${reflector_args[@]}"
 
     msg "Mirrorlist refreshed."
 
