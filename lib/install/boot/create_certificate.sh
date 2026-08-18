@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Secure Boot Keys
 # ==============================================================================
-#  lib/install/boot/secureboot.sh
+#  lib/install/boot/create_certificate.sh
 #
 #  Creates the Secure Boot signing keys when custom certificates are selected.
 #
