@@ -8,7 +8,6 @@
 #
 #    Custom
 #    Microsoft
-#    Custom with Microsoft available
 #
 #  The value is immediately committed to AG_P_SBCert.
 #
@@ -19,24 +18,16 @@
 sb_certificate()
 {
     case "${AG_P_SBCert:-}" in
-        "")
-            AG_P_SBCert="Custom"
-            ;;
 
         "Custom")
             AG_P_SBCert="Microsoft"
             ;;
 
         "Microsoft")
-            AG_P_SBCert="Custom with Microsoft available"
-            ;;
-
-        "Custom with Microsoft available")
             AG_P_SBCert="Custom"
             ;;
 
         *)
-            # Unknown value — reset to the first option.
             AG_P_SBCert="Custom"
             ;;
     esac
