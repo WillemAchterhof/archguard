@@ -4,12 +4,14 @@
 # ==============================================================================
 #  lib/prepare/system/locale.sh
 #
-#  Substring search against the real /etc/locale.gen locale list.
-#  Type part of a language or region, get a numbered list back if more than
-#  one match, exact auto-accept if only one.
+#  Substring search against the real /etc/locale.gen locale definitions.
+#  Type part of a language, region, or locale, get a numbered list back if
+#  more than one match, exact auto-accept if only one.
+#
+#  Commented locale definitions are included in the search because they are
+#  valid locale choices that can be enabled and generated later.
 #
 #  Blank input leaves the existing AG_P_LOCALE unchanged.
-#  A final generated-locale check is performed immediately before committing.
 #
 #  Populates:
 #    - AG_P_LOCALE
@@ -21,7 +23,6 @@ prepare_locale()
     local input
     local choice
     local selected
-    local locale_name
     local -a matches
     local i
 
@@ -43,22 +44,35 @@ prepare_locale()
             continue
         fi
 
-        # Search the actual locale definitions configured in /etc/locale.gen.
+        # Search ALL locale definitions in /etc/locale.gen.
         #
-        # Ignore:
-        #   - blank lines
-        #   - comments
+        # Both enabled:
         #
-        # Return only the locale name (first field), not the character map.
+        #   en_US.UTF-8 UTF-8
         #
-        # awk is used instead of grep so "no matches" is not an error under
+        # and disabled:
+        #
+        #   #en_US.UTF-8 UTF-8
+        #
+        # entries are valid search candidates.
+        #
+        # awk is used instead of grep so that "no matches" does not trigger
         # set -Eeuo pipefail.
         mapfile -t matches < <(
             awk -v q="$query" '
-                /^[[:space:]]*#/ { next }
-                NF == 0 { next }
-
                 {
+                    line = $0
+
+                    # Remove leading whitespace.
+                    sub(/^[[:space:]]+/, "", line)
+
+                    # Remove the optional comment marker.
+                    sub(/^#[[:space:]]*/, "", line)
+
+                    # Ignore empty lines and non-locale comments.
+                    if (line == "" || line !~ /^[A-Za-z_][A-Za-z0-9_+.-]*(\.[A-Za-z0-9_-]+)?(@[A-Za-z0-9_-]+)?[[:space:]]+/)
+                        next
+
                     locale = $1
 
                     if (index(tolower(locale), tolower(q)))
@@ -72,6 +86,12 @@ prepare_locale()
             printf "  Enter another search, or leave blank to skip.\n\n"
             continue
         fi
+
+        # Remove duplicate locale names while preserving their original order.
+        mapfile -t matches < <(
+            printf '%s\n' "${matches[@]}" |
+                awk '!seen[$0]++'
+        )
 
         if [[ "${#matches[@]}" -eq 1 ]]; then
             input="${matches[0]}"
@@ -115,30 +135,30 @@ prepare_locale()
         fi
     done
 
-    # Final check: confirm that the selected locale is actually generated
-    # and therefore available on the live system.
+    # Final confirmation against the locale definitions.
     #
-    # locale -a can use normalized spellings such as en_US.utf8 while
-    # /etc/locale.gen may contain en_US.UTF-8, so compare both forms.
-    if ! locale -a |
-        awk -v q="$input" '
-            function normalize(s) {
-                s = tolower(s)
-                gsub(/[-_.]/, "", s)
-                return s
-            }
+    # This confirms that the selected value actually exists in the current
+    # /etc/locale.gen, regardless of whether it is currently enabled.
+    if ! awk -v q="$input" '
+        {
+            line = $0
 
-            normalize($0) == normalize(q) {
+            sub(/^[[:space:]]+/, "", line)
+            sub(/^#[[:space:]]*/, "", line)
+
+            if (line == "" || line !~ /^[A-Za-z_][A-Za-z0-9_+.-]*(\.[A-Za-z0-9_-]+)?(@[A-Za-z0-9_-]+)?[[:space:]]+/)
+                next
+
+            if ($1 == q)
                 found = 1
-            }
+        }
 
-            END {
-                exit !found
-            }
-        '
+        END {
+            exit !found
+        }
+    ' /etc/locale.gen
     then
-        printf "\n  ⚠  Locale is not currently generated: %s\n" "$input"
-        printf "  Run locale-gen before committing this locale.\n\n"
+        printf "\n  ⚠  Not a recognized locale: %s\n\n" "$input"
         return 1
     fi
 
