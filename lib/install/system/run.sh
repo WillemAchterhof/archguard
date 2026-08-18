@@ -8,7 +8,7 @@
 configure_system()
 {
     configure_pacman
-    configure_pacman_mirrors
+    chroot_pacman_mirrors
     update_system
 
     configure_timezone

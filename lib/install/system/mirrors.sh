@@ -12,7 +12,7 @@
 #
 # ==============================================================================
 
-configure_pacman_mirrors()
+chroot_pacman_mirrors()
 {
     msg "Configuring pacman mirrors"
 
