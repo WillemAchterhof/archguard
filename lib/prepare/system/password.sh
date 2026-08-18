@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — User password
 # ==============================================================================
-#  lib/validate/password.sh
+#  lib/prepare/system/password.sh
 #
 #  Populates:
 #    - AGS_USER_PASSWORD (sensitive — never written to a profile)
