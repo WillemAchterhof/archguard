@@ -5,13 +5,18 @@
 #  lib/prepare/system/locale.sh
 #
 #  Substring search against the real /etc/locale.gen locale definitions.
-#  Type part of a language, region, or locale, get a numbered list back if
-#  more than one match, exact auto-accept if only one.
+#  Both enabled and commented locale definitions are searchable.
 #
-#  Commented locale definitions are included in the search because they are
-#  valid locale choices that can be enabled and generated later.
+#  Type part of a language, region, or locale:
+#    - One match  -> automatically accepted
+#    - Multiple  -> numbered selection
+#    - No matches -> search again or blank to skip
 #
 #  Blank input leaves the existing AG_P_LOCALE unchanged.
+#  'z' cancels the setter entirely.
+#
+#  A final locale definition check is performed immediately before
+#  committing the value.
 #
 #  Populates:
 #    - AG_P_LOCALE
@@ -34,7 +39,7 @@ prepare_locale()
 
         [[ "$query" == "z" ]] && return
 
-        # Blank = skip/cancel, leaving the existing value untouched.
+        # Blank = skip, leaving the existing value untouched.
         if [[ -z "$query" ]]; then
             return
         fi
@@ -44,20 +49,24 @@ prepare_locale()
             continue
         fi
 
-        # Search ALL locale definitions in /etc/locale.gen.
+        # ----------------------------------------------------------------------
+        # Search /etc/locale.gen
         #
-        # Both enabled:
+        # Locale definitions can be either:
         #
         #   en_US.UTF-8 UTF-8
         #
-        # and disabled:
+        # or:
         #
         #   #en_US.UTF-8 UTF-8
         #
-        # entries are valid search candidates.
+        # Commented definitions are deliberately included because they are
+        # valid locale choices that can be enabled later by locale-gen.
         #
-        # awk is used instead of grep so that "no matches" does not trigger
-        # set -Eeuo pipefail.
+        # awk is used instead of grep so "no matches" does not return status 1
+        # and trip set -Eeuo pipefail.
+        # ----------------------------------------------------------------------
+
         mapfile -t matches < <(
             awk -v q="$query" '
                 {
@@ -66,21 +75,33 @@ prepare_locale()
                     # Remove leading whitespace.
                     sub(/^[[:space:]]+/, "", line)
 
-                    # Remove an optional escaped or normal comment marker.
-                    sub(/^\\#[[:space:]]*/, "", line)
-                    sub(/^#[[:space:]]*/, "", line)
+                    # Remove the locale.gen comment marker.
+                    sub(/^#/, "", line)
 
-                    # Ignore empty/non-locale lines.
-                    if (line == "" || line !~ /^[A-Za-z_][A-Za-z0-9_+.-]*(\.[A-Za-z0-9_-]+)?(@[A-Za-z0-9_-]+)?[[:space:]]+/)
+                    # Remove whitespace immediately after the marker.
+                    sub(/^[[:space:]]+/, "", line)
+
+                    # Ignore empty lines and ordinary comments.
+                    if (line == "" || line ~ /^#/)
                         next
 
+                    # The first field is the locale name.
                     locale = $1
 
+                    # Only accept actual locale definitions.
+                    if (locale !~ /^[A-Za-z_][A-Za-z0-9_+.-]*(\.[A-Za-z0-9_-]+)?(@[A-Za-z0-9_-]+)?$/)
+                        next
+
+                    # Case-insensitive substring search.
                     if (index(tolower(locale), tolower(q)))
                         print locale
                 }
             ' /etc/locale.gen
         )
+
+        # ----------------------------------------------------------------------
+        # No matches
+        # ----------------------------------------------------------------------
 
         if [[ "${#matches[@]}" -eq 0 ]]; then
             printf "\n  ⚠  Nothing found for: %s\n" "$query"
@@ -88,16 +109,27 @@ prepare_locale()
             continue
         fi
 
-        # Remove duplicate locale names while preserving their original order.
+        # ----------------------------------------------------------------------
+        # Remove duplicate locale names while preserving order.
+        # ----------------------------------------------------------------------
+
         mapfile -t matches < <(
             printf '%s\n' "${matches[@]}" |
                 awk '!seen[$0]++'
         )
 
+        # ----------------------------------------------------------------------
+        # Exactly one match — accept automatically.
+        # ----------------------------------------------------------------------
+
         if [[ "${#matches[@]}" -eq 1 ]]; then
             input="${matches[0]}"
             break
         fi
+
+        # ----------------------------------------------------------------------
+        # Multiple matches — show numbered list.
+        # ----------------------------------------------------------------------
 
         printf "\n"
 
@@ -109,8 +141,10 @@ prepare_locale()
 
         selected=""
 
-        # Separate inner loop: keep re-prompting for a selection from THIS
-        # list until valid, blank (search again), or z (cancel entirely).
+        # Keep the user inside this result list until they:
+        #   - select a valid number
+        #   - leave blank to search again
+        #   - enter z to cancel
         while true; do
             read -rp "  Select [1-${#matches[@]}], or blank to search again: " choice
 
@@ -136,22 +170,39 @@ prepare_locale()
         fi
     done
 
-    # Final confirmation against the locale definitions.
+    # --------------------------------------------------------------------------
+    # Final confirmation against /etc/locale.gen.
     #
-    # This confirms that the selected value actually exists in the current
-    # /etc/locale.gen, regardless of whether it is currently enabled.
+    # This repeats the same normalization used during the search:
+    #   - leading whitespace removed
+    #   - '#' comment marker removed
+    #
+    # This confirms the selected locale is a real locale definition.
+    # --------------------------------------------------------------------------
+
     if ! awk -v q="$input" '
         {
             line = $0
 
+            # Remove leading whitespace.
             sub(/^[[:space:]]+/, "", line)
-            sub(/^#[[:space:]]*/, "", line)
 
-            if (line == "" || line !~ /^[A-Za-z_][A-Za-z0-9_+.-]*(\.[A-Za-z0-9_-]+)?(@[A-Za-z0-9_-]+)?[[:space:]]+/)
+            # Remove the locale.gen comment marker.
+            sub(/^#/, "", line)
+
+            # Remove whitespace after the marker.
+            sub(/^[[:space:]]+/, "", line)
+
+            # Ignore empty lines and ordinary comments.
+            if (line == "" || line ~ /^#/)
                 next
 
-            if ($1 == q)
+            locale = $1
+
+            if (locale == q) {
                 found = 1
+                exit
+            }
         }
 
         END {
@@ -163,6 +214,11 @@ prepare_locale()
         return 1
     fi
 
+    # --------------------------------------------------------------------------
+    # Commit
+    # --------------------------------------------------------------------------
+
     AG_P_LOCALE="$input"
+
     log_silent "SETTER: locale — AG_P_LOCALE=$AG_P_LOCALE"
 }
