@@ -23,7 +23,6 @@
 # ==============================================================================
 
 build_uki()
-build_uki()
 {
     local uki="/boot/EFI/Linux/arch-linux.efi"
 
