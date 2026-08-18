@@ -121,6 +121,9 @@ prepare_keyboard()
         return 1
     fi
 
+    printf "\n  Selected keyboard: %s\n" "$input"
+
     AG_P_KEYBOARD="$input"
+
     log_silent "SETTER: keyboard — AG_P_KEYBOARD=$AG_P_KEYBOARD"
 }
