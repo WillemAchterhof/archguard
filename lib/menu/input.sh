@@ -30,6 +30,7 @@ handle_input()
         h) prepare_username ;;
         i) prepare_locale ;;
         j) prepare_timezone ;;
+        I) cert_info ;;
         k) prepare_keyboard ;;
         l) prepare_mirrors ;;
         m) prepare_pacman ;;
