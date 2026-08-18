@@ -2,15 +2,12 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — Install Entry Point
 # ==============================================================================
-#  lib/install/run.sh
+#  lib/install/boot/run.sh
 # ==============================================================================
 
-run_install()
+create_boot_chain()
 {
-    configure_disk
-    install_base
-    configure_system
-    create_boot_chain
+    create_sb_certificates
 
-    msg "Install stage completed"
+    msg "Boot stage completed"
 }

@@ -28,7 +28,7 @@
 #        enrolled later alongside the custom keys.
 # ==============================================================================
 
-configure_secure_boot()
+create_sb_certificates()
 {
     msg "Checking Secure Boot status"
 
