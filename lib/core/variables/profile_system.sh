@@ -33,7 +33,6 @@ AG_P_LUKS=""
 AG_P_ROOT_FS=""
 AG_P_SWAP_ENABLED=""
 AG_P_SWAP_SIZE=""
-AG_P_SWAP_MENU_DISPLAY=""
 AG_P_DISK_WIPE_MODE=""
 
 # ------------------------------------------------------------------------------
