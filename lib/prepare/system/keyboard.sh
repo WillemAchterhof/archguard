@@ -50,10 +50,27 @@ prepare_keyboard()
         # awk is used instead of grep so that "no matches" does not return
         # status 1 and trip set -Eeuo pipefail.
         mapfile -t matches < <(
-            localectl list-keymaps |
-                awk -v q="$query" '
-                    index(tolower($0), tolower(q))
-                '
+            awk -v q="$query" '
+                {
+                    line = $0
+
+                    # Remove leading whitespace.
+                    sub(/^[[:space:]]+/, "", line)
+
+                    # Remove an optional escaped or normal comment marker.
+                    sub(/^\\#[[:space:]]*/, "", line)
+                    sub(/^#[[:space:]]*/, "", line)
+
+                    # Ignore empty/non-locale lines.
+                    if (line == "" || line !~ /^[A-Za-z_][A-Za-z0-9_+.-]*(\.[A-Za-z0-9_-]+)?(@[A-Za-z0-9_-]+)?[[:space:]]+/)
+                        next
+
+                    locale = $1
+
+                    if (index(tolower(locale), tolower(q)))
+                        print locale
+                }
+            ' /etc/locale.gen
         )
 
         if [[ "${#matches[@]}" -eq 0 ]]; then
