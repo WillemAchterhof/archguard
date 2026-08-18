@@ -9,6 +9,7 @@
 #
 #  Requires:
 #    - AG_P_USERNAME
+#    - set_user_password
 #
 #  Does NOT:
 #    - Create the user
@@ -16,7 +17,8 @@
 #    - Display the password
 #
 #  Returns:
-#    - 0 if a password was successfully set
+#    - 0 if a password was resolved
+#    - 1 if password resolution failed
 # ==============================================================================
 
 set_user_password()
@@ -53,6 +55,15 @@ set_user_password()
     unset password password_confirm
 
     log_silent "SETTER: user password — AGS_USER_PASSWORD populated"
+
+    return 0
+}
+
+resolve_user_password()
+{
+    if [[ -z "${AGS_USER_PASSWORD:-}" ]]; then
+        set_user_password || return 1
+    fi
 
     return 0
 }

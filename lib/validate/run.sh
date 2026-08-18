@@ -5,17 +5,18 @@
 #  lib/validate/run.sh
 #
 #  Runs the field checks, then — only if every one of them passed —
-#  resolves the LUKS passphrase once, and only if that succeeds too,
-#  shows the final gate: the passphrase together with the disk
-#  destruction confirmation, on one screen. Reports pass/fail via
-#  AG_MENU_PROCEED only — the retry loop back to the menu lives in
-#  run_pipeline (orchestrator/pipeline.sh), so validate never calls
-#  run_menu itself and stays independent of the menu module.
+#  resolves the user password and LUKS passphrase.
+#
+#  The LUKS passphrase is displayed once on the final gate together
+#  with the disk destruction confirmation.
+#
+#  User password is never displayed.
 #
 #  Requires:
 #    - validate_required_fields  (validate_required.sh)
 #    - validate_optional_fields  (validate_optional.sh)
 #    - validate_volumes          (validate_volumes.sh)
+#    - resolve_user_password     (validate/password.sh)
 #    - resolve_luks_passphrase,
 #      display_luks_passphrase   (validate_luks.sh)
 #    - confirm_disk_destruction  (confirm.sh)
@@ -39,6 +40,14 @@ run_validation()
         read -r -n1 -s
         printf "\n"
 
+        AG_MENU_PROCEED="0"
+        return 1
+    fi
+
+    msg "Resolve user password"
+
+    if ! resolve_user_password; then
+        fail_check "User password not confirmed"
         AG_MENU_PROCEED="0"
         return 1
     fi
