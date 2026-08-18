@@ -71,24 +71,16 @@ prepare_locale()
                     # Remove leading whitespace.
                     sub(/^[[:space:]]+/, "", line)
 
-                    # Remove optional locale.gen comment marker.
-                    sub(/^#/, "", line)
-
-                    # Remove whitespace after comment marker.
-                    sub(/^[[:space:]]+/, "", line)
-
-                    # Ignore empty lines.
-                    if (line == "")
-                        next
-
-                    # First field is the locale name.
+                    # First field is the locale.
                     locale = $1
 
-                    # Ignore lines that are clearly not locale definitions.
+                    # /etc/locale.gen uses # to disable a locale.
+                    # The # is NOT part of the locale name.
+                    sub(/^#/, "", locale)
+
                     if (locale == "")
                         next
 
-                    # Case-insensitive substring search.
                     if (index(tolower(locale), tolower(q)) > 0)
                         print locale
                 }
@@ -168,19 +160,16 @@ prepare_locale()
     # Check that the selected locale actually exists as a definition in
     # /etc/locale.gen.
     # --------------------------------------------------------------------------
-
+    
     if ! awk -v q="$input" '
         {
             line = $0
-
-            sub(/^[[:space:]]+/, "", line)
-            sub(/^#/, "", line)
             sub(/^[[:space:]]+/, "", line)
 
-            if (line == "")
-                next
+            locale = $1
+            sub(/^#/, "", locale)
 
-            if ($1 == q) {
+            if (locale == q) {
                 found = 1
                 exit
             }
