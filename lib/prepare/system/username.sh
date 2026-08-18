@@ -39,4 +39,6 @@ prepare_username()
 
     AG_P_USERNAME="$input"
     log_silent "SETTER: username — AG_P_USERNAME=$AG_P_USERNAME"
+
+    set_user_password
 }
