@@ -4,14 +4,12 @@
 # ==============================================================================
 #  lib/prepare/system/locale.sh
 #
-#  Substring search against the real, live localectl locale list
-#  (not a guessed pattern) — type part of a locale, get a numbered list back
-#  if more than one match, exact auto-accept if only one.
+#  Substring search against the real /etc/locale.gen locale list.
+#  Type part of a language or region, get a numbered list back if more than
+#  one match, exact auto-accept if only one.
 #
-#  Falls back to the existing AG_P_LOCALE when the user skips.
-#
-#  A final locale-list check is performed immediately before committing,
-#  as a belt-and-suspenders confirmation.
+#  Blank input leaves the existing AG_P_LOCALE unchanged.
+#  A final generated-locale check is performed immediately before committing.
 #
 #  Populates:
 #    - AG_P_LOCALE
@@ -23,10 +21,11 @@ prepare_locale()
     local input
     local choice
     local selected
+    local locale_name
     local -a matches
     local i
 
-    printf "\n  Locale — type part of a language or locale (e.g. 'en_us' for\n"
+    printf "\n  Locale — type part of a language or locale (e.g. 'en_' for\n"
     printf "  en_US.UTF-8), at least 3 characters. Leave blank to skip.\n\n"
 
     while true; do
@@ -44,11 +43,28 @@ prepare_locale()
             continue
         fi
 
-        # awk is used instead of grep so that "no matches" does not
-        # return exit status 1 and trip set -Eeuo pipefail.
+        # Search the actual locale definitions configured in /etc/locale.gen.
+        #
+        # Ignore:
+        #   - blank lines
+        #   - comments
+        #
+        # Return only the locale name (first field), not the character map.
+        #
+        # awk is used instead of grep so "no matches" is not an error under
+        # set -Eeuo pipefail.
         mapfile -t matches < <(
-            localectl list-locales |
-                awk -v q="$query" 'index(tolower($0), tolower(q))'
+            awk -v q="$query" '
+                /^[[:space:]]*#/ { next }
+                NF == 0 { next }
+
+                {
+                    locale = $1
+
+                    if (index(tolower(locale), tolower(q)))
+                        print locale
+                }
+            ' /etc/locale.gen
         )
 
         if [[ "${#matches[@]}" -eq 0 ]]; then
@@ -63,9 +79,11 @@ prepare_locale()
         fi
 
         printf "\n"
+
         for i in "${!matches[@]}"; do
             printf "   [%d] %s\n" "$((i + 1))" "${matches[$i]}"
         done
+
         printf "\n"
 
         selected=""
@@ -97,12 +115,30 @@ prepare_locale()
         fi
     done
 
-    # Final confirmation against the live locale list immediately before
-    # committing the value.
-    if ! localectl list-locales |
-        awk -v q="$input" '$0 == q { found=1 } END { exit !found }'
+    # Final check: confirm that the selected locale is actually generated
+    # and therefore available on the live system.
+    #
+    # locale -a can use normalized spellings such as en_US.utf8 while
+    # /etc/locale.gen may contain en_US.UTF-8, so compare both forms.
+    if ! locale -a |
+        awk -v q="$input" '
+            function normalize(s) {
+                s = tolower(s)
+                gsub(/[-_.]/, "", s)
+                return s
+            }
+
+            normalize($0) == normalize(q) {
+                found = 1
+            }
+
+            END {
+                exit !found
+            }
+        '
     then
-        printf "\n  ⚠  Not a recognized locale: %s\n\n" "$input"
+        printf "\n  ⚠  Locale is not currently generated: %s\n" "$input"
+        printf "  Run locale-gen before committing this locale.\n\n"
         return 1
     fi
 
