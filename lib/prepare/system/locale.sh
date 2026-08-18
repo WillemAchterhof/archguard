@@ -66,10 +66,11 @@ prepare_locale()
                     # Remove leading whitespace.
                     sub(/^[[:space:]]+/, "", line)
 
-                    # Remove the optional comment marker.
+                    # Remove an optional escaped or normal comment marker.
+                    sub(/^\\#[[:space:]]*/, "", line)
                     sub(/^#[[:space:]]*/, "", line)
 
-                    # Ignore empty lines and non-locale comments.
+                    # Ignore empty/non-locale lines.
                     if (line == "" || line !~ /^[A-Za-z_][A-Za-z0-9_+.-]*(\.[A-Za-z0-9_-]+)?(@[A-Za-z0-9_-]+)?[[:space:]]+/)
                         next
 
