@@ -43,7 +43,8 @@ prepare_timezone()
         fi
 
         mapfile -t matches < <(
-            timedatectl list-timezones | grep -iF -- "$query"
+            timedatectl list-timezones |
+                awk -v q="$query" 'index(tolower($0), tolower(q))'
         )
 
         if [[ "${#matches[@]}" -eq 0 ]]; then
