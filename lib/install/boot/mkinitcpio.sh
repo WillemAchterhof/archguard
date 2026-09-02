@@ -55,6 +55,10 @@ configure_mkinitcpio()
             modules="hyperv_drm"
             ;;
 
+        bochs)
+            modules="bochs"
+            ;;
+
         *)
             modules=""
             ;;

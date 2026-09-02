@@ -9,6 +9,7 @@ create_boot_chain()
 {
     create_sb_certificates
     configure_mkinitcpio
+    configure_plymouth_theme
     configure_kernel_cmdline
     configure_uki
     build_uki

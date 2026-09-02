@@ -65,6 +65,9 @@ detect_gpu()
         *Microsoft*|*Hyper-V*)
             AG_HW_GPU_VENDOR="hyperv"
             ;;
+        *Bochs*)
+            AG_HW_GPU_VENDOR="bochs"
+            ;;
         *)
             AG_HW_GPU_VENDOR="unknown"
             ;;
