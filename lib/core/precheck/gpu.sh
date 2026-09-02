@@ -50,6 +50,21 @@ detect_gpu()
         *Intel*)
             AG_HW_GPU_VENDOR="intel"
             ;;
+        *QXL*)
+            AG_HW_GPU_VENDOR="qxl"
+            ;;
+        *VirtIO*|*Virtio*|*Red\ Hat*)
+            AG_HW_GPU_VENDOR="virtio"
+            ;;
+        *VMware*)
+            AG_HW_GPU_VENDOR="vmware"
+            ;;
+        *InnoTek*|*VirtualBox*)
+            AG_HW_GPU_VENDOR="vbox"
+            ;;
+        *Microsoft*|*Hyper-V*)
+            AG_HW_GPU_VENDOR="hyperv"
+            ;;
         *)
             AG_HW_GPU_VENDOR="unknown"
             ;;
