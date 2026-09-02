@@ -16,7 +16,8 @@
 #    - validate_required_fields  (validate_required.sh)
 #    - validate_optional_fields  (validate_optional.sh)
 #    - validate_volumes          (validate_volumes.sh)
-#    - resolve_user_password     (validate/password.sh)
+#    - validate_system_fields    (system.sh)
+#    - resolve_user_password     (prepare/system/password.sh)
 #    - resolve_luks_passphrase,
 #      display_luks_passphrase   (validate_luks.sh)
 #    - confirm_disk_destruction  (confirm.sh)
@@ -33,6 +34,7 @@ run_validation()
     validate_required_fields || failed=1
     validate_optional_fields || failed=1
     validate_volumes         || failed=1
+    validate_system_fields   || failed=1
 
     if [[ "$failed" -eq 1 ]]; then
         printf "\n Fix the items above, then press [y] again.\n\n"
