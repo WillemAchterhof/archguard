@@ -62,6 +62,14 @@ configure_kernel_cmdline()
     cmdline+=" lockdown=confidentiality"
     cmdline+=" quiet splash"
 
+    # QEMU/OVMF expose an SPCR ACPI table describing a serial console;
+    # the systemd UEFI stub auto-detects it and injects console=uart,...
+    # at boot regardless of anything set here. Plymouth's own policy is
+    # to force plain-text splash whenever any serial console is present
+    # — this tells it to disregard that one for the graphics decision,
+    # without giving up the serial console itself.
+    cmdline+=" plymouth.ignore-serial-consoles"
+
     printf '%s\n' "$cmdline" |
         run_chroot tee /etc/kernel/cmdline >/dev/null
 
