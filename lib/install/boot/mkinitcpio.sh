@@ -35,6 +35,26 @@ configure_mkinitcpio()
             modules="nvidia"
             ;;
 
+        qxl)
+            modules="qxl"
+            ;;
+
+        virtio)
+            modules="virtio_gpu"
+            ;;
+
+        vmware)
+            modules="vmwgfx"
+            ;;
+
+        vbox)
+            modules="vboxvideo"
+            ;;
+
+        hyperv)
+            modules="hyperv_drm"
+            ;;
+
         *)
             modules=""
             ;;
