@@ -19,6 +19,7 @@ verify_configs_folders()
 
     mkdir -p "$AG_INSTALL_ROOT/etc/NetworkManager/conf.d"
     mkdir -p "$AG_INSTALL_ROOT/etc/sysctl.d"
+    mkdir -p "$AG_INSTALL_ROOT/etc/modprobe.d"
 }
 
 deploy_configs()
@@ -60,6 +61,15 @@ deploy_configs()
         || fatal "Missing config: $AG_DIR_SYSCON/99-hardening.conf"
     cp "$AG_DIR_SYSCON/99-hardening.conf" \
         "$AG_INSTALL_ROOT/etc/sysctl.d/99-hardening.conf"
+
+    # --------------------------------------------------------------------------
+    # Kernel module blacklist
+    # --------------------------------------------------------------------------
+
+    [[ -f "$AG_DIR_SYSCON/blacklist.conf" ]] \
+        || fatal "Missing config: $AG_DIR_SYSCON/blacklist.conf"
+    cp "$AG_DIR_SYSCON/blacklist.conf" \
+        "$AG_INSTALL_ROOT/etc/modprobe.d/blacklist.conf"
 
     msg "Config files deployed"
 }
