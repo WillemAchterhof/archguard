@@ -23,5 +23,8 @@ configure_system()
     configure_services
     network_masking
     
+    configure_postboot
+    configure_postboot_service
+    
     msg "System Configured"
 }

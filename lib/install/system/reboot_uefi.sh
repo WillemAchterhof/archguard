@@ -15,6 +15,8 @@ reboot_to_uefi()
     msg ""
     msg "IMPORTANT:"
     msg "Enable Secure Boot in the UEFI settings."
+    msg "Also: Remove the USB-Installer"
+    msg ""
     msg "Then save the changes and exit UEFI."
     msg ""
     msg "Rebooting to UEFI in 3 seconds..."
