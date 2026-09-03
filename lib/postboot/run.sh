@@ -25,6 +25,9 @@ cleanup()
 
     rm -rf -- "$AG_POSTBOOT_DIR"
 
+    # Remove ArchGuard directory if it is now empty
+    rmdir -- /opt/archguard 2>/dev/null || true
+
     log "Post-boot service removed"
 }
 
