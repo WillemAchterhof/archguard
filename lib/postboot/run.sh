@@ -9,6 +9,7 @@ set -Eeuo pipefail
 
 readonly AG_POSTBOOT_DIR="/opt/archguard/postboot"
 readonly AG_POSTBOOT_SERVICE="archguard-postboot.service"
+readonly AG_LUKS_KEY="/opt/archguard/luks.key"
 
 log()
 {
@@ -20,9 +21,10 @@ cleanup()
     log "Post-boot configuration completed"
 
     systemctl disable "$AG_POSTBOOT_SERVICE" 2>/dev/null || true
-    rm -f -- "/etc/systemd/system/$AG_POSTBOOT_SERVICE"
+    rm -rf -- "/etc/systemd/system/$AG_POSTBOOT_SERVICE"
     systemctl daemon-reload
 
+    rm -rf -- "$AG_LUKS_KEY"
     rm -rf -- "$AG_POSTBOOT_DIR"
 
     # Remove ArchGuard directory if it is now empty
