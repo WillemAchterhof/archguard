@@ -16,6 +16,8 @@ configure_system()
     configure_keyboard
     configure_hostname
     configure_user
-
+    verify_configs_folders
+    deploy_configs
+    
     msg "System Configured"
 }

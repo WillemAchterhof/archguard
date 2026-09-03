@@ -28,7 +28,10 @@ readonly AG_DIR_STATE="$AG_DIR_MAIN/state"
 # /
 readonly AG_DIR_LIB="$AG_DIR_INSTALL/lib"
 readonly AG_DIR_PIPELINE="$AG_DIR_INSTALL/orchestrator"
+readonly AG_DIR_CONFIGS="$AG_DIR_INSTALL/configs"
 readonly AG_DIR_LOG="$AG_DIR_STATE/log"
+# /configs
+readonly AG_DIR_CONFIGS_SYSTEM="$AG_DIR_CONFIGS/system"
 # /lib
 readonly AG_DIR_CORE="$AG_DIR_LIB/core"
 readonly AG_DIR_INSTALLER="$AG_DIR_LIB/install"
