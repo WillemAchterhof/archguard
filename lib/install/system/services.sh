@@ -26,9 +26,7 @@ configure_services()
         fstrim.timer \
         reflector.timer \
         systemd-resolved \
-        systemd-timesyncd \
-        mask systemd-networkd \
-        mask wpa_supplicant
+        systemd-timesyncd
 
     ln -sf /run/systemd/resolve/stub-resolv.conf \
         "$AG_INSTALL_ROOT/etc/resolv.conf"
