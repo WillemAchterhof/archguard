@@ -9,7 +9,7 @@ network_masking()
 {
     run_chroot systemctl \
         mask systemd-networkd \
-        smask wpa_supplicant
+        mask wpa_supplicant
 
     msg "Masked Network"
 }
