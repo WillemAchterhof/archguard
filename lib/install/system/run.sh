@@ -19,7 +19,7 @@ configure_system()
     
     verify_configs_folders
     deploy_configs
-    configure_services
+    #configure_services
     
     msg "System Configured"
 }
