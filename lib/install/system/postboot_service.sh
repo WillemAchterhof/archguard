@@ -16,11 +16,13 @@ configure_postboot_service()
 Description=ArchGuard Post-Boot Configuration
 After=network-online.target
 Wants=network-online.target
-ConditionPathExists=/mnt/postboot
+ConditionPathExists=/opt/archguard/postboot/run.sh
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash /mnt/postboot/run.sh
+ExecStart=/bin/bash /opt/archguard/postboot/run.sh
+StandardOutput=journal+console
+StandardError=journal+console
 RemainAfterExit=no
 
 [Install]

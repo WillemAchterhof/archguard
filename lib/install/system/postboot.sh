@@ -8,7 +8,7 @@
 configure_postboot()
 {
     local postboot_src="$AG_DIR_POSTBOOT"
-    local postboot_dst="$AG_INSTALL_ROOT/mnt/postboot"
+    local postboot_dst="$AG_INSTALL_ROOT/opt/archguard/postboot"
 
     msg "Preparing post-boot configuration"
 

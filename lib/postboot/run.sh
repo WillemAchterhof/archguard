@@ -7,7 +7,7 @@
 
 set -Eeuo pipefail
 
-readonly AG_POSTBOOT_DIR="/mnt/postboot"
+readonly AG_POSTBOOT_DIR="/opt/archguard/postboot"
 readonly AG_POSTBOOT_SERVICE="archguard-postboot.service"
 
 log()
@@ -19,8 +19,8 @@ cleanup()
 {
     log "Post-boot configuration completed"
 
-    rm -f -- "/etc/systemd/system/$AG_POSTBOOT_SERVICE"
     systemctl disable "$AG_POSTBOOT_SERVICE" 2>/dev/null || true
+    rm -f -- "/etc/systemd/system/$AG_POSTBOOT_SERVICE"
     systemctl daemon-reload
 
     rm -rf -- "$AG_POSTBOOT_DIR"
@@ -32,7 +32,6 @@ main()
 {
     log "Starting post-boot configuration"
 
-    # Do not execute this runner recursively.
     for script in "$AG_POSTBOOT_DIR"/*.sh; do
         [[ -f "$script" ]] || continue
         [[ "$script" == "$AG_POSTBOOT_DIR/run.sh" ]] && continue
