@@ -43,7 +43,7 @@ main()
         bash "$script"
     done
 
-    cleanup
+    # cleanup
 }
 
 main "$@"
