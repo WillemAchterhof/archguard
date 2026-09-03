@@ -16,6 +16,7 @@ configure_system()
     configure_keyboard
     configure_hostname
     configure_user
+    configure_environment
     
     verify_configs_folders
     deploy_configs
