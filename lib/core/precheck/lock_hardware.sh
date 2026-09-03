@@ -36,4 +36,6 @@ lock_hardware()
     readonly AG_HW_TPM_PRESENT
     readonly AG_HW_TPM_VERSION
     readonly AG_HW_TPM_READY
+
+    readonly AG_HW_WAN_IFACE
 }

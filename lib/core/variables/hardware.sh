@@ -16,6 +16,7 @@
 #    - TPM state
 #    - Secure Boot state
 #    - Boot USB device
+#    - WAN network interface
 #
 #  Does NOT:
 #    - Detect hardware
@@ -77,3 +78,9 @@ AG_HW_GPU_MODEL="unknown"
 AG_HW_TPM_PRESENT="no"
 AG_HW_TPM_VERSION="none"
 AG_HW_TPM_READY="no"
+
+# ------------------------------------------------------------------------------
+# Network
+# ------------------------------------------------------------------------------
+
+AG_HW_WAN_IFACE="unknown"

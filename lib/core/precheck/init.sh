@@ -23,6 +23,7 @@ run_precheck()
     detect_swap_recommendations
     detect_storage
     detect_tpm
+    detect_wan_iface
     lock_hardware
 
     msg "Hardware detection completed"
