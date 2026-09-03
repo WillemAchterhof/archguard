@@ -20,6 +20,7 @@ configure_system()
     verify_configs_folders
     deploy_configs
     configure_services
+    network_masking
     
     msg "System Configured"
 }
