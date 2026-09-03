@@ -28,7 +28,7 @@ configure_services()
         systemd-resolved \
         systemd-timesyncd \
         mask systemd-networkd \
-        mask wpa_supplicant \
+        mask wpa_supplicant
 
     ln -sf /run/systemd/resolve/stub-resolv.conf \
         "$AG_INSTALL_ROOT/etc/resolv.conf"
