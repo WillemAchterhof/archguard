@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Arch Secure Installer V2.6 — Post-Boot Preparation
+#  Arch Secure Installer V2.6 — Post-Boot Preparation
 # ==============================================================================
-# lib/install/system/postboot.sh
+#  lib/install/system/postboot.sh
 # ==============================================================================
 
 configure_postboot()
 {
     local postboot_src="$AG_DIR_POSTBOOT"
-    local postboot_dst="$AG_INSTALL_ROOT/tmp/postboot"
+    local postboot_dst="$AG_INSTALL_ROOT/mnt/postboot"
 
     msg "Preparing post-boot configuration"
 

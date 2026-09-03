@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Arch Secure Installer V2.6 — Post-Boot Service
+#  Arch Secure Installer V2.6 — Post-Boot Service
 # ==============================================================================
-# lib/install/system/postboot_service.sh
+#  lib/install/system/postboot_service.sh
 # ==============================================================================
 
 configure_postboot_service()
@@ -16,11 +16,11 @@ configure_postboot_service()
 Description=ArchGuard Post-Boot Configuration
 After=network-online.target
 Wants=network-online.target
-ConditionPathExists=/tmp/postboot
+ConditionPathExists=/mnt/postboot
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash /tmp/postboot/run.sh
+ExecStart=/bin/bash /mnt/postboot/run.sh
 RemainAfterExit=no
 
 [Install]
