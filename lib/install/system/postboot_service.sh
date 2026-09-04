@@ -13,15 +13,13 @@ configure_postboot_service()
 
     cat > "$service_file" <<'EOF'
 [Unit]
-Description=ArchGuard Post-Boot Configuration
-ConditionPathExists=/opt/archguard/postboot/run.sh
+Description=ArchGuard Post-Boot Login Trigger
+After=graphical-session.target
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash /opt/archguard/postboot/run.sh
-StandardOutput=journal+console
-StandardError=journal+console
-RemainAfterExit=no
+ExecStart=/usr/bin/sudo /usr/bin/systemctl start archguard-postboot.service
+RemainAfterExit=yes
 EOF
 
     chmod 644 "$service_file"

@@ -23,8 +23,8 @@ main()
 
     systemd-cryptenroll \
         --tpm2-device=auto \
-        --tpm2-with-pin=yes \
         --tpm2-pcrs="$AG_TPM_PCRS" \
+        --tpm2-with-pin=yes \        
         "$luks_device"
 
     log "TPM2 enrollment completed successfully."
