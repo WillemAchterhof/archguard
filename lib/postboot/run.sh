@@ -1,68 +1,75 @@
 #!/usr/bin/env bash
 # ==============================================================================
-#  Arch Secure Installer V2.6 — Post-Boot Runner
+#  Arch Secure Installer V2.6 — TPM Post-Boot Runner
 # ==============================================================================
-#  lib/postboot/run.sh
+#  lib/postboot/tpm/run.sh
 # ==============================================================================
 
 set -Eeuo pipefail
 
-readonly AG_POSTBOOT_DIR="/opt/archguard/postboot"
-readonly AG_POSTBOOT_SERVICE="archguard-postboot.service"
-readonly AG_LUKS_KEY="/opt/archguard/luks.key"
+readonly AG_TPM_DIR="/opt/archguard/postboot/tpm"
+readonly AG_TPM_ENROLL="$AG_TPM_DIR/enroll.sh"
+readonly AG_TPM_VERIFY="$AG_TPM_DIR/verify.sh"
 
 log()
 {
-    printf '[ArchGuard PostBoot] %s\n' "$*"
+    printf '[ArchGuard TPM] %s\n' "$*"
 }
 
-run_tpm()
+run_enroll()
 {
-    log "Running TPM post-boot enrollment"
+    local luks_key="$1"
 
-    "$AG_POSTBOOT_DIR/tpm/run.sh" "$AG_LUKS_KEY"
+    log "Starting TPM enrollment"
 
-    log "TPM post-boot enrollment completed"
+    "$AG_TPM_ENROLL" "$luks_key"
+
+    log "TPM enrollment completed"
 }
 
-run_usbguard()
+run_verify()
 {
-    log "Running USBGuard post-boot configuration"
+    log "Starting TPM enrollment verification"
 
-    "$AG_POSTBOOT_DIR/usbguard/run.sh"
+    "$AG_TPM_VERIFY"
 
-    log "USBGuard post-boot configuration completed"
-}
-
-cleanup()
-{
-    log "Post-boot configuration completed"
-
-    systemctl disable "$AG_POSTBOOT_SERVICE" 2>/dev/null || true
-    rm -f -- "/etc/systemd/system/$AG_POSTBOOT_SERVICE"
-    systemctl daemon-reload
-
-    rm -f -- "$AG_LUKS_KEY"
-    rm -rf -- "$AG_POSTBOOT_DIR"
-
-    # Remove ArchGuard directory if it is now empty
-    rmdir -- /opt/archguard 2>/dev/null || true
-
-    log "Temporary post-boot infrastructure removed"
+    log "TPM enrollment verification completed"
 }
 
 main()
 {
-    log "Starting post-boot configuration"
+    local luks_key="${1:-}"
 
-    run_tpm
+    [[ -n "$luks_key" ]] \
+        || {
+            log "ERROR: LUKS key path was not provided"
+            return 1
+        }
 
-    # Future post-boot subsystems:
-    # run_usbguard
-    # run_system
-    # run_security
+    [[ -f "$luks_key" ]] \
+        || {
+            log "ERROR: LUKS key not found: $luks_key"
+            return 1
+        }
 
-    cleanup
+    [[ -x "$AG_TPM_ENROLL" ]] \
+        || {
+            log "ERROR: TPM enrollment script not found: $AG_TPM_ENROLL"
+            return 1
+        }
+
+    [[ -x "$AG_TPM_VERIFY" ]] \
+        || {
+            log "ERROR: TPM verification script not found: $AG_TPM_VERIFY"
+            return 1
+        }
+
+    run_enroll "$luks_key"
+    run_verify
+
+    unset luks_key
+
+    log "TPM post-boot configuration completed successfully"
 }
 
 main "$@"
