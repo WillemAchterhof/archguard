@@ -16,34 +16,51 @@ log()
     printf '[ArchGuard PostBoot] %s\n' "$*"
 }
 
+run_tpm()
+{
+    log "Running TPM post-boot enrollment"
+
+    "$AG_POSTBOOT_DIR/tpm/run.sh" "$AG_LUKS_KEY"
+
+    log "TPM post-boot enrollment completed"
+}
+
+run_usbguard()
+{
+    log "Running USBGuard post-boot configuration"
+
+    "$AG_POSTBOOT_DIR/usbguard/run.sh"
+
+    log "USBGuard post-boot configuration completed"
+}
+
 cleanup()
 {
     log "Post-boot configuration completed"
 
     systemctl disable "$AG_POSTBOOT_SERVICE" 2>/dev/null || true
-    rm -rf -- "/etc/systemd/system/$AG_POSTBOOT_SERVICE"
+    rm -f -- "/etc/systemd/system/$AG_POSTBOOT_SERVICE"
     systemctl daemon-reload
 
-    rm -rf -- "$AG_LUKS_KEY"
+    rm -f -- "$AG_LUKS_KEY"
     rm -rf -- "$AG_POSTBOOT_DIR"
 
     # Remove ArchGuard directory if it is now empty
     rmdir -- /opt/archguard 2>/dev/null || true
 
-    log "Post-boot service removed"
+    log "Temporary post-boot infrastructure removed"
 }
 
 main()
 {
     log "Starting post-boot configuration"
 
-    for script in "$AG_POSTBOOT_DIR"/*.sh; do
-        [[ -f "$script" ]] || continue
-        [[ "$script" == "$AG_POSTBOOT_DIR/run.sh" ]] && continue
+    run_tpm
 
-        log "Running: $(basename "$script")"
-        bash "$script"
-    done
+    # Future post-boot subsystems:
+    # run_usbguard
+    # run_system
+    # run_security
 
     cleanup
 }
