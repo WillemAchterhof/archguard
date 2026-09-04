@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — LUKS Passphrase Generation
 # ==============================================================================
-#  lib/prepare/storage/lvm_luks/generate.sh
+#  lib/prepare/storage/luks/generate.sh
 #
 #  Generates a random LUKS passphrase. Called from resolve_luks_passphrase
 #  at install time — never called directly from the menu.
