@@ -7,7 +7,8 @@
 
 set -Eeuo pipefail
 
-readonly AG_TPM_PCRS="0+1+2+4+5+7+11+12"
+# readonly AG_TPM_PCRS="0+1+2+4+5+7+11+12"
+readonly AG_TPM_PCRS="0+7"
 
 log()
 {
@@ -16,9 +17,19 @@ log()
 
 main()
 {
-    luks_device=$(cryptsetup status cryptroot 2>/dev/null | awk '/device:/ {print $2}')
+    local luks_device
+
+    luks_device=$(cryptsetup status cryptroot 2>/dev/null |
+        awk '/device:/ {print $2}')
+
+    [[ -n "$luks_device" ]] ||
+        {
+            log "ERROR: Unable to determine LUKS device for cryptroot"
+            return 1
+        }
 
     log "Enrolling TPM2 LUKS unlock..."
+    log "LUKS device: $luks_device"
     log "PCR policy: $AG_TPM_PCRS"
 
     systemd-cryptenroll \
