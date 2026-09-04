@@ -1,34 +1,51 @@
 #!/usr/bin/env bash
+# ==============================================================================
+#  Arch Secure Installer V2.6 — TPM Enrollment
+# ==============================================================================
+#  lib/postboot/tpm/enroll.sh
+# ==============================================================================
 
-tpm_enroll_luks() {
-    log_info "[ArchGuard TPM] Enrolling TPM2 LUKS unlock..."
+set -Eeuo pipefail
 
-    # Ensure systemd-cryptenroll is available
-    if ! command -v systemd-cryptenroll &>/dev/null; then
-        log_error "[ArchGuard TPM] systemd-cryptenroll is not installed."
-        return 1
-    fi
+readonly AG_TPM_PCRS="0+1+2+4+5+7+11+12"
 
+log()
+{
+    printf '[ArchGuard TPM] %s\n' "$*"
+}
+
+main()
+{
+    local luks_key="${1:-}"
     # Resolve backing LUKS device from mapper name (cryptroot)
     local luks_device
     luks_device=$(cryptsetup status cryptroot 2>/dev/null | awk '/device:/ {print $2}')
 
-    if [[ -z "$luks_device" || ! -b "$luks_device" ]]; then
-        log_error "[ArchGuard TPM] Could not determine underlying LUKS block device for cryptroot."
-        return 1
-    fi
+    [[ -n "$luks_key" ]] \
+        || {
+            log "ERROR: LUKS key path was not provided"
+            return 1
+        }
 
-    log_info "[ArchGuard TPM] Target LUKS device detected: $luks_device"
+    [[ -f "$luks_key" ]] \
+        || {
+            log "ERROR: LUKS key not found: $luks_key"
+            return 1
+        }
 
-    # Enroll TPM2 PCR policy against the backing block device
-    if systemd-cryptenroll --tpm2-device=auto \
-                           --tpm2-pcrs=0+1+2+4+5+7+11+12 \
-                           "$luks_device"; then
-        log_info "[ArchGuard TPM] Successfully enrolled TPM2 key into $luks_device"
-    else
-        log_error "[ArchGuard TPM] TPM2 enrollment failed for $luks_device"
-        return 1
-    fi
+    log "Enrolling TPM2 LUKS unlock..."
+    log "PCR policy: $AG_TPM_PCRS"
+
+    systemd-cryptenroll \
+        --unlock-key-file="$luks_key" \
+        --tpm2-device=auto \
+        --tpm2-with-pin=yes \
+        --tpm2-pcrs="$AG_TPM_PCRS" \
+        "$luks_device"
+
+    unset luks_key
+
+    log "TPM2 enrollment completed successfully."
 }
 
-tpm_enroll_luks
+main "$@"
