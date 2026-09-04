@@ -47,7 +47,7 @@ cleanup()
 
     systemctl disable "$AG_POSTBOOT_SERVICE" 2>/dev/null || true
     rm -f -- "/etc/systemd/system/$AG_POSTBOOT_SERVICE"
-    systemctl daemon-reload
+    systemctl daemon-reloads
 
     rm -rf -- /opt/archguard
 

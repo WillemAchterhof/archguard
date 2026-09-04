@@ -16,7 +16,7 @@ main()
 {
     log "Verifying TPM2 enrollment"
 
-    if ! systemd-cryptenroll --dump /dev/mapper/cryptroot | \
+    if ! systemd-cryptenroll --dump luks_device | \
         grep -q 'systemd-tpm2'; then
 
         log "ERROR: TPM2 enrollment was not found"
