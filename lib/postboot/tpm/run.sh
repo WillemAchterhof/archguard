@@ -18,20 +18,6 @@ log()
 
 main()
 {
-    local luks_key="${1:-}"
-
-    [[ -n "$luks_key" ]] \
-        || {
-            log "ERROR: LUKS key path was not provided"
-            return 1
-        }
-
-    [[ -f "$luks_key" ]] \
-        || {
-            log "ERROR: LUKS key not found: $luks_key"
-            return 1
-        }
-
     [[ -x "$AG_TPM_ENROLL" ]] \
         || {
             log "ERROR: TPM enrollment script not found: $AG_TPM_ENROLL"
@@ -46,7 +32,7 @@ main()
 
     log "Starting TPM enrollment"
 
-    "$AG_TPM_ENROLL" "$luks_key"
+    "$AG_TPM_ENROLL"
 
     log "TPM enrollment successful"
 

@@ -9,7 +9,6 @@ set -Eeuo pipefail
 
 readonly AG_POSTBOOT_DIR="/opt/archguard/postboot"
 readonly AG_POSTBOOT_SERVICE="archguard-postboot.service"
-readonly AG_LUKS_KEY="/opt/archguard/luks.key"
 
 log()
 {
@@ -28,7 +27,7 @@ run_tpm()
             return 1
         }
 
-    "$tpm_runner" "$AG_LUKS_KEY"
+    "$tpm_runner"
 
     log "TPM post-boot enrollment completed"
 }

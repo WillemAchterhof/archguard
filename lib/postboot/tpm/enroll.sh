@@ -16,20 +16,20 @@ log()
 
 main()
 {
-    local luks_key="${1:-}"
+    readonly AG_LUKS_KEY="/opt/archguard/luks.key"
     # Resolve backing LUKS device from mapper name (cryptroot)
     local luks_device
     luks_device=$(cryptsetup status cryptroot 2>/dev/null | awk '/device:/ {print $2}')
 
-    [[ -n "$luks_key" ]] \
+    [[ -n "$AG_LUKS_KEY" ]] \
         || {
             log "ERROR: LUKS key path was not provided"
             return 1
         }
 
-    [[ -f "$luks_key" ]] \
+    [[ -f "$AG_LUKS_KEY" ]] \
         || {
-            log "ERROR: LUKS key not found: $luks_key"
+            log "ERROR: LUKS key not found: $AG_LUKS_KEY"
             return 1
         }
 
@@ -37,7 +37,7 @@ main()
     log "PCR policy: $AG_TPM_PCRS"
 
     systemd-cryptenroll \
-        --unlock-key-file="$luks_key" \
+        --unlock-key-file="$AG_LUKS_KEY" \
         --tpm2-device=auto \
         --tpm2-with-pin=yes \
         --tpm2-pcrs="$AG_TPM_PCRS" \
