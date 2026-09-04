@@ -16,7 +16,17 @@ main()
 {
     log "Verifying TPM2 enrollment"
 
-    if ! cryptsetup luksDump luks_device | \
+    local luks_device
+    luks_device=$(cryptsetup status cryptroot 2>/dev/null | awk '/device:/ {print $2}')
+
+    if [[ -z "$luks_device" ]]; then
+        log "ERROR: Unable to determine LUKS device for cryptroot"
+        return 1
+    fi
+
+    log "LUKS device: $luks_device"
+
+    if ! cryptsetup luksDump "$luks_device" 2>/dev/null | \
         grep -q 'systemd-tpm2'; then
 
         log "ERROR: TPM2 enrollment was not found"
