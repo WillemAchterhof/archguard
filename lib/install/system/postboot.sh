@@ -31,12 +31,13 @@ configure_postboot()
         || fatal "Postboot directory missing: $postboot_src"
 
     rm -rf -- "$postboot_dst"
+
     mkdir -p "$postboot_dst"
 
-    cp -- "$postboot_src"/*.sh "$postboot_dst/"
+    cp -a -- "$postboot_src/." "$postboot_dst/"
 
     chmod 700 "$postboot_dst"
-    chmod 700 "$postboot_dst"/*.sh
+    find "$postboot_dst" -type f -name '*.sh' -exec chmod 700 {} \;
 
     prepare_luks_key
 

@@ -17,8 +17,6 @@ log()
 main()
 {
     local luks_key="${1:-}"
-    local tpm_pin
-    local tpm_pin_confirm
 
     [[ -n "$luks_key" ]] \
         || {
@@ -32,29 +30,6 @@ main()
             return 1
         }
 
-    log "TPM enrollment requires a PIN."
-    printf '\n'
-
-    while true; do
-        read -r -s -p "Enter TPM PIN: " tpm_pin
-        printf '\n'
-
-        read -r -s -p "Confirm TPM PIN: " tpm_pin_confirm
-        printf '\n'
-
-        if [[ -z "$tpm_pin" ]]; then
-            log "ERROR: TPM PIN cannot be empty."
-            continue
-        fi
-
-        if [[ "$tpm_pin" != "$tpm_pin_confirm" ]]; then
-            log "ERROR: TPM PINs do not match."
-            continue
-        fi
-
-        break
-    done
-
     log "Enrolling TPM2 LUKS unlock..."
     log "PCR policy: $AG_TPM_PCRS"
 
@@ -65,8 +40,6 @@ main()
         --tpm2-pcrs="$AG_TPM_PCRS" \
         /dev/mapper/cryptroot
 
-    unset tpm_pin
-    unset tpm_pin_confirm
     unset luks_key
 
     log "TPM2 enrollment completed successfully."
