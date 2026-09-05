@@ -8,7 +8,7 @@
 set -Eeuo pipefail
 
 # readonly AG_TPM_PCRS="0+1+2+4+5+7+11+12"
-readonly AG_TPM_PCRS="0+7+11"
+readonly AG_TPM_PCRS="11"
 
 log()
 {
