@@ -22,9 +22,8 @@ configure_system()
     deploy_configs
     configure_services
     network_masking
-    
-    configure_postboot
-    configure_postboot_service
+
+    "$AG_DIR_POSTBOOT/prepare-postboot.sh"
     
     msg "System Configured"
 }
