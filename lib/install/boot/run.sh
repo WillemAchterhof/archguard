@@ -8,16 +8,17 @@
 create_boot_chain()
 {
     create_sb_certificates
+    create_pcr_keys
     configure_mkinitcpio
     configure_plymouth_theme
     configure_kernel_cmdline
     configure_uki
+    configure_uki_conf
     build_uki
     sign_uki
     verify_uki
     configure_efi_boot
-    enroll_secure_boot
-
-
+    enroll_secure_boot 
+ 
     msg "Boot stage completed"
 }

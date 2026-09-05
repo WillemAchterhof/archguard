@@ -35,5 +35,10 @@ verify_uki()
     run_chroot sbctl verify "$uki" ||
         fatal "UKI signature verification failed: $uki"
 
+    msg "Verifying TPM2 PCR signature"
+
+    run_chroot ukify inspect "$uki" | grep -q '\.pcrsig' ||
+        fatal "UKI missing .pcrsig section: $uki"
+
     msg "UKI verification successful"
 }
