@@ -8,7 +8,7 @@
 #  process after AG_P_USERNAME logs in.
 # ==============================================================================
 
-prepare_postboot_service()
+prepare_service()
 {
     local service_name="archguard-postinstall.service"
     local service_path="$AG_INSTALL_ROOT/etc/systemd/system/$service_name"
