@@ -37,4 +37,4 @@ verify_tpm
 #  CLEANUP
 # ==============================================================================
 
-clean_postboot
+clean_postboot "${SUDO_USER:-$(whoami)}"
