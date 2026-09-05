@@ -9,7 +9,6 @@
 
 for file in "$AG_DIR_POSTBOOT/prepare"/*.sh; do
     [[ -f "$file" ]] || continue
-    [[ "$(basename "$file")" == "module.sh" ]] && continue
 
     source "$file"
 done
