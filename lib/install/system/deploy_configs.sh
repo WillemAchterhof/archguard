@@ -84,16 +84,6 @@ deploy_configs()
         "$AG_INSTALL_ROOT/etc/systemd/resolved.conf.d/mullvad.conf"
 
     # --------------------------------------------------------------------------
-    # Bash login trigger for first-boot post-boot configuration
-    # --------------------------------------------------------------------------
-
-    [[ -f "$AG_DIR_CONFIGS_SYSTEM/profile.d/archguard-postboot.sh" ]] \
-        || fatal "Missing config: $AG_DIR_CONFIGS_SYSTEM/profile.d/archguard-postboot.sh"
-    cp "$AG_DIR_CONFIGS_SYSTEM/profile.d/archguard-postboot.sh" \
-        "$AG_INSTALL_ROOT/etc/profile.d/archguard-postboot.sh"
-    chmod 644 "$AG_INSTALL_ROOT/etc/profile.d/archguard-postboot.sh"
-
-    # --------------------------------------------------------------------------
     # Journald
     # --------------------------------------------------------------------------
 
