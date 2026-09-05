@@ -5,14 +5,13 @@
 #  lib/postboot/prepare/service.sh
 #
 #  Prepares the systemd service that starts the ArchGuard post-install
-#  process when AG_P_USERNAME logs in.
+#  process after AG_P_USERNAME logs in.
 # ==============================================================================
 
-prepare_service()
+prepare_postboot_service()
 {
     local service_name="archguard-postinstall.service"
     local service_path="$AG_INSTALL_ROOT/etc/systemd/system/$service_name"
-    local bash_profile="$AG_INSTALL_ROOT/home/$AG_P_USERNAME/.bash_profile"
 
     msg "Preparing postboot service"
 
@@ -22,54 +21,50 @@ prepare_service()
     [[ -d "$AG_INSTALL_ROOT/home/$AG_P_USERNAME" ]] \
         || fatal "Home directory not found for user: $AG_P_USERNAME"
 
-    [[ -f "$bash_profile" ]] \
-        || touch "$bash_profile"
-
     # --------------------------------------------------------------------------
     # Create root systemd service
     # --------------------------------------------------------------------------
 
     mkdir -p -- "$(dirname "$service_path")"
 
-    cat > "$service_path" <<'EOF'
+    cat > "$service_path" <<EOF
 [Unit]
 Description=ArchGuard Post-Install Configuration
+After=systemd-logind.service
+Wants=systemd-logind.service
 
 [Service]
 Type=oneshot
-ExecStart=/opt/archguard/run.sh
 User=root
 Group=root
+
+ExecStart=/bin/bash -c 'while ! loginctl list-sessions --no-legend 2>/dev/null | awk "{print \\\$3}" | grep -Fxq "$AG_P_USERNAME"; do sleep 1; done; exec /opt/archguard/run.sh'
+
 RemainAfterExit=no
+
+[Install]
+WantedBy=multi-user.target
 EOF
 
     chmod 644 "$service_path"
 
     # --------------------------------------------------------------------------
-    # Start the service when the installation user logs in
+    # Remove the old shell-based postboot trigger if it exists
     # --------------------------------------------------------------------------
 
-    cat >> "$bash_profile" <<'EOF'
+    local bash_profile="$AG_INSTALL_ROOT/home/$AG_P_USERNAME/.bash_profile"
 
-# ARCHGUARD_POSTBOOT_START
-if ! systemctl is-active --quiet archguard-postinstall.service; then
-    systemctl start archguard-postinstall.service
-fi
-# ARCHGUARD_POSTBOOT_END
-EOF
+    if [[ -f "$bash_profile" ]]; then
+        sed -i '/# ARCHGUARD_POSTBOOT_START/,/# ARCHGUARD_POSTBOOT_END/d' \
+            "$bash_profile"
+    fi
 
     # --------------------------------------------------------------------------
-    # Set ownership inside the installed system
-    # --------------------------------------------------------------------------
-
-    run_chroot chown "$AG_P_USERNAME:$AG_P_USERNAME" \
-        "/home/$AG_P_USERNAME/.bash_profile"
-
-    # --------------------------------------------------------------------------
-    # Reload systemd configuration inside the installed system
+    # Reload and enable service in installed system
     # --------------------------------------------------------------------------
 
     run_chroot systemctl daemon-reload
+    run_chroot systemctl enable "$service_name"
 
     msg "Postboot service prepared for user: $AG_P_USERNAME"
 }
