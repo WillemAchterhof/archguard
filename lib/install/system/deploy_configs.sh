@@ -22,6 +22,7 @@ verify_configs_folders()
     mkdir -p "$AG_INSTALL_ROOT/etc/modprobe.d"
     mkdir -p "$AG_INSTALL_ROOT/etc/systemd/resolved.conf.d"
     mkdir -p "$AG_INSTALL_ROOT/etc/systemd/journald.conf.d"
+    mkdir -p "$AG_INSTALL_ROOT/etc/profile.d"
 }
 
 deploy_configs()
@@ -81,6 +82,16 @@ deploy_configs()
         || fatal "Missing config: $AG_DIR_CONFIGS_SYSTEM/resolved-mullvad.conf"
     cp "$AG_DIR_CONFIGS_SYSTEM/resolved-mullvad.conf" \
         "$AG_INSTALL_ROOT/etc/systemd/resolved.conf.d/mullvad.conf"
+
+    # --------------------------------------------------------------------------
+    # Bash login trigger for first-boot post-boot configuration
+    # --------------------------------------------------------------------------
+
+    [[ -f "$AG_DIR_CONFIGS_SYSTEM/profile.d/archguard-postboot.sh" ]] \
+        || fatal "Missing config: $AG_DIR_CONFIGS_SYSTEM/profile.d/archguard-postboot.sh"
+    cp "$AG_DIR_CONFIGS_SYSTEM/profile.d/archguard-postboot.sh" \
+        "$AG_INSTALL_ROOT/etc/profile.d/archguard-postboot.sh"
+    chmod 644 "$AG_INSTALL_ROOT/etc/profile.d/archguard-postboot.sh"
 
     # --------------------------------------------------------------------------
     # Journald
