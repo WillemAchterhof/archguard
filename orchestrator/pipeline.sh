@@ -44,6 +44,9 @@ run_pipeline()
     msg "Install system"
     module_install
 
+    msg "Prepare Postboot Installation"
+    module_postboot
+
     msg "Installer finished"
     log_header "SESSION COMPLETE"
 

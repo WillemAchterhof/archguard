@@ -50,3 +50,9 @@ module_install()
     run_module "$AG_DIR_INSTALLER"
     run_install
 }
+
+module_postboot()
+{
+    run_module "$AG_DIR_POSTBOOT"
+    prepare_post_environment
+}
