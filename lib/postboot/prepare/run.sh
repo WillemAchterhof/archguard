@@ -12,5 +12,3 @@ prepare_post_environment()
     prepare_environment
     prepare_service
 }
-
-post_orchestrator
