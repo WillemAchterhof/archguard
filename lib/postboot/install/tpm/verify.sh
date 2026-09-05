@@ -1,50 +1,54 @@
 #!/usr/bin/env bash
 # ==============================================================================
-#  Arch Secure Installer V2.6 — TPM Enrollment Verification
+#  Arch Secure Installer V2.6 — TPM Verification
 # ==============================================================================
 #  lib/postboot/tpm/verify.sh
+#
+#  Provides:
+#    verify_tpm
 # ==============================================================================
 
 set -Eeuo pipefail
 
-readonly AG_TPM_PCRS="0+1+2+4+5+7+11+12"
-
-log()
+log_tpm_verify()
 {
     printf '[ArchGuard TPM] %s\n' "$*"
 }
 
-main()
+get_luks_device_verify()
 {
-    log "Verifying TPM2 enrollment"
+    local device
 
-    local luks_device
+    device="$(cryptsetup status cryptroot 2>/dev/null \
+        | awk '/device:/ {print $2; exit}')"
 
-    luks_device=$(cryptsetup status cryptroot 2>/dev/null |
-        awk '/device:/ {print $2}')
+    [[ -n "$device" ]] \
+        || {
+            log_tpm_verify "ERROR: Unable to determine LUKS device for cryptroot"
+            return 1
+        }
 
-    if [[ -z "$luks_device" ]]; then
-        log "ERROR: Unable to determine LUKS device for cryptroot"
-        return 1
-    fi
-
-    log "LUKS device: $luks_device"
-
-    if ! cryptsetup isLuks "$luks_device" 2>/dev/null; then
-        log "ERROR: Device is not a valid LUKS volume"
-        return 1
-    fi
-
-    if ! cryptsetup luksDump "$luks_device" 2>/dev/null |
-        grep -q 'systemd-tpm2'; then
-
-        log "ERROR: TPM2 enrollment was not found"
-        return 1
-    fi
-
-    log "TPM2 enrollment found"
-    log "Expected PCR policy: $AG_TPM_PCRS"
-    log "TPM2 enrollment verification completed"
+    printf '%s\n' "$device"
 }
 
-main "$@"
+verify_tpm()
+{
+    local luks_device
+
+    log_tpm_verify "Verifying TPM2 enrollment"
+
+    luks_device="$(get_luks_device_verify)"
+
+    log_tpm_verify "LUKS device: $luks_device"
+
+    cryptsetup luksDump "$luks_device" 2>/dev/null \
+        | grep -q 'systemd-tpm2' \
+        || {
+            log_tpm_verify "ERROR: No systemd TPM2 token found"
+            return 1
+        }
+
+    log_tpm_verify "TPM2 token found"
+
+    log_tpm_verify "TPM2 enrollment verification successful"
+}
