@@ -8,7 +8,8 @@
 set -Eeuo pipefail
 
 readonly AG_LUKS_KEY="/opt/archguard/luks.key"
-readonly AG_TPM_PCRS="0+1+2+4+5+7+11+12"
+# readonly AG_TPM_PCRS="0+1+2+4+5+7+11+12"
+readonly AG_TPM_PCRS="0+1+2+4+5+7+12"
 
 log()
 {
