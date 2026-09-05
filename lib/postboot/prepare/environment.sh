@@ -5,7 +5,7 @@
 #  lib/postboot/prepare/environment.sh
 # ==============================================================================
 
-prepare_post_environment()
+prepare_environment()
 {
     local source_dir="$AG_DIR_POSTBOOT/install"
     local target_dir="$AG_INSTALL_ROOT/opt/archguard"
