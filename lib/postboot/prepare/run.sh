@@ -11,4 +11,5 @@ prepare_post_environment()
 {
     prepare_environment
     prepare_service
+    clean_wifi_config
 }
