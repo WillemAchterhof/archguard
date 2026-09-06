@@ -54,9 +54,12 @@ display_luks_passphrase()
     printf "================================================\n"
     printf " LUKS Passphrase\n"
     printf "================================================\n\n"
-    printf "  %s\n\n" "$AGS_LUKS_PASSPHRASE"
-    printf "================================================\n\n"
+    
     printf " Store this passphrase somewhere safe now.\n"
     printf " It will not be shown again, and it cannot be\n"
+
     printf " recovered if lost.\n\n"
+
+    printf "================================================\n\n"
+    printf "  %s\n\n" "$AGS_LUKS_PASSPHRASE"
 }
