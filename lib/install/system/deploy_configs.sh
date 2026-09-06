@@ -23,6 +23,7 @@ verify_configs_folders()
     mkdir -p "$AG_INSTALL_ROOT/etc/systemd/resolved.conf.d"
     mkdir -p "$AG_INSTALL_ROOT/etc/systemd/journald.conf.d"
     mkdir -p "$AG_INSTALL_ROOT/etc/profile.d"
+    mkdir -p "$AG_INSTALL_ROOT/opt/archguard/state/config"
 }
 
 deploy_configs()
@@ -93,4 +94,22 @@ deploy_configs()
         "$AG_INSTALL_ROOT/etc/systemd/journald.conf.d/00-persistent.conf"
 
     msg "Config files deployed"
+
+    # --------------------------------------------------------------------------
+    # Temporary Wi-Fi credentials for postboot
+    # --------------------------------------------------------------------------
+
+    if [[ -f "$AG_DIR_CONFIG/wifi.env" ]]; then
+        msg "Deploying temporary Wi-Fi configuration"
+
+        mkdir -p "$AG_POST_CONF"
+
+        cp "$AG_DIR_CONFIG/wifi.env" \
+            "$AG_POST_CONF/wifi.env"
+
+        chmod 600 \
+            "$AG_POST_CONF/wifi.env"
+    else
+        msg "No Wi-Fi configuration found — skipping"
+    fi
 }
