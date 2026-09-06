@@ -60,5 +60,5 @@ display_luks_passphrase()
 
     printf " recovered if lost.\n\n"
 
-    printf "  %s" "$AGS_LUKS_PASSPHRASE"
+    printf "  %s\n\n" "$AGS_LUKS_PASSPHRASE"
 }
