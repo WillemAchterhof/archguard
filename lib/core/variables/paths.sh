@@ -49,8 +49,6 @@ readonly AG_DIR_PRECHECK="$AG_DIR_CORE/precheck"
 readonly AG_DIR_PROFILE_LIB="$AG_DIR_CORE/profile"
 readonly AG_DIR_SERVICES="$AG_DIR_CORE/services"
 readonly AG_DIR_VARIABLES="$AG_DIR_CORE/variables"
-# Postboot
-readonly AG_POST_CONF="$AG_INSTALL_ROOT/opt/archguard/state/config"
 
 # ------------------------------------------------------------------------------
 # Files

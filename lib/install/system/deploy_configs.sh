@@ -15,6 +15,8 @@
 
 verify_configs_folders()
 {
+    readonly AG_POST_CONF="$AG_INSTALL_ROOT/opt/archguard/state/config"
+    
     msg "Verifying config destination folders"
 
     mkdir -p "$AG_INSTALL_ROOT/etc/NetworkManager/conf.d"
