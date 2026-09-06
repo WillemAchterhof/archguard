@@ -55,7 +55,8 @@ install_base_pacstrap()
         libpwquality \
         inotify-tools \
         tar gzip unzip 7zip binutils \
-        plymouth
+        plymouth \
+        sddm-kcm plasma
 
     msg "Base system installed."
 }

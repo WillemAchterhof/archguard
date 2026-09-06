@@ -26,7 +26,8 @@ configure_services()
         fstrim.timer \
         reflector.timer \
         systemd-resolved \
-        systemd-timesyncd
+        systemd-timesyncd \
+        sddm
 
     ln -sf /run/systemd/resolve/stub-resolv.conf \
         "$AG_INSTALL_ROOT/etc/resolv.conf"
