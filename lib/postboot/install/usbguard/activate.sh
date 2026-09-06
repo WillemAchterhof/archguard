@@ -5,20 +5,20 @@
 # ==============================================================================
 
 usbguard_install() {
-    log "[*] Installing USBGuard..."
+    printf "[*] Installing USBGuard..."
     pacman -Syu --noconfirm usbguard
 }
 
 usbguard_policy() {
-    log "[*] Generating USBGuard policy..."
+    printf "[*] Generating USBGuard policy..."
     usbguard generate-policy > /etc/usbguard/rules.conf
 }
 
 usbguard_turn_on() {
-    log "[*] Enabling USBGuard..."
+    printf "[*] Enabling USBGuard..."
     systemctl enable usbguard
 
-    log "[*] Starting USBGuard..."
+    printf "[*] Starting USBGuard..."
     systemctl start usbguard
 }
 
