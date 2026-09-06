@@ -21,3 +21,9 @@ usbguard_turn_on() {
     log "[*] Starting USBGuard..."
     systemctl start usbguard
 }
+
+activate_usbguard() {
+    usbguard_install
+    usbguard_policy
+    usbguard_turn_on
+}
