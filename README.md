@@ -4,13 +4,15 @@
 
 It is designed around a simple principle:
 
-> **Build a minimal Arch Linux system, establish a measured and trusted boot chain, reduce the attack surface, isolate applications and virtual machines, and make security-relevant changes visible to the user.**
+> **Build a minimal Arch Linux system, establish a measured and trusted boot chain, reduce the attack surface, and make security-relevant changes explicit and verifiable.**
 
-ArchGuard is not intended to be a universal "secure Arch" configuration. It is a deliberately opinionated system with hardware-aware configuration, explicit security decisions, and a strong focus on measured boot, encryption, network isolation, and runtime confinement.
+ArchGuard is not intended to be a universal "secure Arch" configuration. It is an opinionated personal project with hardware-aware configuration, measured boot, encrypted storage, kernel hardening, and controlled first-boot configuration.
+
+The project is designed to keep the security model understandable rather than accumulating large numbers of unexplained hardening tweaks.
 
 ---
 
-## Security Architecture
+# Security Architecture
 
 ArchGuard is organized into the following security layers:
 
@@ -42,7 +44,7 @@ ArchGuard is organized into the following security layers:
 8. Detection & Response
 ```
 
-The layers are intentionally separated so that each security boundary has a clear responsibility.
+The current installer implementation primarily establishes the foundations through the early security layers.
 
 ---
 
@@ -50,7 +52,7 @@ The layers are intentionally separated so that each security boundary has a clea
 
 ArchGuard assumes a modern UEFI system with TPM 2.0 support.
 
-The firmware layer provides the root of trust for the measured boot chain.
+The firmware layer provides the initial root of trust for the measured boot chain.
 
 Primary goals:
 
@@ -59,17 +61,17 @@ Primary goals:
 * TPM 2.0
 * measured boot
 * hardware-aware configuration
-* detection of security-relevant hardware or firmware changes
+* reduced unnecessary hardware support
 
 ArchGuard does not assume that the TPM itself makes a system secure.
 
-The TPM is used as part of a larger chain of trust.
+The TPM is used as one component of a larger chain of trust.
 
 ---
 
 # 1. Boot Integrity
 
-ArchGuard uses a **Unified Kernel Image (UKI)** and Secure Boot.
+ArchGuard uses a **Unified Kernel Image (UKI)** together with Secure Boot and measured boot.
 
 The intended boot chain is:
 
@@ -86,17 +88,32 @@ Signed UKI
  └── kernel command line
  │
  ▼
+systemd-stub
+ │
+ ▼
 Measured boot
  │
  ▼
 TPM 2.0
 ```
 
+The UKI is signed before Secure Boot is used to establish trust in the boot image.
+
 The system uses `systemd-stub` to boot the UKI.
 
-ArchGuard does not rely on a traditional installed systemd-boot configuration when direct UKI boot entries are used.
+A direct UKI boot entry can be used without requiring a traditional installed systemd-boot configuration.
 
-### Kernel lockdown
+## Secure Boot
+
+Secure Boot is expected to be enabled in **UEFI User Mode** before TPM enrollment.
+
+This is important because TPM measurements and policies are only meaningful when the expected boot trust chain is actually enforced.
+
+Arch Linux's current documentation also recommends ensuring Secure Boot is active before binding LUKS unlocking to TPM state.
+
+---
+
+# Kernel Lockdown
 
 ArchGuard enables:
 
@@ -104,9 +121,13 @@ ArchGuard enables:
 lockdown=confidentiality
 ```
 
-This provides a stronger kernel security boundary when Secure Boot is active.
+Kernel lockdown provides an additional security boundary when Secure Boot is active.
 
-An intentional consequence is that **kernel hibernation is not supported** under this security model.
+This deliberately restricts certain operations that could otherwise undermine the integrity or confidentiality of the running kernel.
+
+An intentional consequence is:
+
+> **Kernel hibernation is not supported by the ArchGuard security model.**
 
 Suspend remains possible.
 
@@ -114,32 +135,94 @@ Suspend remains possible.
 
 # 2. Secrets & Storage
 
-ArchGuard uses:
+ArchGuard uses encrypted storage as a fundamental security layer.
 
-* LUKS2
-* encrypted root storage
-* LVM where appropriate
-* encrypted swap
-* TPM 2.0 automatic unlock
-* TPM PIN protection
-
-The TPM is not treated as a replacement for the LUKS passphrase.
-
-The intended model is:
+The intended storage architecture is:
 
 ```text
-TPM measurements
-       +
-TPM PIN
-       +
-LUKS
-       ↓
-Encrypted system
+Physical Disk
+     │
+     ▼
+   LUKS2
+     │
+     ▼
+    LVM
+     │
+     ├── root
+     └── swap
 ```
 
-## TPM PCR policy
+The root filesystem is encrypted using LUKS2.
 
-The current TPM enrollment uses:
+Swap is also placed inside the encrypted storage hierarchy.
+
+The goal is to prevent offline access to filesystem contents if the physical storage device is removed from the machine.
+
+---
+
+# TPM 2.0
+
+ArchGuard uses TPM 2.0 as part of the LUKS unlock process.
+
+The intended architecture is:
+
+```text
+              ┌─────────────────┐
+              │   Secure Boot   │
+              └────────┬────────┘
+                       │
+                       ▼
+                Signed UKI
+                       │
+                       ▼
+                Measured Boot
+                       │
+                       ▼
+                   TPM 2.0
+                       │
+              ┌────────┴────────┐
+              │                 │
+           PCR state         TPM PIN
+              │                 │
+              └────────┬────────┘
+                       ▼
+                    LUKS2
+                       │
+                       ▼
+                 Encrypted Root
+```
+
+`systemd-cryptenroll` provides the TPM-backed LUKS enrollment mechanism. TPM2 enrollment can bind the unlock key to selected PCRs and can additionally require a PIN.
+
+---
+
+# TPM PIN
+
+ArchGuard requires an additional TPM PIN.
+
+The model is therefore not simply:
+
+```text
+TPM → unlock
+```
+
+but:
+
+```text
+Trusted measured state
+        +
+TPM PIN
+        ↓
+    LUKS unlock
+```
+
+This prevents possession of the physical machine from automatically being sufficient for unattended TPM-based unlocking.
+
+---
+
+# TPM PCR Policy
+
+ArchGuard currently uses the following PCRs for the TPM enrollment:
 
 ```text
 PCR 0
@@ -151,27 +234,56 @@ PCR 7
 PCR 12
 ```
 
-with SHA-256 measurements.
+using the SHA-256 PCR bank.
 
-PCR 11 is handled through a **signed PCR policy** rather than being included directly in the raw PCR binding.
+PCR 11 is handled separately through a **signed PCR policy**.
 
-This allows ArchGuard to use systemd's PCR-phase measurements without treating every legitimate PCR-11 change as a completely new raw PCR value.
-
-The current enrollment model uses:
+The resulting design is:
 
 ```text
-TPM 2.0
-+ TPM PIN
-+ PCR policy
-+ signed PCR-11 policy
-+ LUKS2
+Raw PCR binding:
+    0 + 1 + 2 + 4 + 5 + 7 + 12
+
+Signed PCR policy:
+    PCR 11
 ```
 
-## No automatic TPM re-enrollment
+This allows ArchGuard to bind the LUKS unlock process to both the platform/boot state and the measured boot phase without treating PCR 11 as an ordinary static PCR binding.
 
-ArchGuard deliberately does **not** automatically re-enroll the TPM after security-relevant changes.
+Modern systemd documentation explicitly supports signed PCR policies and recommends considering PCR policies instead of simply binding secrets to raw PCR values.
 
-If the measured boot state changes unexpectedly:
+---
+
+# Why These PCRs?
+
+The selected PCRs represent different parts of the trusted boot environment.
+
+```text
+PCR 0  → firmware/platform measurements
+PCR 1  → firmware configuration
+PCR 2  → firmware/option ROM measurements
+PCR 4  → boot loader / boot path
+PCR 5  → boot configuration / partition-related measurements
+PCR 7  → Secure Boot state and policy
+PCR 11 → systemd measured boot phases
+PCR 12 → kernel command line / related measured state
+```
+
+The exact measurements depend on the platform and boot configuration.
+
+The selection intentionally favors security sensitivity over maximum convenience.
+
+A legitimate security-relevant change may therefore cause TPM unlocking to fail.
+
+That is a feature of the design, not automatically an error.
+
+---
+
+# No Automatic TPM Re-enrollment
+
+ArchGuard deliberately does **not** automatically re-enroll the TPM after a security-relevant change.
+
+The intended response to an unexpected TPM mismatch is:
 
 ```text
 TPM unlock fails
@@ -183,21 +295,71 @@ Manual LUKS unlock
 ArchGuard detects changed state
         │
         ▼
-Network quarantine
+Security warning / investigation
         │
         ▼
-User investigates
+Network quarantine where applicable
         │
         ▼
-Explicit approval
+User explicitly approves the change
         │
         ▼
 Manual TPM re-enrollment
 ```
 
-This is intentional.
+The important principle is:
 
-Automatic re-enrollment could turn a potentially suspicious change into an automatically trusted state.
+> **A changed security measurement must not automatically become trusted merely because the system can boot again.**
+
+Automatic re-enrollment would weaken the purpose of binding the encrypted system to a known measured state.
+
+---
+
+# TPM Recovery
+
+The TPM is not intended to be the only way to unlock the encrypted system.
+
+A normal LUKS recovery mechanism remains available.
+
+This is necessary because TPM-bound unlocks can legitimately stop working after:
+
+* firmware changes
+* Secure Boot changes
+* UKI changes
+* kernel changes
+* boot configuration changes
+* measured system changes
+* TPM changes or resets
+
+Arch Linux documentation also recommends maintaining an alternative recovery mechanism when using TPM-backed LUKS unlocking.
+
+---
+
+# TPM Verification
+
+ArchGuard verifies the TPM configuration rather than assuming enrollment succeeded.
+
+Useful verification points include:
+
+```bash
+systemd-analyze has-tpm2
+```
+
+and:
+
+```bash
+cryptsetup luksDump /dev/<luks-device>
+```
+
+The LUKS header should contain a `systemd-tpm2` token when TPM enrollment is active.
+
+PCR state can also be inspected using:
+
+```bash
+tpm2_pcrread sha256:0,1,2,4,5,7,11,12
+```
+
+The goal is to verify the actual state of the machine rather than simply checking whether TPM-related packages are installed.
 
 ---
 
@@ -214,27 +376,53 @@ Current security decisions include:
 * restricted unprivileged BPF
 * BPF LSM
 * restricted performance counters
-* restricted kernel pointer exposure
-* restricted kernel message access
 * Yama
 * AppArmor
 * Landlock
+* kernel information restrictions
 * ASLR-related hardening
 * personal kernel module blacklist
 
-The exact configuration is intentionally kept in ArchGuard's configuration files rather than hard-coded throughout the installer.
+The exact configuration is maintained in ArchGuard's configuration files.
 
-## Module minimization
+---
 
-ArchGuard does not use a universal "blacklist every dangerous module" policy.
+# Kernel Module Signatures
 
-Instead, it supports a **hardware- and usage-specific blacklist**.
+ArchGuard requires signed kernel modules.
 
-For example, a machine that does not contain or require:
+The goal is to prevent an attacker from simply loading an arbitrary unsigned kernel module into the running kernel.
+
+This complements Secure Boot and kernel lockdown.
+
+The security chain therefore becomes:
+
+```text
+Secure Boot
+     │
+     ▼
+Signed UKI
+     │
+     ▼
+Locked-down Kernel
+     │
+     ▼
+Signed Kernel Modules
+```
+
+---
+
+# Hardware-Aware Module Minimization
+
+ArchGuard does **not** use a universal blacklist containing every kernel module that could theoretically be abused.
+
+Instead, the blacklist is hardware- and usage-specific.
+
+For example, a system that does not contain or require:
 
 * FireWire
 * Thunderbolt
-* floppy controllers
+* floppy hardware
 * legacy serial hardware
 * optical drives
 * legacy ATA controllers
@@ -243,102 +431,121 @@ For example, a machine that does not contain or require:
 
 can disable those modules.
 
-The important distinction is:
+The principle is:
 
-> **Unused hardware is reduced deliberately; required hardware is not disabled merely because a module could theoretically be abused.**
+> **Reduce unnecessary kernel attack surface without disabling hardware that the system actually requires.**
 
-The blacklist is therefore considered a personal/hardware-specific configuration.
+The blacklist is therefore considered a **personal/hardware-specific configuration**, not a universal Arch Linux security policy.
 
-USB device authorization is handled separately by USBGuard.
+---
+
+# Personal Kernel Module Blacklist
+
+The current blacklist includes hardware and functionality that is known not to be required by the target system.
+
+Examples include:
+
+```text
+Thunderbolt
+FireWire
+Floppy
+PC Speaker
+Parallel ports
+Legacy PS/2 mouse
+Legacy serial hardware
+Optical drives
+Legacy ATA controllers
+Legacy SCSI controllers
+Game controllers
+Selected uncommon filesystems
+Selected uncommon network protocols
+```
+
+This list should be reviewed when ArchGuard is deployed on different hardware.
+
+USB itself is **not** disabled through the kernel module blacklist.
+
+USB device authorization is handled separately through USBGuard.
+
+---
+
+# kexec
+
+ArchGuard disables kernel kexec loading:
+
+```text
+kernel.kexec_load_disabled=1
+```
+
+The intention is to prevent a running system from using kexec to load another kernel and bypass parts of the normal boot chain.
+
+---
+
+# BPF
+
+ArchGuard does not disable BPF completely.
+
+Instead, unprivileged BPF is restricted:
+
+```text
+kernel.unprivileged_bpf_disabled=1
+```
+
+BPF LSM remains available as part of the kernel security architecture.
+
+This preserves legitimate kernel security functionality while reducing unnecessary exposure to unprivileged users.
+
+---
+
+# Performance Counters
+
+ArchGuard restricts access to kernel performance monitoring interfaces.
+
+The current configuration uses:
+
+```text
+kernel.perf_event_paranoid=2
+```
+
+The intention is to reduce the information available to unprivileged processes through performance monitoring facilities.
 
 ---
 
 # 4. Network Security
 
-ArchGuard uses **nftables** as the primary host firewall.
+ArchGuard uses **nftables** as the host firewall.
 
-The firewall is designed around explicit trust boundaries rather than simply allowing all local traffic.
+The firewall is designed around explicit trust boundaries rather than assuming that local traffic is automatically trusted.
 
-The intended model for the host and virtual machines is:
-
-```text
-                         Internet
-                            │
-                            │
-                         DENY
-                            │
-                            ▼
-                     ┌─────────────┐
-                     │    Host     │
-                     └─────────────┘
-                       ▲         │
-                 DENY  │         │ ALLOW
-                       │         ▼
-                  ┌──────────────────┐
-                  │   Virtual Net    │
-                  │     virbr0       │
-                  └──────────────────┘
-                       │         ▲
-                       │         │
-                     ALLOW      ALLOW
-                       │         │
-                       ▼         │
-                     Internet    Host
-```
-
-More explicitly:
-
-| Traffic         | Policy |
-| --------------- | ------ |
-| Internet → Host | DENY   |
-| VM → Host       | DENY   |
-| Host → VM       | ALLOW  |
-| VM → Internet   | ALLOW  |
-| Internet → VM   | DENY   |
-| VM → VM         | DENY   |
-
-VM traffic is NATed through the host.
-
-The default VM subnet is:
+The intended architecture is:
 
 ```text
-192.168.122.0/24
+Internet
+   │
+   ▼
+┌───────────────┐
+│ ArchGuard     │
+│ Host          │
+└───────┬───────┘
+        │
+      virbr0
+        │
+   ┌────┴────┐
+   │         │
+  VM        VM
 ```
 
-ArchGuard owns its own nftables tables.
+The firewall policy is designed to control communication between:
 
-It does **not** globally flush the nftables ruleset because doing so could interfere with other software such as libvirt.
+* Internet
+* host
+* virtual machines
 
-The intended ownership model is:
+The ArchGuard firewall owns only its own nftables tables.
 
-```text
-ArchGuard
- ├── archguard_filter
- └── archguard_nat
+It does **not** globally flush the nftables ruleset.
 
-libvirt
- └── libvirt-owned nftables rules
-```
-
-This separation is intentional.
-
----
-
-# DNS
-
-ArchGuard treats DNS as part of the network security layer.
-
-The intended design is for the system/network layer to own DNS policy.
-
-Applications should not silently bypass this policy using their own DNS-over-HTTPS configuration.
-
-For example, Firefox is configured with:
-
-```text
-DNS over HTTPS: OFF
-```
-
-This allows the system's DNS policy to remain authoritative.
+This is important because other components such as libvirt may maintain their own nftables rules.
 
 ---
 
@@ -348,32 +555,7 @@ ArchGuard attempts to keep the installed system minimal.
 
 Services should only be enabled when they are actually required.
 
-The base system includes components needed for:
-
-* networking
-* Bluetooth
-* audio
-* storage management
-* authentication/policy
-* firewalling
-* security tooling
-* system administration
-
-Examples include:
-
-```text
-NetworkManager
-iwd
-bluez
-PipeWire
-WirePlumber
-udisks2
-polkit
-nftables
-sudo
-```
-
-Service enablement is separated from static configuration deployment.
+Static configuration is separated from runtime actions.
 
 Static configuration files belong in:
 
@@ -381,13 +563,25 @@ Static configuration files belong in:
 install/configs/
 ```
 
-Runtime and first-boot actions belong in:
+Installer and installation logic belongs in:
+
+```text
+install/lib/
+```
+
+First-boot/runtime actions belong in:
 
 ```text
 install/lib/postboot/
 ```
 
-This distinction prevents configuration files from becoming mixed with installer logic.
+Temporary installer state belongs in:
+
+```text
+state/
+```
+
+This separation keeps configuration files independent from the code that deploys them.
 
 ---
 
@@ -398,9 +592,9 @@ ArchGuard uses Linux security mechanisms including:
 * AppArmor
 * Landlock
 * kernel lockdown
-* systemd service hardening
+* systemd service restrictions
 * filesystem permissions
-* sandboxing where available
+* application sandboxing where available
 
 The goal is not to assume that every installed application is trustworthy.
 
@@ -408,145 +602,21 @@ Instead:
 
 > **Applications should have only the privileges and access they actually need.**
 
-## Firefox
+Desktop applications such as Plasma and Firefox are currently configured **manually** and are therefore not considered part of the ArchGuard installer baseline.
 
-The Firefox baseline uses:
+This distinction is intentional.
 
-* Enhanced Tracking Protection: Strict
-* HTTPS-Only Mode
-* DNS-over-HTTPS disabled
-* Firefox password storage disabled
-* DuckDuckGo as the default search engine
-* search suggestions disabled
-* unwanted recommendations disabled
-* unnecessary data collection disabled
-* automatic updates enabled
-
-Installed privacy extensions include:
-
-* uBlock Origin
-* I Still Don't Care About Cookies
-* Multi-Account Containers
-* Temporary Containers
-
-uBlock Origin is configured with multiple maintained filtering lists for advertising, tracking, malware, cookies, social widgets, and annoyances.
+ArchGuard establishes the security foundation; desktop software can then be installed and configured according to the user's requirements.
 
 ---
 
-# Package Trust Model
+# 7. Virtualization Isolation
 
-ArchGuard prefers software from the official Arch repositories.
+Virtualization support is part of the broader ArchGuard design, but the VM environment is kept separate from the core installer security baseline.
 
-The intended trust hierarchy is:
+KVM/QEMU/libvirt can be installed independently.
 
-```text
-Official Arch repositories
-        │
-        │ preferred
-        ▼
-       AUR
-        │
-        │ user-reviewed
-        ▼
-     Flatpak
-        │
-        │ permission-reviewed
-        ▼
-Random binary repositories
-        │
-        │ avoid
-        ▼
-curl | sh installers
-```
-
-## Official repositories
-
-Official Arch packages use package signature verification.
-
-ArchGuard does not disable package signature verification as a workaround for installation problems.
-
-## AUR
-
-The AUR contains user-produced build instructions.
-
-AUR packages are therefore treated as a lower-trust source.
-
-Users should inspect:
-
-* `PKGBUILD`
-* source files
-* install scripts
-* dependencies
-* build commands
-
-before installing an AUR package.
-
-## Flatpak
-
-Flatpak is useful for desktop applications because applications can run inside a sandbox.
-
-However, Flatpak permissions still matter.
-
-A Flatpak application with broad filesystem, device, or network permissions should not be treated as strongly isolated merely because it is distributed as a Flatpak.
-
----
-
-# USBGuard
-
-USBGuard provides device-level USB authorization.
-
-The intended architecture is:
-
-```text
-USB hardware
-     │
-     ▼
-Linux USB subsystem
-     │
-     ▼
-USBGuard
-     │
-     ├── authorized device
-     │
-     └── blocked device
-```
-
-ArchGuard generates an initial USBGuard policy from the devices connected during installation/postboot.
-
-USBGuard is enabled only after the initial policy has been generated.
-
-This is intended to avoid accidentally locking out the keyboard and mouse during first activation.
-
-USB device control is separate from the kernel module blacklist.
-
----
-
-# Virtualization
-
-ArchGuard supports KVM/QEMU/libvirt for occasional Windows or Linux virtual machines.
-
-The preferred virtual machine architecture uses:
-
-* KVM
-* QEMU
-* libvirt
-* virt-manager
-* UEFI
-* Q35 machine type
-* TPM 2.0
-* VirtIO devices
-* Secure Boot where supported
-* isolated VM networking
-
-For Windows guests, VirtIO drivers should be installed in the guest when required.
-
-## VM isolation
-
-ArchGuard intentionally avoids unnecessary host/guest integration.
-
-For example, host filesystem sharing should not be enabled unless there is a specific requirement.
-
-A VM should not automatically receive access to:
+The intended model is that virtual machines should not automatically receive access to host resources such as:
 
 ```text
 /home
@@ -557,288 +627,175 @@ personal documents
 host sockets
 ```
 
-USB passthrough should be explicit rather than automatically exposing host USB devices to guests.
+Host filesystem sharing and automatic USB passthrough should only be enabled when explicitly required.
 
 ---
 
-# Postboot Architecture
+# 8. Detection & Response
 
-ArchGuard separates installation from first-boot configuration.
+ArchGuard treats security events as something that should be detected and acted upon rather than silently ignored.
 
-The general flow is:
+Examples include:
 
-```text
-Arch ISO
-   │
-   ▼
-Installation
-   │
-   ├── partitioning
-   ├── LUKS
-   ├── LVM
-   ├── filesystem
-   ├── pacstrap
-   ├── kernel
-   ├── UKI
-   ├── Secure Boot
-   └── configuration deployment
-   │
-   ▼
-Reboot
-   │
-   ▼
-Installed system
-   │
-   ▼
-Postboot
-   │
-   ├── temporary configuration
-   ├── USBGuard
-   ├── TPM enrollment
-   ├── verification
-   └── cleanup
-   │
-   ▼
-Normal system
-```
+* unexpected TPM state
+* changed measured boot state
+* unexpected hardware changes
+* unauthorized USB devices
+* network security violations
+* security service failures
 
-Temporary installation state is removed after it has served its purpose.
-
-The postboot environment is stored temporarily under:
-
-```text
-/opt/archguard
-```
-
-and is removed when postboot processing is complete.
+The long-term goal is for **ASBGuard** to provide the detection and response layer.
 
 ---
 
-# Temporary Wi-Fi Configuration
+# USBGuard
 
-Wi-Fi credentials may be collected during installation when required.
+USBGuard provides device-level USB authorization.
 
-The temporary flow is:
-
-```text
-Installer
-   │
-   ▼
-state/config/wifi.env
-   │
-   ▼
-Target system
-/opt/archguard/state/config/wifi.env
-   │
-   ▼
-NetworkManager
-   │
-   ▼
-Wi-Fi connection
-   │
-   ▼
-Temporary credentials removed
-   │
-   ▼
-/opt/archguard removed
-```
-
-The temporary Wi-Fi file is protected with restrictive permissions.
-
-The password is unset from the installer shell after it has been written.
-
-ArchGuard does not intend to leave the installer credential file permanently installed on the final system.
-
----
-
-# Backup / Recovery Philosophy
-
-ArchGuard does not currently install Timeshift as part of the default security baseline.
-
-The recovery strategy is intentionally simple:
+The intended architecture is:
 
 ```text
-Broken system
+USB Hardware
      │
      ▼
-Boot ArchGuard installer
+Linux USB subsystem
      │
      ▼
-Reinstall
+USBGuard
+     │
+     ├── Authorized device
+     │
+     └── Blocked device
 ```
 
-This avoids adding another snapshot/backup subsystem to the default installation.
+USBGuard is deliberately separate from the kernel module blacklist.
 
-Users who require additional backup infrastructure can add it independently.
+The kernel blacklist answers:
 
-Backups of personal data remain the user's responsibility.
+> **Should the operating system support this type of hardware/functionality at all?**
+
+USBGuard answers:
+
+> **Should this particular USB device be authorized?**
 
 ---
 
-# Filesystem Layout
+# USBGuard Installation
 
-The project separates installer code, configuration, state, and runtime actions.
+USBGuard is installed during the postboot stage.
 
-Current structure:
-
-```text
-archguard/
-├── install/
-│   ├── configs/
-│   │   └── system/
-│   │
-│   ├── lib/
-│   │   ├── core/
-│   │   │   ├── logging/
-│   │   │   ├── precheck/
-│   │   │   ├── profile/
-│   │   │   ├── services/
-│   │   │   └── variables/
-│   │   │
-│   │   ├── install/
-│   │   │
-│   │   ├── menu/
-│   │   │
-│   │   ├── prepare/
-│   │   │
-│   │   ├── postboot/
-│   │   │
-│   │   ├── utilities/
-│   │   │
-│   │   └── validate/
-│   │
-│   └── orchestrator/
-│
-└── state/
-    ├── config/
-    └── log/
-```
-
-## Configuration ownership
-
-Static configuration:
+The intended sequence is:
 
 ```text
-install/configs/
+Install USBGuard
+      │
+      ▼
+Generate initial policy
+      │
+      ▼
+Enable USBGuard
+      │
+      ▼
+Start USBGuard
 ```
 
-Installer logic:
+The initial policy is generated before the service is activated.
 
-```text
-install/lib/
-```
-
-Runtime/first-boot actions:
-
-```text
-install/lib/postboot/
-```
-
-Temporary installer state:
-
-```text
-state/
-```
-
-This separation is intentional.
+This is important because currently connected input devices such as the keyboard and mouse need to be included in the initial policy.
 
 ---
 
-# Hardware Awareness
+# USBGuard Policy
 
-ArchGuard detects hardware during installation.
+The initial policy is generated using:
 
-Current hardware-aware areas include:
-
-* CPU vendor
-* GPU vendor
-* network interfaces
-* storage devices
-* filesystem requirements
-* kernel module requirements
-
-For example:
-
-```text
-Intel CPU → intel-ucode
-
-AMD CPU → amd-ucode
+```bash
+usbguard generate-policy
 ```
 
-GPU packages are selected according to detected hardware.
+The resulting policy is written to:
 
-The installer should not install unnecessary hardware-specific packages merely because they exist.
+```text
+/etc/usbguard/rules.conf
+```
+
+The generated policy is a starting point rather than a universal security policy.
+
+Devices should be reviewed before permanently trusting additional hardware.
+
+The intended security model is:
+
+```text
+Known / explicitly authorized USB device
+        │
+        ▼
+      ALLOW
+
+
+Unknown USB device
+        │
+        ▼
+      DENY
+```
+
+---
+
+# USBGuard and the Kernel
+
+USBGuard does not replace kernel-level USB support.
+
+The layers work together:
+
+```text
+USB device
+    │
+    ▼
+USB controller / kernel
+    │
+    ▼
+USB device enumeration
+    │
+    ▼
+USBGuard authorization
+    │
+    ├── allowed
+    │
+    └── blocked
+```
+
+The USB subsystem therefore remains functional while individual devices can be controlled.
 
 ---
 
 # Current Security Decisions
 
-The following decisions are intentional parts of the ArchGuard security model.
-
-| Area                        | Decision                 |
-| --------------------------- | ------------------------ |
-| Secure Boot                 | Enabled                  |
-| UKI                         | Enabled                  |
-| TPM 2.0                     | Required/used            |
-| LUKS2                       | Enabled                  |
-| TPM PIN                     | Enabled                  |
-| TPM PCR policy              | Enabled                  |
-| Automatic TPM re-enrollment | Disabled                 |
-| Kernel lockdown             | `confidentiality`        |
-| Module signatures           | Enabled                  |
-| kexec                       | Disabled                 |
-| Unprivileged BPF            | Restricted               |
-| BPF LSM                     | Enabled                  |
-| perf events                 | Restricted               |
-| AppArmor                    | Enabled                  |
-| Landlock                    | Enabled                  |
-| Yama                        | Enabled                  |
-| nftables                    | Enabled                  |
-| USBGuard                    | Enabled                  |
-| VM isolation                | Enabled                  |
-| Global kernel blacklist     | No                       |
-| Hardware-specific blacklist | Yes                      |
-| Hibernation                 | Unsupported              |
-| Suspend                     | Supported                |
-| Timeshift                   | Not installed by default |
-| Firefox DoH                 | Disabled                 |
-| Official Arch packages      | Preferred                |
-| AUR                         | User-reviewed            |
-| Flatpak                     | Permission-reviewed      |
-
----
-
-# Threat Model
-
-ArchGuard is primarily designed to reduce the impact of:
-
-* malicious removable devices
-* unauthorized USB devices
-* boot-chain tampering
-* modified firmware/boot state
-* offline attacks against the encrypted system
-* malicious or compromised applications
-* unnecessary kernel attack surface
-* unauthorized network access
-* VM-to-host attacks
-* VM-to-VM lateral movement
-* accidental exposure of host resources
-* persistence through unnecessary services
-
-ArchGuard does **not** claim to protect against every possible attack.
-
-In particular, it cannot magically protect a system from:
-
-* a compromised firmware supply chain
-* a physically compromised TPM
-* an already-compromised trusted boot chain
-* malicious hardware that is intentionally authorized
-* stolen credentials
-* a user intentionally granting dangerous application permissions
-* vulnerabilities that have not yet been discovered
-* a sufficiently privileged attacker who has already obtained complete control of the system
-
-Security is therefore treated as a layered system rather than a single feature.
+| Area                        | Decision          |
+| --------------------------- | ----------------- |
+| UEFI                        | Required          |
+| Secure Boot                 | Enabled           |
+| UKI                         | Enabled           |
+| TPM 2.0                     | Used              |
+| LUKS2                       | Enabled           |
+| LVM                         | Used              |
+| TPM PIN                     | Enabled           |
+| TPM PCR policy              | Enabled           |
+| Automatic TPM re-enrollment | Disabled          |
+| Kernel lockdown             | `confidentiality` |
+| Module signatures           | Enabled           |
+| kexec                       | Disabled          |
+| Unprivileged BPF            | Restricted        |
+| BPF LSM                     | Enabled           |
+| Performance counters        | Restricted        |
+| AppArmor                    | Enabled           |
+| Landlock                    | Enabled           |
+| Yama                        | Enabled           |
+| nftables                    | Enabled           |
+| USBGuard                    | Enabled           |
+| Hardware-specific blacklist | Yes               |
+| Universal kernel blacklist  | No                |
+| Hibernation                 | Unsupported       |
+| Desktop installation        | Manual            |
+| Firefox configuration       | Manual            |
 
 ---
 
@@ -864,7 +821,7 @@ Do not disable hardware blindly for theoretical security benefits.
 
 ### 5. Separation of responsibilities
 
-Configuration, installation logic, runtime actions, and temporary state should remain separate.
+Configuration, installation logic, runtime actions, and temporary state remain separate.
 
 ### 6. Fail closed where practical
 
@@ -880,100 +837,34 @@ Where possible, ArchGuard uses established Linux security mechanisms rather than
 
 ---
 
-# Testing
-
-ArchGuard is tested both in:
-
-* a KVM/libvirt virtual machine
-* physical hardware
-
-Virtual machines are useful for validating:
-
-* installation flow
-* partitioning
-* filesystem configuration
-* networking
-* UKI generation
-* Secure Boot configuration
-* TPM behavior
-* postboot execution
-* firewall behavior
-* service configuration
-
-Physical hardware remains necessary for validating:
-
-* real firmware behavior
-* Secure Boot
-* TPM measurements
-* actual GPU operation
-* Wi-Fi
-* Bluetooth
-* USB devices
-* suspend
-* display manager
-* hardware-specific kernel modules
-
-A configuration that works in a VM should not automatically be considered validated on physical hardware.
-
----
-
-# Development Principles
-
-ArchGuard is intentionally built as a collection of small components rather than one enormous installer script.
-
-Functions should have a single clear responsibility.
-
-For example:
-
-```text
-detect_cpu
-detect_gpu
-configure_disk
-deploy_configs
-usbguard_install
-usbguard_policy
-usbguard_turn_on
-enroll_tpm
-verify_tpm
-clean_postboot
-```
-
-The orchestrator should determine **when** operations happen.
-
-Individual modules should determine **how** they perform their specific task.
-
----
-
 # Project Status
 
 ArchGuard is an actively developed personal security-focused Arch Linux installer.
 
-The following areas are operational or substantially implemented:
+The security foundation currently includes:
 
 * UEFI installation
 * Secure Boot
-* UKI boot
+* Unified Kernel Image
+* measured boot
 * TPM 2.0
 * LUKS2
 * LVM
-* TPM-based LUKS unlock
+* TPM-based LUKS unlocking
 * TPM PIN
-* PCR-based policy
+* PCR-based TPM policy
+* signed PCR policy
 * kernel lockdown
 * kernel hardening
+* kernel module signatures
+* hardware-aware module minimization
 * nftables
 * AppArmor
-* NetworkManager
-* Plasma
-* SDDM
-* Bluetooth/audio stack
-* KVM/libvirt support
-* Firefox security baseline
-* postboot cleanup
+* Landlock
+* USBGuard
+* postboot configuration and cleanup
 
-Some components remain under active development and validation.
-
-Do not assume that an option described in this README is universally appropriate for every Arch Linux installation.
+The graphical desktop environment and Firefox are **not currently installed or configured by ArchGuard**. They are manually configured after the secure base system has been installed.
 
 ---
 
@@ -981,9 +872,9 @@ Do not assume that an option described in this README is universally appropriate
 
 ArchGuard is a personal security project.
 
-It is **not** a security certification, hardened distribution, or guarantee of system security.
+It is **not a security certification, hardened distribution, or guarantee of system security**.
 
-Security settings can cause compatibility problems, prevent hardware from working, or make legitimate system changes require manual intervention.
+Security settings can cause compatibility problems, prevent hardware from working, or require manual intervention after legitimate system changes.
 
 Always test ArchGuard on hardware you control before relying on it for important systems.
 
@@ -996,5 +887,3 @@ Keep independent backups of important data.
 License: **TBD**
 
 Until a license is explicitly selected, the project should not be assumed to grant broad redistribution or modification rights.
-
----
