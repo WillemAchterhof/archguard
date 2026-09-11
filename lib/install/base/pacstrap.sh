@@ -65,6 +65,5 @@ install_base_pacstrap()
         tar gzip unzip 7zip binutils \
         plymouth
 
-
     msg "Base system installed."
 }
