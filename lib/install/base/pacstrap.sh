@@ -55,9 +55,7 @@ install_base_pacstrap()
         qemu-desktop \
         libvirt \
         virt-manager \
-        noto-fonts \
-        noto-fonts-cjk \
-        noto-fonts-emoji \
+        noto-fonts noto-fonts-cjk noto-fonts-emoji \
         udisks2 polkit \
         sudo \
 		man-db \
