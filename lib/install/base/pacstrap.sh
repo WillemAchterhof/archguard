@@ -39,23 +39,32 @@ install_base_pacstrap()
         $gpu_pkg \
         e2fsprogs dosfstools ${fs_pkg:+$fs_pkg} \
         cryptsetup lvm2 \
+        tpm2-tss tpm2-tools \
         mkinitcpio \
         sbctl sbsigntools efibootmgr \
-        tpm2-tss tpm2-tools \
         apparmor nftables \
-        networkmanager iwd \
-        bluez bluez-utils \
-        pipewire pipewire-audio pipewire-alsa pipewire-pulse wireplumber \
-        udisks2 polkit \
-        sudo \
-        man-db \
-        git neovim \
-        iproute2 iputils \
-        reflector \
         libpwquality \
         inotify-tools \
+        networkmanager iwd \
+        iproute2 iputils \
+        reflector \
+        bluez bluez-utils \
+        pipewire pipewire-audio pipewire-alsa pipewire-pulse wireplumber \
+        firefox \
+        alacritty \
+        qemu-desktop \
+        libvirt \
+        virt-manager \
+        noto-fonts \
+        noto-fonts-cjk \
+        noto-fonts-emoji \
+        udisks2 polkit \
+        sudo \
+		man-db \
+        git neovim \
         tar gzip unzip 7zip binutils \
         plymouth
+
 
     msg "Base system installed."
 }
