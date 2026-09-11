@@ -27,7 +27,10 @@ configure_services()
         reflector.timer \
         systemd-resolved \
         systemd-timesyncd \
-        bluetooth
+        bluetooth \
+        libvirtd
+
+        run_chroot virsh net-autostart default
 
     ln -sf /run/systemd/resolve/stub-resolv.conf \
         "$AG_INSTALL_ROOT/etc/resolv.conf"
