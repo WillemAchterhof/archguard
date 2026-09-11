@@ -30,7 +30,7 @@ configure_services()
         bluetooth \
         libvirtd
 
-        run_chroot virsh net-autostart default
+    run_chroot virsh net-autostart default
 
     ln -sf /run/systemd/resolve/stub-resolv.conf \
         "$AG_INSTALL_ROOT/etc/resolv.conf"
