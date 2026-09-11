@@ -20,6 +20,7 @@ configure_services()
     msg "Enabling services"
 
     run_chroot systemctl enable \
+        sddm \
         apparmor \
         NetworkManager \
         nftables \
