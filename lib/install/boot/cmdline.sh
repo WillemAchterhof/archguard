@@ -62,6 +62,7 @@ configure_kernel_cmdline()
     cmdline+=" lockdown=confidentiality"
     cmdline+=" systemd.default_timeout_start_sec=infinity"
     cmdline+=" quiet splash"
+    cmdline+=" plymouth.ignore-serial-consoles"
 
     # QEMU/OVMF expose an SPCR ACPI table describing a serial console;
     # the systemd UEFI stub auto-detects it and injects console=uart,...
