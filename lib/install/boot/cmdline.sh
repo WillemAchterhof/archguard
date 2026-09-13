@@ -41,7 +41,7 @@ configure_kernel_cmdline()
         fatal "Unable to determine LUKS UUID: $AG_INSTALL_PART_ROOT"
 
     cmdline="rd.luks.name=${luks_uuid}=cryptroot"
-    cmdline+=" rd.luks.options=${luks_uuid}=tpm2-device=auto,timeout=0s"
+    cmdline+=" rd.luks.options=${luks_uuid}=tpm2-device=auto,tpm2-pin=yes"
     cmdline+=" root=/dev/vgroot/root"
     cmdline+=" rootfstype=${AG_P_ROOT_FS}"
     cmdline+=" rw"
@@ -60,6 +60,7 @@ configure_kernel_cmdline()
     cmdline+=" lsm=landlock,lockdown,yama,integrity,apparmor,bpf"
     cmdline+=" apparmor=1"
     cmdline+=" lockdown=confidentiality"
+    cmdline+="systemd.default_timeout_start_sec=infinity"
     cmdline+=" quiet splash"
 
     # QEMU/OVMF expose an SPCR ACPI table describing a serial console;
