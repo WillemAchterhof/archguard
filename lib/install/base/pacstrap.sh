@@ -50,12 +50,6 @@ install_base_pacstrap()
         reflector \
         bluez bluez-utils \
         pipewire pipewire-audio pipewire-alsa pipewire-pulse wireplumber \
-        firefox \
-        alacritty \
-        qemu-desktop \
-        libvirt \
-        virt-manager \
-        noto-fonts noto-fonts-cjk noto-fonts-emoji \
         udisks2 polkit \
         sudo \
 		man-db \
