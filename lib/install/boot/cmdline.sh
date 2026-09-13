@@ -60,7 +60,7 @@ configure_kernel_cmdline()
     cmdline+=" lsm=landlock,lockdown,yama,integrity,apparmor,bpf"
     cmdline+=" apparmor=1"
     cmdline+=" lockdown=confidentiality"
-    cmdline+=" systemd.default_timeout_start_sec=infinity"
+    cmdline+=" systemd.default_device_timeout_sec=infinity"
     cmdline+=" quiet splash"
     cmdline+=" plymouth.ignore-serial-consoles"
 
