@@ -20,7 +20,6 @@ configure_services()
     msg "Enabling services"
 
     run_chroot systemctl enable \
-        sddm \
         apparmor \
         NetworkManager \
         nftables \
@@ -28,8 +27,7 @@ configure_services()
         reflector.timer \
         systemd-resolved \
         systemd-timesyncd \
-        bluetooth \
-        libvirtd
+        bluetooth
 
     ln -sf /run/systemd/resolve/stub-resolv.conf \
         "$AG_INSTALL_ROOT/etc/resolv.conf"
