@@ -18,7 +18,7 @@
 #  All Wi-Fi operations are performed through nmcli.
 # ==============================================================================
 
-AG_WIFI_ENV="/opt/archguard/state/config/wifi.env"
+AG_WIFI_ENV="/opt/archguard/config/base/wifi.env"
 
 # ==============================================================================
 #  INTERNET CONNECTIVITY
@@ -37,7 +37,7 @@ wifi_load()
 {
     [[ -f "$AG_WIFI_ENV" ]] || return 0
 
-    log "[*] Loading saved Wi-Fi configuration..."
+    printf "[*] Loading saved Wi-Fi configuration..."
 
     # shellcheck disable=SC1090
     source "$AG_WIFI_ENV"
@@ -57,7 +57,7 @@ wifi_connect_saved()
     [[ -n "${AG_WIFI_PASSWORD:-}" ]] \
         || return 1
 
-    log "[*] Connecting to saved Wi-Fi network..."
+    printf "[*] Connecting to saved Wi-Fi network..."
 
     nmcli device wifi connect \
         "$AG_WIFI_SSID" \
@@ -70,7 +70,7 @@ wifi_connect_saved()
 
 wifi_show()
 {
-    log "[*] Scanning for wireless networks..."
+    printf "[*] Scanning for wireless networks..."
 
     nmcli device wifi rescan >/dev/null 2>&1 || true
 
@@ -141,18 +141,18 @@ base_connectivity()
     # --------------------------------------------------------------------------
 
     if check_internet; then
-        log "[+] Internet connection already available."
+        printf "[+] Internet connection already available."
         return 0
     fi
 
-    log "[*] No internet connection detected."
+    printf "[*] No internet connection detected."
 
     # --------------------------------------------------------------------------
     # Try saved Wi-Fi configuration
     # --------------------------------------------------------------------------
 
     if [[ -f "$AG_WIFI_ENV" ]]; then
-        log "[*] Saved Wi-Fi configuration found."
+        printf "[*] Saved Wi-Fi configuration found."
 
         wifi_load
 
@@ -160,13 +160,13 @@ base_connectivity()
             sleep 3
 
             if check_internet; then
-                log "[+] Internet connection established."
+                printf "[+] Internet connection established."
                 unset AG_WIFI_PASSWORD
                 return 0
             fi
         fi
 
-        log "[!] Saved Wi-Fi connection failed."
+        printf "[!] Saved Wi-Fi connection failed."
         unset AG_WIFI_PASSWORD
     fi
 
@@ -174,12 +174,12 @@ base_connectivity()
     # Interactive Wi-Fi setup
     # --------------------------------------------------------------------------
 
-    log "[*] Starting interactive Wi-Fi setup..."
+    printf "[*] Starting interactive Wi-Fi setup..."
 
     wifi_connect
 
     check_internet \
         || fatal "Unable to establish an internet connection."
 
-    log "[+] Internet connection established."
+    printf "[+] Internet connection established."
 }
