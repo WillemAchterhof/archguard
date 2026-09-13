@@ -22,7 +22,7 @@ usbguard_turn_on() {
     systemctl start usbguard
 }
 
-activate_usbguard() {
+base_usbguard() {
     usbguard_install
     usbguard_policy
     usbguard_turn_on

@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — TPM Enrollment
 # ==============================================================================
-#  lib/postboot/tpm/enroll.sh
+#  #  lib/postboot/install/base/enroll.sh
 #
 #  Provides:
 #    enroll_tpm
@@ -45,7 +45,7 @@ get_luks_device()
     printf '%s\n' "$device"
 }
 
-enroll_tpm()
+base_enroll_tpm()
 {
     local luks_device
 

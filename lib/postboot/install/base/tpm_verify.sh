@@ -2,7 +2,7 @@
 # ==============================================================================
 #  Arch Secure Installer V2.6 — TPM Verification
 # ==============================================================================
-#  lib/postboot/tpm/verify.sh
+#  lib/postboot/install/base/verify.sh
 #
 #  Provides:
 #    verify_tpm
@@ -31,7 +31,7 @@ get_luks_device_verify()
     printf '%s\n' "$device"
 }
 
-verify_tpm()
+base_verify_tpm()
 {
     local luks_device
 
