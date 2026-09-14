@@ -16,10 +16,10 @@ usbguard_policy() {
 
 usbguard_ipc() {
     local acl_dir="/etc/usbguard/IPCAccessControl.d"
-    local target_user="$AG_P_USERNAME"
+    local target_user="${SUDO_USER:-$(id -un)}"
 
-    [[ -n "${AG_P_USERNAME:-}" ]] || {
-        echo "FATAL: AG_P_USERNAME is not set" >&2
+    [[ -n "$target_user" ]] || {
+        echo "Target_user is not set" >&2
         exit 1
     }
 
