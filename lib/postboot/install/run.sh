@@ -54,9 +54,9 @@ ask_post_install()
 
             git clone \
                 "https://github.com/WillemAchterhof/archguard-post-install.git" \
-                "$POST_INSTALL_ROOT/post_install"
+                "$POSTBOOT_ROOT/post_install"
 
-            "$POST_INSTALL_ROOT/post_install/run.sh"
+            exec "$POSTBOOT_ROOT/post_install/run.sh"
             ;;
 
         *)
