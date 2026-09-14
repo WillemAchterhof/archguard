@@ -56,6 +56,7 @@ ask_post_install()
                 "https://github.com/WillemAchterhof/archguard-post-install.git" \
                 "$POSTBOOT_ROOT/post_install"
 
+            chmod +x "$POSTBOOT_ROOT/post_install/run.sh"
             "$POSTBOOT_ROOT/post_install/run.sh"
             ;;
 
