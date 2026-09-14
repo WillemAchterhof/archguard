@@ -50,7 +50,7 @@ ask_post_install()
 
     case "${answer,,}" in
         ""|y|yes)
-            msg "Installing ArchGuard Post-Install..."
+            printf "Installing ArchGuard Post-Install..."
 
             git clone \
                 "https://github.com/WillemAchterhof/archguard-post-install.git" \
@@ -60,7 +60,7 @@ ask_post_install()
             ;;
 
         *)
-            msg "Post-Install skipped."
+            printf "Post-Install skipped."
             ;;
     esac
 }
