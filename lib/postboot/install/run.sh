@@ -42,28 +42,28 @@ base_usbguard
 #  OPTIONAL POSTBOOT
 # ==============================================================================
 
-ask_postboot()
+ask_post_install()
 {
     local answer
 
     printf '\n'
-    printf 'Launch ArchGuard PostBoot configuration? [Y/n]: '
+    printf 'Launch ArchGuard Post-Install configuration? [Y/n]: '
 
     read -r answer
 
     case "${answer,,}" in
         ""|y|yes)
-            msg "Installing ArchGuard PostBoot..."
+            msg "Installing ArchGuard Post-Install..."
 
             git clone \
-                "https://..." \
-                "$POSTBOOT_ROOT/post_boot"
+                "https://github.com/WillemAchterhof/archguard-post-install.git" \
+                "$POST_INSTALL_ROOT/post_install"
 
-            "$POSTBOOT_ROOT/post_boot/run.sh"
+            "$POST_INSTALL_ROOT/post_install/run.sh"
             ;;
 
         *)
-            msg "PostBoot skipped."
+            msg "Post-Install skipped."
             ;;
     esac
 }
