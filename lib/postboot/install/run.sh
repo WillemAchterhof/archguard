@@ -26,6 +26,9 @@ done < <(
         -print0
 )
 
+
+read -r -p 'Launch ArchGuard Post-Install configuration? [Y/n]: ' answer < /dev/tty
+
 # ==============================================================================
 #  BASE POSTBOOT ACTIONS
 # ==============================================================================
@@ -44,10 +47,6 @@ e  OPTIONAL POSTBOOT
 
 ask_post_install()
 {
-    local answer
-
-    read -r -p 'Launch ArchGuard Post-Install configuration? [Y/n]: ' answer < /dev/tty
-
     case "${answer,,}" in
         ""|y|yes)
             printf "Installing ArchGuard Post-Install..."
