@@ -39,6 +39,36 @@ base_connectivity
 base_usbguard
 
 # ==============================================================================
+#  OPTIONAL POSTBOOT
+# ==============================================================================
+
+ask_postboot()
+{
+    local answer
+
+    printf '\n'
+    printf 'Launch ArchGuard PostBoot configuration? [Y/n]: '
+
+    read -r answer
+
+    case "${answer,,}" in
+        ""|y|yes)
+            msg "Installing ArchGuard PostBoot..."
+
+            git clone \
+                "https://..." \
+                "$POSTBOOT_ROOT/post_boot"
+
+            "$POSTBOOT_ROOT/post_boot/run.sh"
+            ;;
+
+        *)
+            msg "PostBoot skipped."
+            ;;
+    esac
+}
+
+# ==============================================================================
 #  TPM ENROLLMENT
 # ==============================================================================
 
