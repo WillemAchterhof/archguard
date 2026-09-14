@@ -46,10 +46,7 @@ ask_post_install()
 {
     local answer
 
-    printf '\n'
-    printf 'Launch ArchGuard Post-Install configuration? [Y/n]: '
-
-    read -r answer
+    read -r -p 'Launch ArchGuard Post-Install configuration? [Y/n]: ' answer < /dev/tty
 
     case "${answer,,}" in
         ""|y|yes)
