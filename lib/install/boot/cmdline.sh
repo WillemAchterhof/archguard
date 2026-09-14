@@ -41,7 +41,7 @@ configure_kernel_cmdline()
         fatal "Unable to determine LUKS UUID: $AG_INSTALL_PART_ROOT"
 
     cmdline="rd.luks.name=${luks_uuid}=cryptroot"
-    cmdline+=" rd.luks.options=${luks_uuid}=tpm2-device=auto,tpm2-pin=yes,timeout=o"
+    cmdline+=" rd.luks.options=${luks_uuid}=tpm2-device=auto,tpm2-pin=yes,timeout=0,timeout=o"
     cmdline+=" root=/dev/vgroot/root"
     cmdline+=" rootfstype=${AG_P_ROOT_FS}"
     cmdline+=" rw"
