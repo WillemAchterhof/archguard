@@ -39,7 +39,7 @@ base_connectivity
 base_usbguard
 
 # ==============================================================================
-#  OPTIONAL POSTBOOT
+e  OPTIONAL POSTBOOT
 # ==============================================================================
 
 ask_post_install()
@@ -56,7 +56,7 @@ ask_post_install()
                 "https://github.com/WillemAchterhof/archguard-post-install.git" \
                 "$POSTBOOT_ROOT/post_install"
 
-            exec "$POSTBOOT_ROOT/post_install/run.sh"
+            "$POSTBOOT_ROOT/post_install/run.sh"
             ;;
 
         *)
