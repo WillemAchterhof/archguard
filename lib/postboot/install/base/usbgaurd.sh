@@ -18,16 +18,17 @@ usbguard_ipc() {
     local acl_dir="/etc/usbguard/IPCAccessControl.d"
     local target_user="$AG_P_USERNAME"
 
-    [[ -n "${AG_P_USERNAME:-}" ]] \
-        || fatal "AG_P_USERNAME is not set"
+    [[ -n "${AG_P_USERNAME:-}" ]] || {
+        echo "FATAL: AG_P_USERNAME is not set" >&2
+        exit 1
+    }
 
     printf "[*] Configuring USBGuard IPC access for %s..." "$target_user"
 
     mkdir -p "$acl_dir"
 
     cat > "$acl_dir/$target_user" <<EOF
-Devices=list
-Devices=modify
+Devices=list,modify
 EOF
 
     chmod 600 "$acl_dir/$target_user"
@@ -35,11 +36,8 @@ EOF
 }
 
 usbguard_turn_on() {
-    printf "[*] Enabling USBGuard..."
-    systemctl enable usbguard
-
-    printf "[*] Starting USBGuard..."
-    systemctl start usbguard
+    printf "[*] Enabling and starting USBGuard..."
+    systemctl enable --now usbguard
 }
 
 base_usbguard() {
