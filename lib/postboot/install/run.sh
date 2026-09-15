@@ -56,7 +56,7 @@ ask_post_install()
                 "$POSTBOOT_ROOT/post_install"
 
             chmod +x "$POSTBOOT_ROOT/post_install/run.sh"
-            "$POSTBOOT_ROOT/post_install/run.sh"
+            "$POSTBOOT_ROOT/post_install/root_run.sh"
             ;;
 
         *)
